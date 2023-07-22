@@ -3,7 +3,7 @@
   overflow: hidden;
 }
 
-.uagb-infobox__outer-wrap {
-  border-radius: var(--gest-img-border-radius);
+.uagb-post__inner-wrap {
+  border-radius: calc(var(--gest-img-border-radius) * 2);
   overflow: hidden;
 }
