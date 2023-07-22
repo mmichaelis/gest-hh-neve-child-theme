@@ -2,3 +2,8 @@
   border-radius: var(--gest-img-border-radius);
   overflow: hidden;
 }
+
+.uagb-post__inner-wrap {
+  border-radius: var(--gest-img-border-radius);
+  overflow: hidden;
+}
