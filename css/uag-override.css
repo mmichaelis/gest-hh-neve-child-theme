@@ -1,5 +1,4 @@
-.wp-block-cover {
+.uagb-post-grid .uagb-post__image img {
   border-radius: var(--gest-img-border-radius);
-  margin-bottom: 12px;
   overflow: hidden;
 }
