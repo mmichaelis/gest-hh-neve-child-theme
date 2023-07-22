@@ -18,5 +18,9 @@ Tags: blog, custom-logo, e-commerce, rtl-language-support, post-formats, grid-la
 @import url("css/custom.css");
 @import url("css/general-override.css");
 @import url("css/neve-override.css");
+@import url("css/neve-mobile-override.css");
+@import url("css/neve-no-mobile-override.css");
+@import url("css/neve-tablet-override.css");
+@import url("css/neve-desktop-override.css");
 @import url("css/uag-override.css");
 @import url("css/wordpress-override.css");

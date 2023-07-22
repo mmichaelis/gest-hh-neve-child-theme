@@ -23,6 +23,17 @@ body {
   font-family: var(--gest-logo-ff);
   font-weight: var(--gest-logo-wght-normal);
 }
+
 .site-logo h1, .site-logo p {
   font-weight: var(--gest-logo-wght-bold);
+}
+
+/* Hide sub-text in logo by default. */
+.site-logo small {
+  display: none;
+}
+
+/* By default, don't force wrapped text in logo. */
+.site-logo .nv-title-tagline-wrap {
+  min-width: inherit;
 }
