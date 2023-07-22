@@ -1,7 +1,7 @@
 .wp-block-cover {
   --gest-img-border-radius: 12px;
-}
 
-.wp-block-cover img {
   border-radius: var(--gest-img-border-radius);
+  margin-bottom: 12px;
+  overflow: hidden;
 }
