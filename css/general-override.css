@@ -1,0 +1,4 @@
+img.scaled-image {
+  /* Default configured margin breaks layout. */
+  margin: inherit;
+}
