@@ -19,4 +19,6 @@
   --gest-bgcolor: rgba(255, 255, 255, 1);
   --gest-text-color: var(--gest-color);
   --gest-site-bg: var(--gest-bgcolor);
+
+  --gest-site-border: rgba(86, 91, 105, 1);
 }

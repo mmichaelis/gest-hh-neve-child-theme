@@ -43,3 +43,19 @@ body {
 .footer-bottom {
   display: none;
 }
+
+/* ======================================================[ custom: border]=== */
+
+body {
+  background-color: var(--gest-site-border);
+}
+
+[class*=row-inner] {
+  background: var(--gest-site-border);
+}
+
+#content > .container,
+.footer-top-inner > .container,
+.hfg_header .header-main-inner .container {
+  background-color: var(--gest-site-bg);
+}
