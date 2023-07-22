@@ -1,12 +1,12 @@
 @media screen and (min-width: 769px) {
   /* Display sub-text in logo on non-mobile only. */
   .site-logo small {
-    display: inherit;
+    display: inherit !important;
   }
 
   /* Force logo-text to wrap. */
   .site-logo .nv-title-tagline-wrap {
-    max-width: 230px;
+    max-width: 230px !important;
   }
 
 }
