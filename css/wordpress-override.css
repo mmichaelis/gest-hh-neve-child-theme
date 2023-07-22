@@ -1,0 +1,9 @@
+.wp-block-image {
+  --gest-img-border-radius: 12px;
+}
+
+.wp-block-image img {
+  border-radius: var(--gest-img-border-radius);
+  display: block;
+  margin: 0 auto;
+}
