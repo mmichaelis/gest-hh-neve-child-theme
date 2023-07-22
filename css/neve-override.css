@@ -1,4 +1,4 @@
-/* ===========[ general ]=== */
+/* ============================================================[ general ]=== */
 
 [data-row-id] {
   color: var(--gest-color);
@@ -7,6 +7,14 @@
 
 [data-row-id] a {
   color: var(--gest-color);
+}
+
+/* =========================================================[ typography ]=== */
+
+body {
+  font-family: var(--gest-bodyfontfamily);
+  color: var(--gest-text-color);
+  background-color: var(--gest-site-bg);
 }
 
 /* ===========================================================[ nav-brand ]===*/

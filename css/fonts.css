@@ -19,4 +19,6 @@
   --gest-logo-wght-normal: var(--gest-mitr-wght-normal);
   --gest-logo-wght-bold: var(--gest-mitr-wght-bold);
   --gest-handwriting-ff: var(--gest-kalam-ff), var(--nv-default-ff), var(--nv-fallback-ff);
+
+  --gest-bodyfontfamily: var(--gest-open-sans-ff), var(--nv-default-ff), var(--nv-fallback-ff);
 }
