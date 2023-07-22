@@ -1,0 +1,9 @@
+/* ===========================================================[ nav-brand ]===*/
+
+.site-logo {
+  font-family: var(--gest-logo-ff);
+  font-weight: var(--gest-logo-wght-normal);
+}
+.site-logo h1, .site-logo p {
+  font-weight: var(--gest-logo-wght-bold);
+}
