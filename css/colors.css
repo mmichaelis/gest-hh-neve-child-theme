@@ -9,11 +9,12 @@
    *
    * ---------------------------------------------------------------------------
    */
-  --color-gest-red: rgba(251, 0, 13, 1); /* Name: Torch Red, Hex: #FB000D, https://www.htmlcsscolor.com/hex/FB000D */
-  --color-gest-yellow: rgba(255, 174, 0, 1); /* Name: Orange, Hex: #FFAE00, https://www.htmlcsscolor.com/hex/FFAE00 */
-  --color-gest-blue: rgba(19, 58, 172, 1); /* Name: Egyptian Blue, Hex: #133AAC, https://www.htmlcsscolor.com/hex/133AAC */
-  --color-gest-green: rgba(20, 209, 0, 1); /* Name: Free Speech Green, Hex: #14D100, https://www.htmlcsscolor.com/hex/14D100 */
-  --color-gest-roof: rgba(55, 86, 177, 1); /* Name: Cerulean Blue, Hex: #3756B1, https://www.htmlcsscolor.com/hex/3756B1 */
+  --gest-red-color: rgba(251, 0, 13, 1); /* Name: Torch Red, Hex: #FB000D, https://www.htmlcsscolor.com/hex/FB000D */
+  --gest-yellow-color: rgba(255, 174, 0, 1); /* Name: Orange, Hex: #FFAE00, https://www.htmlcsscolor.com/hex/FFAE00 */
+  --gest-blue-color: rgba(19, 58, 172, 1); /* Name: Egyptian Blue, Hex: #133AAC, https://www.htmlcsscolor.com/hex/133AAC */
+  --gest-green-color: rgba(20, 209, 0, 1); /* Name: Free Speech Green, Hex: #14D100, https://www.htmlcsscolor.com/hex/14D100 */
+  --gest-roof-color: rgba(55, 86, 177, 1); /* Name: Cerulean Blue, Hex: #3756B1, https://www.htmlcsscolor.com/hex/3756B1 */
 
-  --color-gest-text: rgba(0, 0, 0, 1);
+  --gest-color: rgba(0, 0, 0, 1);
+  --gest-bgcolor: rgba(255, 255, 255, 1);
 }
