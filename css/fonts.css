@@ -14,6 +14,8 @@
   --gest-kalam-wght-bold: 700;
 
   --gest-text-ff: var(--gest-open-sans-ff), var(--nv-default-ff), var(--nv-fallback-ff);
+  --gest-text-wght-normal: var(--gest-open-sans-wght-normal);
+  --gest-text-wght-bold: var(--gest-open-sans-wght-bold);
   --gest-heading-ff: var(--gest-open-sans-ff), var(--nv-default-ff), var(--nv-fallback-ff);
   --gest-logo-ff: var(--gest-mitr-ff), var(--nv-default-ff), var(--nv-fallback-ff);
   --gest-logo-wght-normal: var(--gest-mitr-wght-normal);
