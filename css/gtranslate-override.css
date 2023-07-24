@@ -14,3 +14,12 @@
   padding: 0px 12px;
   width: inherit;
 }
+
+.nav-ul li a.glink {
+  display: inline;
+}
+
+.nav-ul li select.gt_selector {
+  display: flex;
+  width: 100%;
+}
