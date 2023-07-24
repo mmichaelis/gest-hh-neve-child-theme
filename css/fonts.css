@@ -24,6 +24,8 @@
 
   --gest-bodyfontfamily: var(--gest-open-sans-ff), var(--nv-default-ff), var(--nv-fallback-ff);
 
+  --gest-fontfamily: var(--gest-open-sans-ff), var(--nv-default-ff), var(--nv-fallback-ff);
+  --gest-fontweight: var(--gest-open-sans-wght-normal);
   --gest-formfieldfontfamily: var(--gest-open-sans-ff), var(--nv-default-ff), var(--nv-fallback-ff);
   --gest-formfieldfontweight: var(--gest-open-sans-wght-normal);
 }

@@ -1,7 +1,7 @@
-.wp-block-cover {
-  border-radius: var(--gest-img-border-radius);
-  margin-bottom: 12px;
-  overflow: hidden;
+.builder-item .item--inner {
+  color: var(--gest-color);
+  font-family: var(--gest-fontfamily);
+  font-weight: var(--gest-fontweight);
 }
 
 .widget select,
@@ -15,4 +15,10 @@ form.wp-block-search input.wp-block-search__input {
   color: var(--gest-formfieldcolor);
   font-family: var(--gest-formfieldfontfamily);
   font-weight: var(--gest-formfieldfontweight);
+}
+
+.wp-block-cover {
+  border-radius: var(--gest-img-border-radius);
+  margin-bottom: 12px;
+  overflow: hidden;
 }
