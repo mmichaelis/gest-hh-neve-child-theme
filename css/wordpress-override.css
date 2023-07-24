@@ -3,3 +3,16 @@
   margin-bottom: 12px;
   overflow: hidden;
 }
+
+.widget select,
+.wp-block-search.wp-block-search__button-inside .wp-block-search__inside-wrapper,
+form input:read-write,
+form select,
+form select option,
+form textarea,
+form.wp-block-search input.wp-block-search__input {
+  background: var(--gest-formfieldbgcolor);
+  color: var(--gest-formfieldcolor);
+  font-family: var(--gest-formfieldfontfamily);
+  font-weight: var(--gest-formfieldfontweight);
+}

@@ -21,4 +21,7 @@
   --gest-site-bg: var(--gest-bgcolor);
 
   --gest-site-border: rgba(86, 91, 105, 1);
+
+  --gest-formfieldcolor: var(--gest-color);
+  --gest-formfieldbgcolor: var(--gest-bgcolor);
 }
