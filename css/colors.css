@@ -24,4 +24,7 @@
 
   --gest-formfieldcolor: var(--gest-color);
   --gest-formfieldbgcolor: var(--gest-bgcolor);
+
+  --color: orange;
+  --primarybtncolor: red;
 }
