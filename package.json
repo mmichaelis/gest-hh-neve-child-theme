@@ -1,0 +1,17 @@
+{
+  "name": "gest-hh-neve-child-theme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gulp": "gulp",
+    "zip": "gulp zip"
+  },
+  "keywords": [],
+  "author": "Mark Michaelis",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-zip": "^5.1.0"
+  }
+}
