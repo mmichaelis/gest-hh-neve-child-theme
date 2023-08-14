@@ -10,19 +10,19 @@ License:        GNU General Public License v2 or later
 License URI:    http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:    neve
 Tags: blog, custom-logo, e-commerce, rtl-language-support, post-formats, grid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-menu, featured-image-header, featured-images, flexible-header, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, accessibility-ready, wide-blocks, block-styles
+Requires at least: 6.2
+Tested up to: 6.2
+Requires PHP: 7.0
 */
 
-@import url("css/colors.css");
-@import url("css/fonts.css");
+@import url("gest/main.css");
 @import url("css/sizes.css");
-@import url("css/custom.css");
-@import url("css/general-override.css");
-@import url("css/gtranslate-override.css");
-@import url("css/neve-override.css");
-@import url("css/neve-override-small-mobile.css");
-@import url("css/neve-override-mobile.css");
-@import url("css/neve-override-no-mobile.css");
-@import url("css/neve-override-tablet.css");
-@import url("css/neve-override-desktop.css");
-@import url("css/uag-override.css");
-@import url("css/wordpress-override.css");
+
+@import url("cookie-notice/main.css");
+@import url("enhanced-tooltipglossary/main.css");
+@import url("general/main.css");
+@import url("gtranslate/main.css");
+@import url("neve/main.css");
+@import url("the-events-calendar/main.css");
+@import url("uag/main.css");
+@import url("wordpress/main.css");

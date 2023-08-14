@@ -22,3 +22,8 @@ form.wp-block-search input.wp-block-search__input {
   margin-bottom: 12px;
   overflow: hidden;
 }
+
+img.scaled-image {
+  /* Default configured margin breaks layout. */
+  margin: inherit;
+}

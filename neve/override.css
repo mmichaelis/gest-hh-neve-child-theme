@@ -1,0 +1,64 @@
+/* ----------------------------------------------------[+ Dark Page Border +] */
+
+body {
+  background: var(--gest-site-border);
+}
+
+[data-row-id] {
+  background: initial;
+}
+
+.header-menu-sidebar-bg, [class*=row-inner] {
+  background: initial;
+}
+
+.row {
+  background: var(--gest-site-bg);
+}
+
+/* ----------------------------------------------------[- Dark Page Border -] */
+
+.builder-item--secondary-menu {
+  --fontfamily: var(--gest-fontfamily);
+  --fontweight: var(--gest-fontweight-bold);
+}
+
+/* Darken nested menu items more and more by depth. */
+.hfg_header .header-menu-sidebar .header-menu-sidebar-bg .nav-ul .sub-menu {
+  background-color: var(--gest-darken-04);
+}
+
+.site-logo {
+  --fontfamily: var(--gest-logo-fontfamily);
+}
+
+.site-logo h1, .site-logo p {
+  --fontweight: var(--gest-logo-fontweight-bold);
+
+  font-family: var(--fontfamily);
+  font-weight: var(--fontweight);
+}
+
+.site-logo small {
+  --fontweight: var(--gest-logo-fontweight);
+
+  font-family: var(--fontfamily);
+  font-weight: var(--fontweight);
+}
+
+/* Hide sub-text in logo by default. */
+.site-logo small {
+  display: none;
+}
+
+/* By default, don't force wrapped text in logo. */
+.site-logo .nv-title-tagline-wrap {
+  min-width: inherit;
+}
+
+/* =============================================================[ footer ]=== */
+
+/* Hide Neve Footer */
+.footer-bottom {
+  display: none;
+}

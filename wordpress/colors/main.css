@@ -1,0 +1,14 @@
+.wp-block-button__link {
+  color: var(--gest-block-button-fg);
+  background-color: var(--gest-block-button-bg);
+}
+
+a.wp-block-button__link:focus,
+a.wp-block-button__link:hover {
+  color: var(--gest-block-button-active);
+}
+
+.wp-block-cover .wp-block-cover__inner-container,
+.wp-block-cover-image .wp-block-cover__inner-container {
+  color: var(--gest-text-on-dark-color);
+}

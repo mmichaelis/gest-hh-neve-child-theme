@@ -1,0 +1,92 @@
+:root {
+  /*
+   * ---------------------------------------------------------------------------
+   *
+   * GEST Visual Identity Colors
+   *
+   * Palette Origin: https://paletton.com/#uid=75B110kw0w0jyC+oRxVy4oIDfjr
+   * Special Color (Roof): rgb(55, 86, 177); #3756b1
+   *
+   * ---------------------------------------------------------------------------
+   */
+
+  --gest-red-color: rgba(251, 0, 13, 1); /* Name: Torch Red, Hex: #FB000D, https://www.htmlcsscolor.com/hex/FB000D */
+  --gest-yellow-color: rgba(255, 174, 0, 1); /* Name: Orange, Hex: #FFAE00, https://www.htmlcsscolor.com/hex/FFAE00 */
+  --gest-blue-color: rgba(19, 58, 172, 1); /* Name: Egyptian Blue, Hex: #133AAC, https://www.htmlcsscolor.com/hex/133AAC */
+  --gest-green-color: rgba(20, 209, 0, 1); /* Name: Free Speech Green, Hex: #14D100, https://www.htmlcsscolor.com/hex/14D100 */
+  --gest-roof-color: rgba(55, 86, 177, 1); /* Name: Cerulean Blue, Hex: #3756B1, https://www.htmlcsscolor.com/hex/3756B1 */
+
+  /*
+   * https://www.colors.tools/tints-and-shades/
+   */
+
+  --gest-red-color-darkest: rgba(100, 0, 5, 1); /* Name: Burgundy, Hex: #640005, https://www.htmlcsscolor.com/hex/640005 */
+  --gest-red-color-darker: rgba(150, 0, 7, 1); /* Name: Sangria, Hex: #960007, https://www.htmlcsscolor.com/hex/960007 */
+  --gest-red-color-dark: rgba(200, 0, 10, 1); /* Name: Venetian Red, Hex: #c8000a, https://www.htmlcsscolor.com/hex/c8000a */
+  --gest-red-color-light: rgba(251, 51, 61, 1); /* Name: Alizarin, Hex: #fb333d, https://www.htmlcsscolor.com/hex/fb333d */
+  --gest-red-color-lighter: rgba(252, 102, 109, 1); /* Name: Wild Watermelon, Hex: #fc666d, https://www.htmlcsscolor.com/hex/fc666d */
+  --gest-red-color-lightest: rgba(253, 153, 158, 1); /* Name: Wewak, Hex: #fd999e, https://www.htmlcsscolor.com/hex/fd999e */
+
+  --gest-yellow-color-darkest: rgba(102, 69, 0, 1); /* Name: Raw Umber, Hex: #664500, https://www.htmlcsscolor.com/hex/664500 */
+  --gest-yellow-color-darker: rgba(153, 104, 0, 1); /* Name: Golden Brown, Hex: #996800, https://www.htmlcsscolor.com/hex/996800 */
+  --gest-yellow-color-darker: rgba(153, 104, 0, 1); /* Name: Golden Brown, Hex: #996800, https://www.htmlcsscolor.com/hex/996800 */
+  --gest-yellow-color-dark: rgba(204, 139, 0, 1); /* Name: Dark Goldenrod, Hex: #cc8b00, https://www.htmlcsscolor.com/hex/cc8b00 */
+  --gest-yellow-color-light: rgba(255, 190, 51, 1); /* Name: Supernova, Hex: #ffbe33, https://www.htmlcsscolor.com/hex/ffbe33 */
+  --gest-yellow-color-lighter: rgba(255, 206, 102, 1); /* Name: Grandis, Hex: #ffce66, https://www.htmlcsscolor.com/hex/ffce66 */
+  --gest-yellow-color-lightest: rgba(255, 222, 153, 1); /* Name: Cream Brulee, Hex: #ffde99, https://www.htmlcsscolor.com/hex/ffde99 */
+
+  --gest-blue-color-darkest: rgba(7, 23, 68, 1); /* Name: Midnight Express, Hex: #071744, https://www.htmlcsscolor.com/hex/071744 */
+  --gest-blue-color-darker: rgba(11, 34, 103, 1); /* Name: Sapphire, Hex: #0b2267, https://www.htmlcsscolor.com/hex/0b2267 */
+  --gest-blue-color-dark: rgba(15, 46, 137, 1); /* Name: Smalt, Hex: #0f2e89, https://www.htmlcsscolor.com/hex/0f2e89 */
+  --gest-blue-color-light: rgba(66, 97, 188, 1); /* Name: Free Speech Blue, Hex: #4261bc, https://www.htmlcsscolor.com/hex/4261bc */
+  --gest-blue-color-lighter: rgba(113, 136, 205, 1); /* Name: Wild Blue Yonder, Hex: #7188cd, https://www.htmlcsscolor.com/hex/7188cd */
+  --gest-blue-color-lightest: rgba(160, 176, 221, 1); /* Name: Echo Blue, Hex: #a0b0dd, https://www.htmlcsscolor.com/hex/a0b0dd */
+
+  --gest-green-color-darkest: rgba(8, 83, 0, 1); /* Name: Myrtle, Hex: #085300, https://www.htmlcsscolor.com/hex/085300 */
+  --gest-green-color-darker: rgba(12, 125, 0, 1); /* Name: Green, Hex: #0c7d00, https://www.htmlcsscolor.com/hex/0c7d00 */
+  --gest-green-color-dark: rgba(16, 167, 0, 1); /* Name: Islamic Green, Hex: #10a700, https://www.htmlcsscolor.com/hex/10a700 */
+  --gest-green-color-light: rgba(67, 218, 51, 1); /* Name: Lime Green, Hex: #43da33, https://www.htmlcsscolor.com/hex/43da33 */
+  --gest-green-color-lighter: rgba(114, 227, 102, 1); /* Name: Pastel Green, Hex: #72e366, https://www.htmlcsscolor.com/hex/72e366 */
+  --gest-green-color-lightest: rgba(161, 236, 153, 1); /* Name: Granny Smith Apple, Hex: #a1ec99, https://www.htmlcsscolor.com/hex/a1ec99 */
+
+  --black-color: rgba(0, 0, 0, 1); /* Name: Black, Hex: #000000, https://www.htmlcsscolor.com/hex/000000 */
+  --gray-color-shades-80: rgba(25, 25, 25, 1); /* Name: Nero, Hex: #191919, https://www.htmlcsscolor.com/hex/191919 */
+  --gray-color-shades-60: rgba(51, 51, 51, 1); /* Name: Night Rider, Hex: #333, https://www.htmlcsscolor.com/hex/333333 */
+  --gray-color-shades-40: rgba(76, 76, 76, 1); /* Name: Matterhorn, Hex: #4c4c4c, https://www.htmlcsscolor.com/hex/4c4c4c */
+  --gray-color-shades-20: rgba(102, 102, 102, 1); /* Name: Dim Gray, Hex: #666, https://www.htmlcsscolor.com/hex/666666 */
+  --gray-color-tints-20: rgba(153, 153, 153, 1); /* Name: Nobel, Hex: #999, https://www.htmlcsscolor.com/hex/999999 */
+  --gray-color-tints-40: rgba(178, 178, 178, 1); /* Name: , Hex: #b2b2b2, https://www.htmlcsscolor.com/hex/b2b2b2 */
+  --gray-color-tints-60: rgba(204, 204, 204, 1); /* Name: Pink Swan, Hex: #ccc, https://www.htmlcsscolor.com/hex/cccccc */
+  --gray-color-tints-80: rgba(229, 229, 229, 1); /* Name: Whisper, Hex: #e5e5e5, https://www.htmlcsscolor.com/hex/e5e5e5 */
+  --white-color: rgba(255, 255, 255, 1); /* Name: White, Hex: #ffffff, https://www.htmlcsscolor.com/hex/ffffff */
+
+  --gest-darken-01: rgba(0, 0, 0, .01);
+  --gest-darken-02: rgba(0, 0, 0, .02);
+  --gest-darken-03: rgba(0, 0, 0, .03);
+  --gest-darken-04: rgba(0, 0, 0, .04);
+  --gest-darken-05: rgba(0, 0, 0, .05);
+  --gest-darken-06: rgba(0, 0, 0, .06);
+  --gest-darken-07: rgba(0, 0, 0, .07);
+  --gest-darken-08: rgba(0, 0, 0, .08);
+  --gest-darken-09: rgba(0, 0, 0, .09);
+  --gest-darken-10: rgba(0, 0, 0, .1);
+  --gest-darken-20: rgba(0, 0, 0, .2);
+  --gest-darken-30: rgba(0, 0, 0, .3);
+  --gest-darken-40: rgba(0, 0, 0, .4);
+  --gest-darken-50: rgba(0, 0, 0, .5);
+
+  --gest-brighten-01: rgba(255, 255, 255, .01);
+  --gest-brighten-02: rgba(255, 255, 255, .02);
+  --gest-brighten-03: rgba(255, 255, 255, .03);
+  --gest-brighten-04: rgba(255, 255, 255, .04);
+  --gest-brighten-05: rgba(255, 255, 255, .05);
+  --gest-brighten-06: rgba(255, 255, 255, .06);
+  --gest-brighten-07: rgba(255, 255, 255, .07);
+  --gest-brighten-08: rgba(255, 255, 255, .08);
+  --gest-brighten-09: rgba(255, 255, 255, .09);
+  --gest-brighten-10: rgba(255, 255, 255, .1);
+  --gest-brighten-20: rgba(255, 255, 255, .2);
+  --gest-brighten-30: rgba(255, 255, 255, .3);
+  --gest-brighten-40: rgba(255, 255, 255, .4);
+  --gest-brighten-50: rgba(255, 255, 255, .5);
+}

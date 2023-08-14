@@ -1,0 +1,36 @@
+:root {
+   /*
+    * ==========================================================================
+    * Colors for debugging purpose, to identify colors, that are not yet
+    * overridden by GEST specific colors.
+    * ==========================================================================
+    */
+   --debug-fg-1: rgb(255, 0, 0);
+   --debug-fg-2: rgb(148, 0, 0);
+   --debug-fg-3: rgb(118, 0, 148);
+   --debug-bg-1: rgb(255, 255, 100);
+   --debug-bg-2: rgb(212, 212, 0);
+   --debug-bg-3: rgb(131, 212, 0);
+
+   --gest-text-color: var(--debug-fg-1);
+   --gest-site-bg: var(--debug-bg-3);
+   --gest-primary-accent: var(--debug-fg-2);
+   --gest-secondary-accent: var(--debug-fg-3);
+   --gest-text-on-dark-color: var(--debug-bg-1);
+
+   --gest-block-button-fg: var(--debug-bg-2);
+   --gest-block-button-bg: var(--debug-fg-3);
+   --gest-block-button-active: var(--debug-bg-2);
+   --gest-uag-posts-bg: var(--debug-bg-1);
+
+   --gest-cookie-notice-fg: var(--debug-bg-1);
+   --gest-cookie-notice-bg: var(--debug-fg-2);
+   --gest-cookie-notice-hover-fg: var(--debug-fg-1);
+
+   --gest-formfieldbordercolor: var(--debug-fg-2);
+
+   --gest-option-selected-color: var(--debug-bg-1);
+   --gest-option-selected-bg: var(--debug-fg-1);
+   --gest-option-hover-color: var(--debug-bg-3);
+   --gest-option-hover-bg: var(--debug-fg-3);
+ }

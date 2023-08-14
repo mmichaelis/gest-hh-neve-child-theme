@@ -1,0 +1,8 @@
+:root {
+   /*
+    * ==========================================================================
+    * Overrides colors by redefining color-variables, where possible.
+    * ==========================================================================
+    */
+   --formfieldbordercolor: var(--gest-formfieldbordercolor);
+}

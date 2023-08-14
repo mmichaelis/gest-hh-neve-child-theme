@@ -1,0 +1,9 @@
+select option[selected] {
+  color: var(--gest-option-selected-color) !important;
+  background: var(--gest-option-selected-bg) !important;
+}
+
+select option:hover {
+  color: var(--gest-option-hover-color) !important;
+  background: var(--gest-option-hover-bg) !important;
+}

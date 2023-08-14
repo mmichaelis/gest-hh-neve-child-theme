@@ -1,0 +1,29 @@
+:root {
+  /*
+   * ===========================================================================
+   * Colors for usage types.
+   * ===========================================================================
+   */
+  --gest-text-color: var(--black-color);
+  --gest-site-bg: var(--white-color);
+  --gest-site-border: var(--gray-color-shades-60);
+  --gest-primary-accent: var(--gest-blue-color-dark);
+  --gest-secondary-accent: var(--gest-blue-color-dark);
+  --gest-text-on-dark-color: var(--white-color);
+
+  --gest-block-button-fg: var(--white-color);
+  --gest-block-button-bg: var(--black-color);
+  --gest-block-button-active: var(--gest-yellow-color-light);
+  --gest-uag-posts-bg: var(--gray-color-tints-80);
+
+  --gest-cookie-notice-fg: var(--gest-yellow-color-lighter);
+  --gest-cookie-notice-bg: var(--gest-blue-color-darker);
+  --gest-cookie-notice-hover-fg: var(--gest-yellow-color-lightest);
+
+  --gest-formfieldbordercolor: var(--gray-color-tints-20);
+
+  --gest-option-selected-color: var(--white-color);
+  --gest-option-selected-bg: var(--gest-blue-color-dark);
+  --gest-option-hover-color: var(--white-color);
+  --gest-option-hover-bg: var(--gest-blue-color-dark);
+}
