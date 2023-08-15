@@ -11,6 +11,7 @@
   --gest-search-shadow: rgba(113, 136, 205, .2);
   --gest-site-border: var(--gray-color-shades-60);
   --gest-primary-accent: var(--gest-blue-color-dark);
+  --gest-primary-accent-hover: var(--gest-blue-color);
   --gest-secondary-accent: var(--gest-blue-color-dark);
   --gest-text-on-dark-color: var(--white-color);
 

@@ -1,0 +1,6 @@
+:root {
+  --tec-color-accent-primary: var(--gest-primary-accent);
+  --tec-color-accent-primary-hover: var(--gest-primary-accent-hover);
+  --tec-color-accent-primary-active: var(--gest-primary-accent-hover);
+  --tec-color-background: var(--gest-site-bg);
+}
