@@ -27,3 +27,9 @@ img.scaled-image {
   /* Default configured margin breaks layout. */
   margin: inherit;
 }
+
+.wp-block-image img {
+  border-radius: var(--gest-img-border-radius);
+  display: block;
+  margin: 0 auto;
+}
