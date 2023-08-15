@@ -88,3 +88,11 @@ body {
 .site-footer {
   box-shadow: 0 1px 3px rgba(0,0,0,.1);
 }
+
+/* Add Rounded Borders To Default Blog Post Images */
+.nv-thumb-wrap img {
+  border-radius: var(--gest-img-border-radius);
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
