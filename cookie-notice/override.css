@@ -1,0 +1,27 @@
+#cookie-notice {
+  opacity: 0.8;
+  background-color: var(--gest-cookie-notice-bg) !important;
+}
+
+#cookie-notice .cookie-notice-container {
+  color: var(--gest-cookie-notice-fg) !important;
+}
+
+#cn-accept-cookie, #cn-more-info {
+  background-color: var(--gest-brighten-10);
+  color: var(--gest-cookie-notice-fg);
+}
+
+#cn-accept-cookie:hover, #cn-more-info:hover {
+  color: var(--gest-cookie-notice-hover-fg);
+  background-color: var(--gest-brighten-30);
+  border-color: currentColor;
+}
+
+/* Close-Button */
+.cn-close-icon:before, .cn-close-icon:after {
+  background-color: var(--gest-cookie-notice-fg);
+}
+.cn-close-icon:before:hover, .cn-close-icon:after:hover {
+  background-color: var(--gest-cookie-notice-hover-fg);
+}
