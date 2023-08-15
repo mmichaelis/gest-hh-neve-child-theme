@@ -3,6 +3,7 @@
   --gest-text-wght-normal: var(--gest-open-sans-wght-normal);
   --gest-text-wght-bold: var(--gest-open-sans-wght-bold);
   --gest-heading-ff: var(--gest-open-sans-ff), var(--nv-default-ff), var(--nv-fallback-ff);
+  --gest-heading-wght: var(--gest-open-sans-wght-bold);
   --gest-logo-ff: var(--gest-mitr-ff), var(--nv-default-ff), var(--nv-fallback-ff);
   --gest-logo-wght-normal: var(--gest-mitr-wght-normal);
   --gest-logo-wght-bold: var(--gest-mitr-wght-bold);

@@ -1,0 +1,6 @@
+:root {
+  --bodyfontfamily: var(--gest-text-ff);
+  --bodyfontweight: var(--gest-text-wght-normal);
+  --headingsfontfamily: var(--gest-heading-ff);
+  --headingsfontweight: var(--gest-heading-wght);
+}
