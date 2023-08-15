@@ -39,6 +39,19 @@ img.scaled-image {
   margin-bottom: 12px;
 }
 
+/* =====================================================[+ Download Button +] */
+
+.wp-block-file__button {
+  background: var(--gest-block-button-bg);
+  color: var(--gest-block-button-fg);
+}
+
+a.wp-block-file__button:focus, a.wp-block-file__button:hover {
+  color: var(--gest-block-button-active);
+}
+
+/* =====================================================[- Download Button -] */
+
 /* ========================================================[+ WP Admin Bar +] */
 
 /*
