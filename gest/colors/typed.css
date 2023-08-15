@@ -6,6 +6,9 @@
    */
   --gest-text-color: var(--black-color);
   --gest-site-bg: var(--white-color);
+  --gest-sidebar-bg: var(--white-color);
+  --gest-search-bg: var(--gest-brighten-90);
+  --gest-search-shadow: rgba(113, 136, 205, .2);
   --gest-site-border: var(--gray-color-shades-60);
   --gest-primary-accent: var(--gest-blue-color-dark);
   --gest-secondary-accent: var(--gest-blue-color-dark);

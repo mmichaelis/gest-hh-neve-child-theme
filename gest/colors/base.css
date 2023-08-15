@@ -89,4 +89,8 @@
   --gest-brighten-30: rgba(255, 255, 255, .3);
   --gest-brighten-40: rgba(255, 255, 255, .4);
   --gest-brighten-50: rgba(255, 255, 255, .5);
+  --gest-brighten-60: rgba(255, 255, 255, .6);
+  --gest-brighten-70: rgba(255, 255, 255, .7);
+  --gest-brighten-80: rgba(255, 255, 255, .8);
+  --gest-brighten-90: rgba(255, 255, 255, .9);
 }

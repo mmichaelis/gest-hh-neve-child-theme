@@ -8,8 +8,12 @@ body {
   background: initial;
 }
 
-.header-menu-sidebar-bg, [class*=row-inner] {
+[class*=row-inner] {
   background: initial;
+}
+
+.header-menu-sidebar-bg {
+  background: var(--gest-sidebar-bg);
 }
 
 .row {
@@ -17,6 +21,23 @@ body {
 }
 
 /* ----------------------------------------------------[- Dark Page Border -] */
+
+/* ------------------------------------------------------[+ Search Overlay +] */
+
+/*
+ * Half-transparent, but opaque background in search field.
+ */
+
+.nv-nav-search {
+  background-color: var(--gest-search-bg);
+  box-shadow: var(--gest-search-shadow) 0 8px 24px;
+}
+
+.search-form {
+  background: var(--gest-site-bg);
+}
+
+/* ------------------------------------------------------[- Search Overlay -] */
 
 .builder-item--secondary-menu {
   --fontfamily: var(--gest-fontfamily);
