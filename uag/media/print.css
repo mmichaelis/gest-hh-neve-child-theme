@@ -13,11 +13,33 @@
    * Must ensure, that float is applied here.
    * Otherwise, we will get empty pages for blog-list overview.
    */
-   .uagb-slick-carousel .slick-slide {
+  .uagb-slick-carousel .slick-slide {
     float: left !important;
   }
 
-  .uagb-slick-carousel ul.slick-dots, .slick-arrow {
+  .uagb-slick-carousel ul.slick-dots,
+  .uagb-slick-carousel .slick-arrow,
+  .wp-block-uagb-table-of-contents {
     display: none !important;
+  }
+
+  .uagb-post-grid .uagb-post__cta {
+    display: none !important;
+  }
+
+  .uagb-toc__scroll-top,
+  .uagb-blockquote__tweet-button {
+    display: none !important;
+  }
+
+  .uagb-post-grid {
+    padding: 0;
+    width: 100%;
+  }
+
+  /* Team-Display like GEST-Board. */
+  .wp-block-uagb-team {
+    page-break-inside: avoid;
+    width: 100%;
   }
 }
