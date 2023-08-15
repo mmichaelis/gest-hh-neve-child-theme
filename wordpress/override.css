@@ -38,3 +38,33 @@ img.scaled-image {
 .wp-block-image {
   margin-bottom: 12px;
 }
+
+/* ========================================================[+ WP Admin Bar +] */
+
+/*
+ * Tuning, especially to fix possible overflow issue because of too many icons
+ * in the toolbar.
+ */
+
+#wpadminbar {
+  /* Hide overflow, as wrapping looks bad. */
+  overflow: hidden;
+}
+
+#wpadminbar #wp-admin-bar-root-default > li,
+#wpadminbar #wp-admin-bar-top-secondary > li {
+  /* By default, hide all menu items, so that we may allow them explicitly. */
+  display: none;
+}
+
+#wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-wp-logo,
+#wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-wpa-logout,
+#wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-site-name,
+#wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-new-content,
+#wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-edit,
+#wpadminbar #wp-admin-bar-top-secondary > #wp-admin-bar-search,
+#wpadminbar #wp-admin-bar-top-secondary > #wp-admin-bar-my-account {
+  display: initial;
+}
+ 
+/* ========================================================[- WP Admin Bar -] */
