@@ -83,3 +83,8 @@ body {
 .footer-bottom {
   display: none;
 }
+
+/* Apply Border from Header also to Footer, but at top. */
+.site-footer {
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
