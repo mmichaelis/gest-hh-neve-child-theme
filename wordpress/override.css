@@ -68,7 +68,7 @@ img.scaled-image {
   display: initial;
 }
 
-@media (min-width: 600px) {
+@media (max-width: 600px) {
   /* Remove strange top-margin on small screens. */
   html,
   body {
