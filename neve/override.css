@@ -16,8 +16,17 @@ body {
   background: var(--gest-sidebar-bg);
 }
 
-.row {
+.row, .container {
   background: var(--gest-site-bg);
+}
+
+/*
+ * Attaches the footer directly to <main>. This especially is applicable to
+ * small page-contents, where otherwise, a dark gap will appear between the
+ * main content and the footer.
+ */
+.neve-main {
+  display: flex;
 }
 
 /* ----------------------------------------------------[- Dark Page Border -] */
