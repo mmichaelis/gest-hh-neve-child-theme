@@ -62,6 +62,7 @@ img.scaled-image {
 #wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-site-name,
 #wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-new-content,
 #wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-edit,
+#wpadminbar #wp-admin-bar-root-default > #wp-admin-bar-tribe-events,
 #wpadminbar #wp-admin-bar-top-secondary > #wp-admin-bar-search,
 #wpadminbar #wp-admin-bar-top-secondary > #wp-admin-bar-my-account {
   display: initial;
