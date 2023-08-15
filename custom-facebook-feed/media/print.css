@@ -1,0 +1,14 @@
+@media print {
+  .cff-critical-notice {
+    display: none !important;
+  }
+
+  #cff .cff-error-msg {
+    display: none !important;
+  }
+
+  /* Feed-Preview looks ugly in print layout. Just remove. */
+  #cff .cff-posts-wrap {
+    display: none !important;
+  }
+}

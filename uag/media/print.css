@@ -1,0 +1,23 @@
+@media print {
+
+  /*
+   * Must ensure, that overflow and float are applied here.
+   * Otherwise, we will get empty pages for blog-list overview.
+   */
+  .uagb-slick-carousel .slick-list {
+    overflow: hidden !important;
+    float: left !important;
+  }
+
+  /*
+   * Must ensure, that float is applied here.
+   * Otherwise, we will get empty pages for blog-list overview.
+   */
+   .uagb-slick-carousel .slick-slide {
+    float: left !important;
+  }
+
+  .uagb-slick-carousel ul.slick-dots, .slick-arrow {
+    display: none !important;
+  }
+}

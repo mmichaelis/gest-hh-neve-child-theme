@@ -1,0 +1,10 @@
+@media print {
+  /* No need for download button. */
+  .wp-block-file__button {
+    display: none;
+  }
+  /* No need to list other blog entries. */
+  .blog-sidebar {
+    display: none;
+  }
+}

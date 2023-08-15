@@ -4,9 +4,9 @@
  * =============================================================================
  */
 
-@import "./base.css";
-@import "./typed.css";
-@import "./override.css";
+@import url("base.css");
+@import url("typed.css");
+@import url("override.css");
 /*
-@import "./debug.css";
+@import url("debug.css");
 */

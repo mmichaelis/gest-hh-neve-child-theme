@@ -20,7 +20,7 @@ form.wp-block-search input.wp-block-search__input {
 .wp-block-cover {
   border-radius: var(--gest-img-border-radius);
   margin-bottom: 12px;
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 img.scaled-image {

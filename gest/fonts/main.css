@@ -4,5 +4,5 @@
  * =============================================================================
  */
 
-@import "./base.css";
-@import "./typed.css";
+@import url("base.css");
+@import url("typed.css");

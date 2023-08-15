@@ -1,3 +1,38 @@
 @media print {
+  /* Hide footer navigation. */
+  .site-footer {
+    display: none;
+  }
 
+  /* Hide navigation toolbar icons.*/
+  [data-item-id="nav-icon"], [data-item-id="header_search_responsive"] {
+    display: none;
+  }
+
+  /* No need to display navigation items. */
+  [role="navigation"] {
+    display: none;
+  }
+
+  /* Force sub-text in logo for print. */
+  .site-logo small {
+    display: block !important;
+  }
+
+  /* Force logo-text to wrap. */
+  .site-logo .nv-title-tagline-wrap {
+    max-width: 230px !important;
+  }
+
+  /* Add URL for reference. */
+  .site-logo .nv-title-tagline-wrap::after {
+    content: ' gest-hamburg.de';
+    font-size: 0.8em;
+    white-space: nowrap;
+  }
+
+  /* No need for blog-post navigation. */
+  .nv-post-navigation {
+    display: none;
+  }
 }

@@ -19,4 +19,45 @@
     --gest-option-hover-color: var(--white-color);
     --gest-option-hover-bg: var(--black-color);
   }
+
+  /* Some general enforced states for better print experience. */
+  * {
+    float: none !important;
+    /* max-width: Setting to 100% broke blog-post-overview. */
+    /* https://www.bennadel.com/blog/851-fixing-divs-that-cause-content-truncation-when-printing.htm */
+    overflow: visible !important;
+    /* https://www.lockedownseo.com/chrome-print-preview-differs-from-dev-tools/ */
+    transition: none !important;
+  }
+
+  /* No benefit in underlining links. */
+  a {
+    text-decoration: none !important;
+  }
+
+  /*
+   * Print Link Targets In Output
+   * See https://www.smashingmagazine.com/2018/05/print-stylesheets-in-2018/
+   *
+   * Exceptions to this:
+   * - internal links within GEST site (including "localhost" for local installation)
+   * - Links with anchor reference (possibly too long, anchor irrelevant)
+   * - Links with arguments (possibly too long)
+  */
+  a[href^='http']:not([href*='gest-hamburg']):not([href*='localhost']):not([href*='#']):not([href*='?'])::after {
+    content: ' (' attr(href) ')';
+    white-space: nowrap;
+  }
+
+  /* Prevent page-break directly after headings. */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
 }
