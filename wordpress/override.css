@@ -31,5 +31,10 @@ img.scaled-image {
 .wp-block-image img {
   border-radius: var(--gest-img-border-radius);
   display: block;
+  /* Center Image */
   margin: 0 auto;
+}
+
+.wp-block-image {
+  margin-bottom: 12px;
 }
