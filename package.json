@@ -3,9 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "20",
+    "pnpm": "8"
+  },
+  "private": true,
   "scripts": {
+    "about:engines-node": "node ./scripts/about-engines-node.mjs",
+    "about:engines-pnpm": "node ./scripts/about-engines-pnpm.mjs",
+    "about:version": "node ./scripts/about-version.mjs",
+    "preadd": "node ./scripts/check-pnpm.mjs",
     "build": "pnpm zip",
+    "preinstall": "node ./scripts/check-pnpm.mjs",
     "gulp": "gulp",
+    "preremove": "node ./scripts/check-pnpm.mjs",
     "zip": "gulp zip"
   },
   "keywords": [],
@@ -13,6 +24,7 @@
   "license": "ISC",
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-zip": "^5.1.0"
+    "gulp-zip": "^5.1.0",
+    "read-package-json": "^7.0.1"
   }
 }

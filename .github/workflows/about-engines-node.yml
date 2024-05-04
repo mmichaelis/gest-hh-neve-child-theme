@@ -1,0 +1,79 @@
+# Retrieves engine information from package.json for node.
+#
+# On manual call outputs the versions found.
+# On reusable workflow call provides version information as
+# `nodeVersion`.
+
+name: about-engines-node
+
+on:
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: "If to output the resulting version as summary."
+        required: false
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      verbose:
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      nodeVersion:
+        description: "Determined node version from package.json"
+        value: ${{ jobs.main.outputs.nodeVersion }}
+
+env:
+  # https://github.com/actions/runner-images/issues/70
+  NODE_OPTIONS: "--max_old_space_size=4096"
+  nodeVersion: 20
+  pnpmVersion: 8
+
+permissions: {}
+
+jobs:
+  main:
+    name: "Get Node Engine Information"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      nodeVersion: ${{ steps.get-node-version.outputs.result }}
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            ./package.json
+            ./pnpm-lock.yaml
+      - id: installPnpm
+        name: "Install: Use PNPM ${{ env.pnpmVersion }}"
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.pnpmVersion }}
+          run_install: false
+      - id: installNodeJs
+        name: "Install: Use Node.js ${{ env.nodeVersion }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.nodeVersion }}
+          cache: "pnpm"
+      - id: install
+        name: Install
+        run: |
+          pnpm install --frozen-lockfile
+      - id: get-node-version
+        name: "Get Node.js version"
+        run: |
+          result=$(pnpm --silent about:engines-node)
+          echo "result=${result}" >> $GITHUB_OUTPUT
+      - id: output-results
+        if: ${{ inputs.verbose }}
+        name: "Output Results"
+        run: |
+          echo "# Detected Engines" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "* Node Version: ${{ steps.get-node-version.outputs.result }}" >> $GITHUB_STEP_SUMMARY
