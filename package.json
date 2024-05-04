@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "pnpm zip",
     "gulp": "gulp",
     "zip": "gulp zip"
   },

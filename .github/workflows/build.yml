@@ -1,0 +1,53 @@
+name: "Build"
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  # https://github.com/actions/runner-images/issues/70
+  NODE_OPTIONS: "--max_old_space_size=4096"
+  nodeVersion: 20
+  pnpmVersion: 9
+
+permissions: {}
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      artifact-id: ${{ steps.upload-child-theme.outputs.artifact-id }}
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v4
+      - id: installPnpm
+        name: "Install: Use PNPM ${{ env.pnpmVersion }}"
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.pnpmVersion }}
+          run_install: false
+      - id: installNodeJs
+        name: "Install: Use Node.js ${{ env.nodeVersion }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.nodeVersion }}
+          cache: "pnpm"
+      - id: install
+        name: Install
+        run: |
+          pnpm install --frozen-lockfile
+      - id: build
+        name: "Build"
+        run: |
+          pnpm -r build
+      - id: upload-child-theme
+        name: "Upload Child Theme"
+        uses: actions/upload-artifact@v3
+        with:
+          name: gest-hh-neve-child
+          path: gest-hh-neve-child.zip
+          retention-days: 10
+  - name: Output artifact ID
+      run:  echo 'Artifact ID is ${{ steps.upload-child-theme.outputs.artifact-id }}'
