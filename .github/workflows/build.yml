@@ -44,7 +44,7 @@ jobs:
           pnpm -r build
       - id: upload-child-theme
         name: "Upload Child Theme"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: gest-hh-neve-child
           path: /theme
