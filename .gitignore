@@ -2,3 +2,6 @@ node_modules/
 # Packed Artifacts
 *.zip
 *.tgz
+# IDEs and Editors
+/.idea
+/.vscode
