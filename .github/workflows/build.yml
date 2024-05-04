@@ -49,5 +49,6 @@ jobs:
           name: gest-hh-neve-child
           path: gest-hh-neve-child.zip
           retention-days: 10
-  - name: Output artifact ID
-      run:  echo 'Artifact ID is ${{ steps.upload-child-theme.outputs.artifact-id }}'
+      - id: output-build-info
+        name: Output artifact ID
+        run:  echo 'Artifact ID is ${{ steps.upload-child-theme.outputs.artifact-id }}'
