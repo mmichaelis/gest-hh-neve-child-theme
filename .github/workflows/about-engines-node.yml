@@ -49,6 +49,7 @@ jobs:
           sparse-checkout: |
             ./package.json
             ./pnpm-lock.yaml
+            ./scripts/**/*
       - id: installPnpm
         name: "Install: Use PNPM ${{ env.pnpmVersion }}"
         uses: pnpm/action-setup@v2
@@ -74,6 +75,6 @@ jobs:
         if: ${{ inputs.verbose }}
         name: "Output Results"
         run: |
-          echo "# Detected Engines" >> $GITHUB_STEP_SUMMARY
+          echo "# Detected Node Engine" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "* Node Version: ${{ steps.get-node-version.outputs.result }}" >> $GITHUB_STEP_SUMMARY
