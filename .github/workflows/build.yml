@@ -47,8 +47,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: gest-hh-neve-child
-          path: gest-hh-neve-child.zip
+          path: /theme
           retention-days: 10
+          compression-level: 9
       - id: output-build-info
         name: Output artifact ID
         run:  echo 'Artifact ID is ${{ steps.upload-child-theme.outputs.artifact-id }}'

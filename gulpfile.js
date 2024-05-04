@@ -4,14 +4,7 @@ var zip = require('gulp-zip');
 
 gulp.task('zip', function () {
   return gulp.src([
-    './**/*', 
-    '!./{.*,.*/**/*}', 
-    '!./{node_modules,node_modules/**/*}', 
-    '!./assets/{sass,sass/*}', 
-    '!./gulpfile.js', 
-    '!./package.json', 
-    '!./pnpm-lock.yaml',
-    '!./*.zip',
+    './theme/**/*',
   ])
     .pipe(zip('gest-hh-neve-child.zip'))
     .pipe(gulp.dest('./'));
