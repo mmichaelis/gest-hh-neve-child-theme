@@ -40,6 +40,7 @@ jobs:
     needs:
       - about
     env:
+      name: ${{ needs.about.outputs.name }}
       nodeVersion: ${{ needs.about.outputs.nodeVersion }}
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
       version: ${{ needs.about.outputs.version }}
@@ -74,7 +75,7 @@ jobs:
         name: "Upload Child Theme"
         uses: actions/upload-artifact@v4
         with:
-          name: gest-hh-neve-child-${{ env.version }}
+          name: ${{ env.name }}-${{ env.version }}
           path: build/**/*
           retention-days: 10
           compression-level: 9
