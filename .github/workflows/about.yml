@@ -43,9 +43,9 @@ jobs:
         with:
           fetch-depth: 1
           sparse-checkout: |
-            package.json
-            pnpm-lock.yaml
-            scripts
+            ./package.json
+            ./pnpm-lock.yaml
+            ./scripts
       - id: installPnpm
         name: "Install: Use PNPM ${{ env.pnpmVersion }}"
         uses: pnpm/action-setup@v2
