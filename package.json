@@ -11,7 +11,7 @@
   "scripts": {
     "about": "node ./scripts/about.mjs",
     "preadd": "node ./scripts/check-pnpm.mjs",
-    "build": "exit 0",
+    "build": "node ./scripts/build.mjs ./src ./build",
     "get-version": "node ./scripts/version.mjs",
     "preinstall": "node ./scripts/check-pnpm.mjs",
     "preremove": "node ./scripts/check-pnpm.mjs",

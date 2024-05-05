@@ -77,7 +77,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gest-hh-neve-child-${{ env.version }}
-          path: theme/**/*
+          path: build/**/*
           retention-days: 10
           compression-level: 9
       - id: output-build-info
