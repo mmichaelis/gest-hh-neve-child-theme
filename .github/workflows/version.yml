@@ -45,7 +45,7 @@ on:
         value: ${{ jobs.main.outputs.version }}
 
 run-name: |
-  ${{ github.workflow }} (verbose: ${{ github.event.inputs.verbose }})
+  ${{ github.workflow }} (release type: ${{ github.event.inputs.release_type }}, snapshot? ${{ github.event.inputs.snapshot }}, verbose: ${{ github.event.inputs.verbose }})
 
 env:
   # https://github.com/actions/runner-images/issues/70
