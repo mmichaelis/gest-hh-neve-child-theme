@@ -43,9 +43,7 @@ jobs:
         with:
           fetch-depth: 1
           sparse-checkout: |
-            ./package.json
-            ./pnpm-lock.yaml
-            ./scripts
+            scripts
       - id: files
         name: "Files"
         run: |
