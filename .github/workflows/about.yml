@@ -46,6 +46,11 @@ jobs:
             ./package.json
             ./pnpm-lock.yaml
             ./scripts
+      - id: files
+        name: "Files"
+        run: |
+          ls -axl .
+          ls -axl ./scripts
       - id: installPnpm
         name: "Install: Use PNPM ${{ env.pnpmVersion }}"
         uses: pnpm/action-setup@v2
