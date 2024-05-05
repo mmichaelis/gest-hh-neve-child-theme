@@ -2,7 +2,19 @@ name: "Build"
 
 on:
   workflow_dispatch:
+    inputs:
+      verbose:
+        description: "If to output the resulting version as summary."
+        required: false
+        type: boolean
+        default: true
   workflow_call:
+    inputs:
+      verbose:
+        description: "If to output the resulting version as summary."
+        required: false
+        type: boolean
+        default: false
 
 env:
   # https://github.com/actions/runner-images/issues/70
@@ -13,11 +25,21 @@ env:
 permissions: {}
 
 jobs:
+  about:
+    name: "About"
+    uses: "./.github/workflows/about.yml"
   main:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs:
+      - about
+    env:
+      nodeVersion: ${{ needs.about.outputs.nodeVersion }}
+      pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
+      version: ${{ needs.about.outputs.version }}
     outputs:
       artifact-id: ${{ steps.upload-child-theme.outputs.artifact-id }}
+      artifact-url: ${{ steps.upload-child-theme.outputs.artifact-url }}
     steps:
       - id: checkout
         name: Checkout
@@ -46,10 +68,24 @@ jobs:
         name: "Upload Child Theme"
         uses: actions/upload-artifact@v4
         with:
-          name: gest-hh-neve-child
+          name: gest-hh-neve-child-${{ env.version }}
           path: theme/**/*
           retention-days: 10
           compression-level: 9
       - id: output-build-info
         name: Output artifact ID
         run:  echo 'Artifact ID is ${{ steps.upload-child-theme.outputs.artifact-id }}'
+  verbose:
+    name: "Verbose"
+    runs-on: ubuntu-latest
+    needs:
+      - about
+      - main
+    if: ${{ github.event.inputs.verbose }}
+    steps:
+      - id: output
+        name: "Output"
+        run: |
+          echo "# Build Result" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "* Child Theme: [gest-hh-neve-child-${{ needs.about.outputs.version }}.zip](${{ needs.main.outputs.artifact-url }})" >> $GITHUB_STEP_SUMMARY

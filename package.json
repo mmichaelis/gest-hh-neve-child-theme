@@ -11,9 +11,8 @@
   "scripts": {
     "about": "node ./scripts/about.mjs",
     "preadd": "node ./scripts/check-pnpm.mjs",
-    "build": "pnpm zip",
+    "build": "exit 0",
     "preinstall": "node ./scripts/check-pnpm.mjs",
-    "gulp": "gulp",
     "preremove": "node ./scripts/check-pnpm.mjs",
     "zip": "gulp zip"
   },
