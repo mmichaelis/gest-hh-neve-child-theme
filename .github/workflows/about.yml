@@ -15,6 +15,16 @@ on:
         required: false
         type: boolean
         default: false
+    outputs:
+      nodeVersion:
+        description: "Determined node version from package.json"
+        value: ${{ jobs.main.outputs.nodeVersion }}
+      pnpmVersion:
+        description: "Determined pnpm version from package.json"
+        value: ${{ jobs.main.outputs.pnpmVersion }}
+      version:
+        description: "Determined version from package.json"
+        value: ${{ jobs.main.outputs.version }}
 
 run-name: |
   ${{ github.workflow }} (verbose: ${{ github.event.inputs.verbose }})

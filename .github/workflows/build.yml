@@ -15,6 +15,13 @@ on:
         required: false
         type: boolean
         default: false
+    outputs:
+      artifact-id:
+        description: "ID of the uploaded artifact"
+        value: ${{ jobs.main.outputs.artifact-id }}
+      artifact-url:
+        description: "URL of the uploaded artifact"
+        value: ${{ jobs.main.outputs.artifact-url }}
 
 env:
   # https://github.com/actions/runner-images/issues/70
