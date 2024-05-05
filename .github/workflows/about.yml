@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       verbose:
-        description: "If to output the resulting version as summary."
+        description: "If to output a summary."
         required: false
         type: boolean
         default: true
   workflow_call:
     inputs:
       verbose:
-        description: "If to output the resulting version as summary."
+        description: "If to output a summary."
         required: false
         type: boolean
         default: false
