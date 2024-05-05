@@ -12,9 +12,10 @@
     "about": "node ./scripts/about.mjs",
     "preadd": "node ./scripts/check-pnpm.mjs",
     "build": "exit 0",
+    "get-version": "node ./scripts/version.mjs",
     "preinstall": "node ./scripts/check-pnpm.mjs",
     "preremove": "node ./scripts/check-pnpm.mjs",
-    "get-version": "node ./scripts/version.mjs",
+    "wordpress-theme-meta": "node ./scripts/wordpress-theme-meta.mjs",
     "zip": "gulp zip"
   },
   "keywords": [],
