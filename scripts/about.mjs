@@ -3,9 +3,8 @@
 // Invoke with "pnpm --silent" to suppress additional output.
 
 import minimist from "minimist";
-import readJson from "read-package-json";
+import { about } from "./about-main.mjs";
 
-const packageJson = "package.json";
 const cliArguments = process.argv.slice(2);
 
 const argv = minimist(cliArguments, {
@@ -50,20 +49,7 @@ Hint:
   process.exit(isRequiredArgsMissing ? 1 : 0);
 }
 
-readJson(packageJson, console.error, false, (err, data) => {
-  if (err) {
-    console.error(`Error reading ${packageJson}: ${err}`);
-    process.exit(1);
-  }
-
-  let currentData = data;
-  extraArgs.forEach((extraArg) => {
-    if (!currentData[extraArg]) {
-      console.error(`Path "${extraArg}" not found in package.json.`);
-      process.exit(1);
-    }
-    currentData = currentData[extraArg];
-  });
-
-  console.log(currentData);
-});
+(async () => {
+  const data = await about(extraArgs);
+  console.log(data);
+})();
