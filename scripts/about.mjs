@@ -15,7 +15,7 @@ const argv = minimist(cliArguments, {
   unknown: (unknownArg) => {
     // Don't fail for non-options.
     if (unknownArg.startsWith("-")) {
-      console.error(`Unknown argument ${unknownArg} passed to "version"!"`);
+      console.error(`Unknown argument ${unknownArg} passed to "about"!"`);
       process.exit(1);
     }
   },

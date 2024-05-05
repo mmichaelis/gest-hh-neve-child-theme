@@ -17,6 +17,9 @@ devDependencies:
   read-package-json:
     specifier: ^7.0.1
     version: 7.0.1
+  semver:
+    specifier: ^7.6.0
+    version: 7.6.0
 
 packages:
 

@@ -36,6 +36,7 @@ jobs:
     name: "About"
     uses: "./.github/workflows/about.yml"
   main:
+    name: "Main"
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs:

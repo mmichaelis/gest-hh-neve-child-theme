@@ -1,4 +1,4 @@
-name: "About"
+name: "Version"
 
 on:
   workflow_dispatch:
@@ -8,6 +8,20 @@ on:
         required: false
         type: boolean
         default: true
+      release_type:
+        description: 'Release type.'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+      snapshot:
+        description: "If to output next snapshot version."
+        required: false
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       verbose:
@@ -15,15 +29,19 @@ on:
         required: false
         type: boolean
         default: false
+      release_type:
+        description: 'Release type.'
+        required: true
+        default: 'patch'
+        type: string
+      snapshot:
+        description: "If to output next snapshot version."
+        required: false
+        type: boolean
+        default: false
     outputs:
-      nodeVersion:
-        description: "Determined node version from package.json"
-        value: ${{ jobs.main.outputs.nodeVersion }}
-      pnpmVersion:
-        description: "Determined pnpm version from package.json"
-        value: ${{ jobs.main.outputs.pnpmVersion }}
       version:
-        description: "Determined version from package.json"
+        description: "Determined version"
         value: ${{ jobs.main.outputs.version }}
 
 run-name: |
@@ -35,16 +53,17 @@ env:
   nodeVersion: 20
   pnpmVersion: 8
 
-permissions: {}
+permissions: { }
 
 jobs:
+  about:
+    name: "About"
+    uses: "./.github/workflows/about.yml"
   main:
     name: "Main"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      nodeVersion: ${{ steps.get-node-version.outputs.result }}
-      pnpmVersion: ${{ steps.get-pnpm-version.outputs.result }}
       version: ${{ steps.get-version.outputs.result }}
     steps:
       - id: checkout
@@ -70,20 +89,15 @@ jobs:
         name: Install
         run: |
           pnpm install --frozen-lockfile
-      - id: get-node-version
-        name: "Get Node.js Version"
-        run: |
-          result=$(pnpm --silent about engines node)
-          echo "result=${result}" >> $GITHUB_OUTPUT
-      - id: get-pnpm-version
-        name: "Get PNPM Version"
-        run: |
-          result=$(pnpm --silent about engines pnpm)
-          echo "result=${result}" >> $GITHUB_OUTPUT
       - id: get-version
         name: "Get Version"
         run: |
-          result=$(pnpm --silent about version)
+          result=""
+          if [ ${{ inputs.snapshot }} = true ]; then
+            result=$(pnpm --silent get-version --snapshot ${{ inputs.release_type }})
+          else
+            result=$(pnpm --silent get-version ${{ inputs.release_type }})
+          fi
           echo "result=${result}" >> $GITHUB_OUTPUT
   verbose:
     name: "Verbose"
@@ -94,8 +108,8 @@ jobs:
       - id: output
         name: "Output"
         run: |
-          echo "# About" >> $GITHUB_STEP_SUMMARY
+          echo "# Version" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "* Node Version: ${{ needs.main.outputs.nodeVersion }}" >> $GITHUB_STEP_SUMMARY
-          echo "* PNPM Version: ${{ needs.main.outputs.pnpmVersion }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Version: ${{ needs.main.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Snapshot? ${{ inputs.snapshot }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Release Type: ${{ inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Next Version: ${{ needs.main.outputs.version }}" >> $GITHUB_STEP_SUMMARY
