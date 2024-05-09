@@ -85,8 +85,8 @@ jobs:
       - id: config
         name: "Config"
         run: |
-          git config --global user.name "${userName}"
-          git config --global user.email "${userMail}"
+          git config --global user.name "${{ env.userName }}"
+          git config --global user.email "${{ env.userMail }}"
       - id: inc-version
         name: "Increment Version"
         env:
