@@ -9,9 +9,10 @@ import { build } from "./build-main.mjs";
 const cliArguments = process.argv.slice(2);
 
 const argv = minimist(cliArguments, {
-  boolean: ["help"],
+  boolean: ["help", "silent"],
   alias: {
-    "help": ["h", "?"]
+    "help": ["h", "?"],
+    "silent": ["s"],
   },
   unknown: (unknownArg) => {
     // Don't fail for non-options.
@@ -24,6 +25,7 @@ const argv = minimist(cliArguments, {
 
 const {
   help = false,
+  silent = false,
   "_": extraArgs,
 } = argv;
 
@@ -37,7 +39,7 @@ if (help || extraArgs.length !== 2) {
 
 Usage:
 
-  build [--help|-h|-?] <src-folder> <target-folder>
+  build [--help|-h|-?] [--silent|-s] <src-folder> <target-folder>
 
 Examples:
 
@@ -48,5 +50,8 @@ Examples:
 
 (async () => {
   const [srcFolder, targetFolder] = extraArgs;
-  console.log(await build(srcFolder, targetFolder));
+  const path = await build(srcFolder, targetFolder);
+  if (!silent) {
+    console.log(path);
+  }
 })();
