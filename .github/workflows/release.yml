@@ -61,8 +61,8 @@ jobs:
     secrets: inherit
     with:
       release_type: ${{ github.event.inputs.release_type }}
-      verbose: ${{ github.event.inputs.verbose }}
-      dryRun: ${{ github.event.inputs.dryRun }}
+      verbose: ${{ github.event.inputs.verbose == 'true'}}
+      dryRun: ${{ github.event.inputs.dryRun == 'true' }}
   build:
     name: "Build"
     uses: "./.github/workflows/build.yml"
