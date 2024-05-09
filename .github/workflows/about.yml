@@ -60,7 +60,7 @@ jobs:
             scripts
       - id: installPnpm
         name: "Install: Use PNPM ${{ env.pnpmVersion }}"
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: ${{ env.pnpmVersion }}
           run_install: false
