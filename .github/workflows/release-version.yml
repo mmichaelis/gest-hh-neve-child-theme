@@ -93,7 +93,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           releaseType=${{ github.event.inputs.release_type }}
-          releaseVersion="$(pnpm --silent version "${releaseType}" --message "chore: release ${releaseType}: %s")"
+          releaseVersion="$(pnpm version --silent "${releaseType}" --message "chore: release ${releaseType}: %s")"
           echo "result=${releaseVersion}" >> $GITHUB_OUTPUT
       - id: inc-snapshot-version
         name: "Increment Snapshot Version"
@@ -101,7 +101,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           snapshotType="prerelease"
-          snapshotVersion="$(pnpm --silent version "${releaseType}" --no-git-tag-version version)"
+          snapshotVersion="$(pnpm version --silent "${releaseType}" --no-git-tag-version)"
           git commit -am "chore: next snapshot version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
