@@ -17,6 +17,11 @@ on:
         required: false
         type: boolean
         default: true
+      dryRun:
+        description: "If to perform a dryRun without push at the end."
+        required: false
+        type: boolean
+        default: true
   workflow_call:
     inputs:
       release_type:
@@ -29,6 +34,11 @@ on:
         required: false
         type: boolean
         default: false
+      dryRun:
+        description: "If to perform a dryRun without push at the end."
+        required: false
+        type: boolean
+        default: true
     outputs:
       version:
         description: "Released version"
@@ -105,9 +115,15 @@ jobs:
           git commit -am "chore: next snapshot version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
+        if: ${{ !github.event.inputs.dryRun }}
         name: "Push Changes"
         run: |
           git push --follow-tags
+      - id: git-push-dry-run
+        if: ${{ github.event.inputs.dryRun }}
+        name: "Push Changes (Dry Run)"
+        run: |
+          git push --follow-tags --dry-run
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
