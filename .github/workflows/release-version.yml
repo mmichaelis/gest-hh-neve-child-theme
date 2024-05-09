@@ -101,7 +101,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           snapshotType="prerelease"
-          snapshotVersion="$(pnpm version --silent "${releaseType}" --no-git-tag-version)"
+          snapshotVersion="$(pnpm version --silent "${snapshotType}" --no-git-tag-version)"
           git commit -am "chore: next snapshot version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
