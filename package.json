@@ -15,6 +15,9 @@
     "get-version": "node ./scripts/version.mjs",
     "preinstall": "node ./scripts/check-pnpm.mjs",
     "preremove": "node ./scripts/check-pnpm.mjs",
+    "preversion": "exit 0",
+    "version": "pnpm build",
+    "postversion": "git push && git push --tags",
     "wordpress-theme-meta": "node ./scripts/wordpress-theme-meta.mjs",
     "zip": "gulp zip"
   },
