@@ -94,6 +94,7 @@ jobs:
         run: |
           releaseType=${{ github.event.inputs.release_type }}
           releaseVersion="$(pnpm version "${releaseType}" --message "chore: release ${releaseType}: %s")"
+          echo "result=${releaseVersion}"
           echo "result=${releaseVersion}" >> $GITHUB_OUTPUT
       - id: inc-snapshot-version
         name: "Increment Snapshot Version"
