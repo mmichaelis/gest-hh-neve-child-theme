@@ -57,6 +57,8 @@ jobs:
     env:
       nodeVersion: ${{ needs.about.outputs.nodeVersion }}
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
+      userName: ${{ github.actor }}
+      userMail: "${{ github.actor }}@users.noreply.github.com"
     outputs:
       version: ${{ steps.inc-version.outputs.result }}
       nextVersion: ${{ steps.inc-snapshot-version.outputs.result }}
@@ -80,6 +82,11 @@ jobs:
         name: Install
         run: |
           pnpm install --frozen-lockfile
+      - id: config
+        name: "Config"
+        run: |
+          git config --global user.name "${userName}"
+          git config --global user.email "${userMail}"
       - id: inc-version
         name: "Increment Version"
         env:
