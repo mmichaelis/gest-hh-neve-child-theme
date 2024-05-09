@@ -38,7 +38,7 @@ on:
         description: "If to perform a dryRun without push at the end."
         required: false
         type: boolean
-        default: true
+        default: false
     outputs:
       version:
         description: "Released version"

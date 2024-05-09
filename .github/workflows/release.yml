@@ -1,0 +1,86 @@
+name: "Release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type.'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+      verbose:
+        description: "If to output a summary."
+        required: false
+        type: boolean
+        default: true
+      dryRun:
+        description: "If to perform a dryRun without push at the end."
+        required: false
+        type: boolean
+        default: true
+  workflow_call:
+    inputs:
+      release_type:
+        description: 'Release type.'
+        required: true
+        default: 'patch'
+        type: string
+      verbose:
+        description: "If to output a summary."
+        required: false
+        type: boolean
+        default: false
+      dryRun:
+        description: "If to perform a dryRun without push at the end."
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      version:
+        description: "Released version"
+        value: ${{ jobs.version.outputs.version }}
+      nextVersion:
+        description: "Snapshot version"
+        value: ${{ jobs.version.outputs.nextVersion }}
+
+env:
+  # https://github.com/actions/runner-images/issues/70
+  NODE_OPTIONS: "--max_old_space_size=4096"
+
+permissions:
+  contents: write
+
+jobs:
+  version:
+    name: "Release Version"
+    uses: "./.github/workflows/release-version.yml"
+    secrets: inherit
+  build:
+    name: "Build"
+    uses: "./.github/workflows/build.yml"
+    needs:
+      - version
+  main:
+    name: "Main"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs:
+      - build
+      - version
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+      - id: gh-release
+        if: ${{ !github.event.inputs.dryRun }}
+        name: "Create Release"
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: ${{ needs.build.outputs.artifact-name }}.zip
