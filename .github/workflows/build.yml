@@ -48,7 +48,7 @@ jobs:
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
       version: ${{ needs.about.outputs.version }}
     outputs:
-      artifact-name: ${{ steps.artifact-name.outputs.artifact-name }}
+      artifact-name: ${{ steps.artifact-name.outputs.result }}
       artifact-id: ${{ steps.upload-child-theme.outputs.artifact-id }}
       artifact-url: ${{ steps.upload-child-theme.outputs.artifact-url }}
     steps:
