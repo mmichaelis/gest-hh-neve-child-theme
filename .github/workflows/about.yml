@@ -16,6 +16,9 @@ on:
         type: boolean
         default: false
     outputs:
+      name:
+        description: "Determined name from package.json"
+        value: ${{ jobs.main.outputs.name }}
       nodeVersion:
         description: "Determined node version from package.json"
         value: ${{ jobs.main.outputs.nodeVersion }}
@@ -43,6 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
+      name: ${{ steps.get-name.outputs.result }}
       nodeVersion: ${{ steps.get-node-version.outputs.result }}
       pnpmVersion: ${{ steps.get-pnpm-version.outputs.result }}
       version: ${{ steps.get-version.outputs.result }}
@@ -85,6 +89,11 @@ jobs:
         run: |
           result=$(pnpm --silent about version)
           echo "result=${result}" >> $GITHUB_OUTPUT
+      - id: get-name
+        name: "Get Name"
+        run: |
+          result=$(pnpm --silent about name)
+          echo "result=${result}" >> $GITHUB_OUTPUT
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
@@ -98,4 +107,5 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "* Node Version: ${{ needs.main.outputs.nodeVersion }}" >> $GITHUB_STEP_SUMMARY
           echo "* PNPM Version: ${{ needs.main.outputs.pnpmVersion }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Name: ${{ needs.main.outputs.name }}" >> $GITHUB_STEP_SUMMARY
           echo "* Version: ${{ needs.main.outputs.version }}" >> $GITHUB_STEP_SUMMARY
