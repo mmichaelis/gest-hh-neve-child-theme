@@ -59,6 +59,10 @@ jobs:
     name: "Release Version"
     uses: "./.github/workflows/release-version.yml"
     secrets: inherit
+    with:
+      release_type: ${{ github.event.inputs.release_type }}
+      verbose: ${{ github.event.inputs.verbose }}
+      dryRun: ${{ github.event.inputs.dryRun }}
   build:
     name: "Build"
     uses: "./.github/workflows/build.yml"
