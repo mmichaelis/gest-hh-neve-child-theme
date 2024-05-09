@@ -47,6 +47,9 @@ on:
         description: "Snapshot version"
         value: ${{ jobs.main.outputs.nextVersion }}
 
+run-name: |
+  ${{ github.workflow }} (release type: ${{ github.event.inputs.release_type }}, dry-run? ${{ github.event.inputs.dryRun }}, verbose: ${{ github.event.inputs.verbose }})
+
 env:
   # https://github.com/actions/runner-images/issues/70
   NODE_OPTIONS: "--max_old_space_size=4096"
