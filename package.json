@@ -25,7 +25,7 @@
   "author": "Mark Michaelis",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-zip": "^5.1.0",
     "minimist": "^1.2.8",
     "read-package-json": "^7.0.1",
