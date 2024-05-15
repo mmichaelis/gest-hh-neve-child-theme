@@ -29,6 +29,6 @@
     "gulp-zip": "^6.0.0",
     "minimist": "^1.2.8",
     "read-package-json": "^7.0.1",
-    "semver": "^7.6.0"
+    "semver": "^7.6.2"
   }
 }
