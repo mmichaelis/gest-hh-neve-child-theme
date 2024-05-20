@@ -42,51 +42,55 @@ on:
     outputs:
       version:
         description: "Released version"
-        value: ${{ jobs.version.outputs.version }}
+        value: ${{ jobs.release.outputs.version }}
       nextVersion:
         description: "Snapshot version"
-        value: ${{ jobs.version.outputs.nextVersion }}
+        value: ${{ jobs.snapshot.outputs.version }}
 
 run-name: |
-  ${{ github.workflow }} (release type: ${{ github.event.inputs.release_type }}, dry-run: ${{ github.event.inputs.dryRun }}, verbose: ${{ github.event.inputs.verbose }})
+  ${{ github.workflow }} (release type: ${{ inputs.release_type }}, dry-run: ${{ inputs.dryRun }}, verbose: ${{ inputs.verbose }})
 
 env:
   # https://github.com/actions/runner-images/issues/70
   NODE_OPTIONS: "--max_old_space_size=4096"
-  dryRun: ${{ github.event.inputs.dryRun }}
-  release_type: ${{ github.event.inputs.release_type }}
-  verbose: ${{ github.event.inputs.verbose }}
 
 permissions:
   contents: write
 
 jobs:
-  version:
+  release:
     name: "Release Version"
     uses: "./.github/workflows/release-version.yml"
     secrets: inherit
     with:
-      dryRun: ${{ env.dryRun }}
-      release_type: ${{ env.release_type }}
+      dryRun: ${{ inputs.dryRun }}
+      release_type: ${{ inputs.release_type }}
   build:
-    name: "Build"
+    name: "Build Release"
     uses: "./.github/workflows/build.yml"
     needs:
-      - version
+      - release
+  snapshot:
+    name: "Increase Snapshot Version"
+    uses: "./.github/workflows/inc-snapshot-version.yml"
+    needs:
+      - build
+    secrets: inherit
+    with:
+      dryRun: ${{ inputs.dryRun }}
   main:
     name: "Main"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs:
       - build
-      - version
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.artifact-name }}
       - id: gh-release
-        if: ${{ !env.dryRun }}
+        if: ${{ ! inputs.dryRun }}
         name: "Create Release"
         uses: softprops/action-gh-release@v2
         env:
@@ -94,15 +98,18 @@ jobs:
         with:
           files: ${{ needs.build.outputs.artifact-name }}.zip
       - id: gh-release-dry-run
-        if: ${{ env.dryRun }}
+        if: ${{ inputs.dryRun }}
         name: "Create Release (Dry Run)"
         run: |
           echo "Would create a release with ${{ needs.build.outputs.artifact-name }}.zip"
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
-    needs: main
-    if: ${{ env.verbose }}
+    needs:
+      - main
+      - release
+      - snapshot
+    if: ${{ inputs.verbose }}
     steps:
       - id: output
         name: "Output"
@@ -110,11 +117,11 @@ jobs:
           echo "# Release Version" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Parameters" >> $GITHUB_STEP_SUMMARY
-          echo "* Released Type: ${{ env.release_type }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Verbose: ${{ env.verbose }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Dry-Run: ${{ env.dryRun }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Released Type: ${{ inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Verbose: ${{ inputs.verbose }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Dry-Run: ${{ inputs.dryRun }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "* Released Version: _TODO_" >> $GITHUB_STEP_SUMMARY
-          echo "* Snapshot Version: _TODO_" >> $GITHUB_STEP_SUMMARY
+          echo "* Released Version: ${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Snapshot Version: ${{ needs.snapshot.outputs.version }}" >> $GITHUB_STEP_SUMMARY
