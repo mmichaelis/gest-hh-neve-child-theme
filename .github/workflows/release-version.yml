@@ -68,6 +68,8 @@ jobs:
     needs:
       - about
     env:
+      release_type: ${{ github.event.inputs.release_type }}
+      dryRun: ${{ github.event.inputs.dryRun == 'true' }}
       nodeVersion: ${{ needs.about.outputs.nodeVersion }}
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
       userName: ${{ github.actor }}
@@ -106,7 +108,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          releaseType=${{ github.event.inputs.release_type }}
+          releaseType=${{ env.release_type }}
           releaseVersion="$(pnpm version --silent "${releaseType}" --message "chore: release ${releaseType}: %s")"
           echo "Release Version: ${releaseVersion}"
           echo "result=${releaseVersion}" >> $GITHUB_OUTPUT
@@ -121,12 +123,12 @@ jobs:
           echo "Next Version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
-        if: ${{ !github.event.inputs.dryRun }}
+        if: ${{ !env.dryRun }}
         name: "Push Changes"
         run: |
           git push --follow-tags
       - id: git-push-dry-run
-        if: ${{ github.event.inputs.dryRun }}
+        if: ${{ env.dryRun }}
         name: "Push Changes (Dry Run)"
         run: |
           git push --follow-tags --dry-run
@@ -134,7 +136,9 @@ jobs:
     name: "Verbose"
     runs-on: ubuntu-latest
     needs: main
-    if: ${{ github.event.inputs.verbose }}
+    env:
+      verbose: ${{ github.event.inputs.verbose == 'true'}}
+    if: ${{ env.verbose }}
     steps:
       - id: output
         name: "Output"
