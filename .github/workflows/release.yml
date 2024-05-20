@@ -53,6 +53,9 @@ run-name: |
 env:
   # https://github.com/actions/runner-images/issues/70
   NODE_OPTIONS: "--max_old_space_size=4096"
+  dryRun: ${{ github.event.inputs.dryRun }}
+  release_type: ${{ github.event.inputs.release_type }}
+  verbose: ${{ github.event.inputs.verbose }}
 
 permissions:
   contents: write
@@ -63,8 +66,8 @@ jobs:
     uses: "./.github/workflows/release-version.yml"
     secrets: inherit
     with:
-      release_type: ${{ github.event.inputs.release_type }}
-      verbose: ${{ github.event.inputs.verbose == 'true'}}
+      dryRun: ${{ env.dryRun }}
+      release_type: ${{ env.release_type }}
   build:
     name: "Build"
     uses: "./.github/workflows/build.yml"
@@ -77,8 +80,6 @@ jobs:
     needs:
       - build
       - version
-    env:
-      dryRun: ${{ github.event.inputs.dryRun == 'true' }}
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -101,8 +102,6 @@ jobs:
     name: "Verbose"
     runs-on: ubuntu-latest
     needs: main
-    env:
-      verbose: ${{ github.event.inputs.verbose == 'true'}}
     if: ${{ env.verbose }}
     steps:
       - id: output
@@ -111,9 +110,9 @@ jobs:
           echo "# Release Version" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Parameters" >> $GITHUB_STEP_SUMMARY
-          echo "* Released Type: ${{ inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Verbose: ${{ inputs.verbose }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Dry-Run: ${{ inputs.dryRun }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Released Type: ${{ env.release_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Verbose: ${{ env.verbose }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Dry-Run: ${{ env.dryRun }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

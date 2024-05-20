@@ -53,6 +53,11 @@ run-name: |
 env:
   # https://github.com/actions/runner-images/issues/70
   NODE_OPTIONS: "--max_old_space_size=4096"
+  dryRun: ${{ github.event.inputs.dryRun }}
+  release_type: ${{ github.event.inputs.release_type }}
+  verbose: ${{ github.event.inputs.verbose }}
+  userName: ${{ github.actor }}
+  userMail: "${{ github.actor }}@users.noreply.github.com"
 
 permissions:
   contents: write
@@ -68,12 +73,8 @@ jobs:
     needs:
       - about
     env:
-      release_type: ${{ github.event.inputs.release_type }}
-      dryRun: ${{ github.event.inputs.dryRun == 'true' }}
       nodeVersion: ${{ needs.about.outputs.nodeVersion }}
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
-      userName: ${{ github.actor }}
-      userMail: "${{ github.actor }}@users.noreply.github.com"
     outputs:
       version: ${{ steps.inc-version.outputs.result }}
       nextVersion: ${{ steps.inc-snapshot-version.outputs.result }}
@@ -123,7 +124,7 @@ jobs:
           echo "Next Version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
-        if: ${{ !env.dryRun }}
+        if: ${{ ! env.dryRun }}
         name: "Push Changes"
         run: |
           git push --follow-tags
@@ -136,8 +137,6 @@ jobs:
     name: "Verbose"
     runs-on: ubuntu-latest
     needs: main
-    env:
-      verbose: ${{ github.event.inputs.verbose == 'true'}}
     if: ${{ env.verbose }}
     steps:
       - id: output
@@ -145,9 +144,9 @@ jobs:
         run: |
           echo "# Release Version" >> $GITHUB_STEP_SUMMARY
           echo "## Parameters" >> $GITHUB_STEP_SUMMARY
-          echo "* Released Type: ${{ inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Verbose: ${{ inputs.verbose }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Dry-Run: ${{ inputs.dryRun }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Released Type: ${{ env.release_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Verbose: ${{ env.verbose }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Dry-Run: ${{ env.dryRun }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
