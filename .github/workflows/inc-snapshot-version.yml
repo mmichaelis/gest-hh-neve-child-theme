@@ -112,6 +112,14 @@ jobs:
         name: "Push Changes (Dry Run)"
         run: |
           git push --dry-run
+      - id: debug-on-failure
+        name: "Debug on Failure"
+        if: failure()
+        run: |
+          echo "Debugging on failure..."
+          git status
+          git log --oneline -n 10
+          git diff @{push}
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
