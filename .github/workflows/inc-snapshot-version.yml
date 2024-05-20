@@ -43,6 +43,15 @@ permissions:
   contents: write
 
 jobs:
+  echo-inputs:
+    name: "Echo Inputs"
+    runs-on: ubuntu-latest
+    steps:
+      - id: echo
+        name: "Echo Inputs"
+        run: |
+          echo "dryRun=${{ github.event.inputs.dryRun }}"
+          echo "verbose=${{ github.event.inputs.verbose }}"
   about:
     name: "About"
     uses: "./.github/workflows/about.yml"
