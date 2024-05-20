@@ -97,7 +97,8 @@ jobs:
       - build
       - release
     steps:
-      - name: Download artifact
+      - id: download-artifact
+        name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.artifact-name }}
@@ -108,7 +109,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: ${{ needs.build.outputs.artifact-name }}.zip
+          files: |
+            ${{ steps.download-artifact.outputs.download-path }}
           tag_name: ${{ needs.release.outputs.version }}
       - id: gh-release-dry-run
         if: ${{ inputs.dryRun }}
