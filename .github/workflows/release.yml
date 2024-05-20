@@ -123,8 +123,11 @@ jobs:
         if: failure()
         run: |
           echo "Debugging on failure..."
+          pwd
           ls -axl
           find -type f
+          echo "${{ steps.download-artifact.outputs.download-path }}"
+          find -type f ${{ steps.download-artifact.outputs.download-path }}
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
