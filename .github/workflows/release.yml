@@ -84,6 +84,7 @@ jobs:
     timeout-minutes: 15
     needs:
       - build
+      - release
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -97,6 +98,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: ${{ needs.build.outputs.artifact-name }}.zip
+          tag_name: ${{ needs.release.outputs.version }}
       - id: gh-release-dry-run
         if: ${{ inputs.dryRun }}
         name: "Create Release (Dry Run)"
