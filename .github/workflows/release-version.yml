@@ -48,7 +48,7 @@ on:
         value: ${{ jobs.main.outputs.nextVersion }}
 
 run-name: |
-  ${{ github.workflow }} (release type: ${{ github.event.inputs.release_type }}, dry-run: ${{ github.event.inputs.dryRun }}, verbose: ${{ github.event.inputs.verbose }})
+  ${{ github.workflow }} (release type: ${{ inputs.release_type }}, dry-run: ${{ inputs.dryRun }}, verbose: ${{ inputs.verbose }})
 
 env:
   # https://github.com/actions/runner-images/issues/70
@@ -123,12 +123,12 @@ jobs:
           echo "Next Version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
-        if: ${{ github.event.inputs.dryRun }}
+        if: ${{ !inputs.dryRun }}
         name: "Push Changes"
         run: |
           git push --follow-tags
       - id: git-push-dry-run
-        if: ${{ github.event.inputs.dryRun }}
+        if: ${{ inputs.dryRun }}
         name: "Push Changes (Dry Run)"
         run: |
           git push --follow-tags --dry-run
@@ -136,7 +136,7 @@ jobs:
     name: "Verbose"
     runs-on: ubuntu-latest
     needs: main
-    if: ${{ github.event.inputs.verbose }}
+    if: ${{ inputs.verbose }}
     steps:
       - id: output
         name: "Output"
