@@ -102,7 +102,9 @@ jobs:
           compression-level: 9
       - id: output-build-info
         name: Output artifact ID
-        run:  echo 'Artifact ID is ${{ steps.upload-child-theme.outputs.artifact-id }}'
+        run: |
+          echo "Artifact URL is ${{ steps.upload-child-theme.outputs.artifact-url }}"
+          echo "Artifact ID is ${{ steps.upload-child-theme.outputs.artifact-id }}"
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
