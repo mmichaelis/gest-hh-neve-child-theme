@@ -103,6 +103,10 @@ jobs:
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - id: temp-debug-download
+        name: "Debug Download"
+        run: |
+          ls -R
       - id: gh-release
         if: ${{ ! inputs.dryRun }}
         name: "Create Release"
@@ -127,8 +131,6 @@ jobs:
           pwd
           ls -axl
           find -type f
-          echo "${{ steps.download-artifact.outputs.download-path }}"
-          find -type f ${{ steps.download-artifact.outputs.download-path }}
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
