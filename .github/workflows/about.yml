@@ -66,6 +66,10 @@ jobs:
           fetch-depth: 1
           sparse-checkout: |
             scripts
+      - id: git-pull
+        name: "Pull Changes"
+        run: |
+          git pull
       - id: installPnpm
         name: "Install: Use PNPM ${{ env.pnpmVersion }}"
         uses: pnpm/action-setup@v4
