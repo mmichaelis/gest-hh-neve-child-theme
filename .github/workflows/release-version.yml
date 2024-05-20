@@ -53,11 +53,12 @@ run-name: |
 env:
   # https://github.com/actions/runner-images/issues/70
   NODE_OPTIONS: "--max_old_space_size=4096"
-  dryRun: ${{ github.event.inputs.dryRun }}
-  release_type: ${{ github.event.inputs.release_type }}
-  verbose: ${{ github.event.inputs.verbose }}
-  userName: ${{ github.actor }}
-  userMail: "${{ github.actor }}@users.noreply.github.com"
+  DRY_RUN: ${{ github.event.inputs.dryRun }}
+  RELEASE_TYPE: ${{ github.event.inputs.release_type }}
+  SNAPSHOT_TYPE: "prerelease"
+  VERBOSE: ${{ github.event.inputs.verbose }}
+  USER_NAME: ${{ github.actor }}
+  USER_MAIL: "${{ github.actor }}@users.noreply.github.com"
 
 permissions:
   contents: write
@@ -101,15 +102,15 @@ jobs:
       - id: config
         name: "Git Config"
         run: |
-          git config --global user.name "${{ env.userName }}"
-          git config --global user.email "${{ env.userMail }}"
+          git config --global user.name "${{ env.USER_NAME }}"
+          git config --global user.email "${{ env.USER_MAIL }}"
           echo "Done configuring Git: user.name and user.email."
       - id: inc-version
         name: "Increment Version"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          releaseType=${{ env.release_type }}
+          releaseType=${{ env.RELEASE_TYPE }}
           releaseVersion="$(pnpm version --silent "${releaseType}" --message "chore: release ${releaseType}: %s")"
           echo "Release Version: ${releaseVersion}"
           echo "result=${releaseVersion}" >> $GITHUB_OUTPUT
@@ -118,18 +119,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          snapshotType="prerelease"
+          snapshotType=${{ env.SNAPSHOT_TYPE }}
           snapshotVersion="$(pnpm version --silent "${snapshotType}" --no-git-tag-version)"
           git commit -am "chore: next snapshot version: ${snapshotVersion}"
           echo "Next Version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
-        if: ${{ ! env.dryRun }}
+        if: ${{ env.DRY_RUN == 'false'}}
         name: "Push Changes"
         run: |
           git push --follow-tags
       - id: git-push-dry-run
-        if: ${{ env.dryRun }}
+        if: ${{ env.DRY_RUN == 'true' }}
         name: "Push Changes (Dry Run)"
         run: |
           git push --follow-tags --dry-run
@@ -137,16 +138,16 @@ jobs:
     name: "Verbose"
     runs-on: ubuntu-latest
     needs: main
-    if: ${{ env.verbose }}
+    if: ${{ env.VERBOSE == 'true' }}
     steps:
       - id: output
         name: "Output"
         run: |
           echo "# Release Version" >> $GITHUB_STEP_SUMMARY
           echo "## Parameters" >> $GITHUB_STEP_SUMMARY
-          echo "* Released Type: ${{ env.release_type }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Verbose: ${{ env.verbose }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Dry-Run: ${{ env.dryRun }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Released Type: ${{ env.RELEASE_TYPE }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Verbose: ${{ env.VERBOSE }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Dry-Run: ${{ env.DRY_RUN }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
