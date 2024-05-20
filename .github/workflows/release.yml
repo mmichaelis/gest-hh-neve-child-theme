@@ -85,6 +85,7 @@ jobs:
     uses: "./.github/workflows/inc-snapshot-version.yml"
     needs:
       - build
+      - release
     secrets: inherit
     with:
       dryRun: ${{ inputs.dryRun }}
