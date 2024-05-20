@@ -77,7 +77,7 @@ jobs:
       nextVersion: ${{ steps.inc-snapshot-version.outputs.result }}
     steps:
       - id: checkout
-        name: Checkout
+        name: "Checkout"
         uses: actions/checkout@v4
       - id: installPnpm
         name: "Install: Use PNPM ${{ env.pnpmVersion }}"
@@ -92,14 +92,15 @@ jobs:
           node-version: ${{ env.nodeVersion }}
           cache: "pnpm"
       - id: install
-        name: Install
+        name: "Install"
         run: |
           pnpm install --frozen-lockfile
       - id: config
-        name: "Config"
+        name: "Git Config"
         run: |
           git config --global user.name "${{ env.userName }}"
           git config --global user.email "${{ env.userMail }}"
+          echo "Done configuring Git: user.name and user.email."
       - id: inc-version
         name: "Increment Version"
         env:
@@ -107,6 +108,7 @@ jobs:
         run: |
           releaseType=${{ github.event.inputs.release_type }}
           releaseVersion="$(pnpm version --silent "${releaseType}" --message "chore: release ${releaseType}: %s")"
+          echo "Release Version: ${releaseVersion}"
           echo "result=${releaseVersion}" >> $GITHUB_OUTPUT
       - id: inc-snapshot-version
         name: "Increment Snapshot Version"
@@ -116,6 +118,7 @@ jobs:
           snapshotType="prerelease"
           snapshotVersion="$(pnpm version --silent "${snapshotType}" --no-git-tag-version)"
           git commit -am "chore: next snapshot version: ${snapshotVersion}"
+          echo "Next Version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
         if: ${{ !github.event.inputs.dryRun }}
@@ -137,6 +140,12 @@ jobs:
         name: "Output"
         run: |
           echo "# Release Version" >> $GITHUB_STEP_SUMMARY
+          echo "## Parameters" >> $GITHUB_STEP_SUMMARY
+          echo "* Released Type: ${{ inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Verbose: ${{ inputs.verbose }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Dry-Run: ${{ inputs.dryRun }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "* Released Version: ${{ needs.main.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "* Snapshot Version: ${{ needs.main.outputs.nextVersion }}" >> $GITHUB_STEP_SUMMARY

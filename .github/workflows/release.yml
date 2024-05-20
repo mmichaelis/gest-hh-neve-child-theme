@@ -102,5 +102,12 @@ jobs:
         run: |
           echo "# Release Version" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Parameters" >> $GITHUB_STEP_SUMMARY
+          echo "* Released Type: ${{ inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Verbose: ${{ inputs.verbose }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Dry-Run: ${{ inputs.dryRun }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Result" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           echo "* Released Version: _TODO_" >> $GITHUB_STEP_SUMMARY
           echo "* Snapshot Version: _TODO_" >> $GITHUB_STEP_SUMMARY
