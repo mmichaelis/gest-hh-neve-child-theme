@@ -30,7 +30,7 @@ on:
         value: ${{ jobs.main.outputs.version }}
 
 run-name: |
-  ${{ github.workflow }} (verbose: ${{ github.event.inputs.verbose }})
+  ${{ github.workflow }} (verbose: ${{ inputs.verbose }})
 
 env:
   # https://github.com/actions/runner-images/issues/70
@@ -106,12 +106,12 @@ jobs:
     name: "Verbose"
     runs-on: ubuntu-latest
     needs: main
-    if: ${{ github.event.inputs.verbose }}
+    if: ${{ inputs.verbose }}
     steps:
       - id: output
         name: "Output"
         run: |
-          echo "# About" >> $GITHUB_STEP_SUMMARY
+          echo "# ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "* Node Version: ${{ needs.main.outputs.nodeVersion }}" >> $GITHUB_STEP_SUMMARY
           echo "* PNPM Version: ${{ needs.main.outputs.pnpmVersion }}" >> $GITHUB_STEP_SUMMARY
