@@ -1,17 +1,8 @@
-name: "Release Version"
+name: "Increase Snapshot Version"
 
 on:
   workflow_dispatch:
     inputs:
-      release_type:
-        description: 'Release type.'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-          - major
-          - minor
-          - patch
       verbose:
         description: "If to output a summary."
         required: false
@@ -24,11 +15,6 @@ on:
         default: true
   workflow_call:
     inputs:
-      release_type:
-        description: 'Release type.'
-        required: true
-        default: 'patch'
-        type: string
       verbose:
         description: "If to output a summary."
         required: false
@@ -41,16 +27,15 @@ on:
         default: false
     outputs:
       version:
-        description: "Released version"
+        description: "Snapshot version"
         value: ${{ jobs.main.outputs.version }}
 
 run-name: |
-  ${{ github.workflow }} (release type: ${{ inputs.release_type }}, dry-run: ${{ inputs.dryRun }}, verbose: ${{ inputs.verbose }})
+  ${{ github.workflow }} (dry-run: ${{ inputs.dryRun }}, verbose: ${{ inputs.verbose }})
 
 env:
   # https://github.com/actions/runner-images/issues/70
   NODE_OPTIONS: "--max_old_space_size=4096"
-  RELEASE_TYPE: ${{ inputs.release_type }}
   USER_NAME: ${{ github.actor }}
   USER_MAIL: "${{ github.actor }}@users.noreply.github.com"
 
@@ -62,7 +47,7 @@ jobs:
     name: "About"
     uses: "./.github/workflows/about.yml"
   main:
-    name: "Release Version"
+    name: "Main"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs:
@@ -71,7 +56,7 @@ jobs:
       nodeVersion: ${{ needs.about.outputs.nodeVersion }}
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
     outputs:
-      version: ${{ steps.inc-version.outputs.result }}
+      version: ${{ steps.inc-snapshot-version.outputs.result }}
     steps:
       - id: checkout
         name: "Checkout"
@@ -98,25 +83,26 @@ jobs:
           git config --global user.name "${{ env.USER_NAME }}"
           git config --global user.email "${{ env.USER_MAIL }}"
           echo "Done configuring Git: user.name and user.email."
-      - id: inc-version
-        name: "Increment Version"
+      - id: inc-snapshot-version
+        name: "Increment Snapshot Version"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          releaseType=${{ env.RELEASE_TYPE }}
-          releaseVersion="$(pnpm version --silent "${releaseType}" --message "chore: release ${releaseType}: %s")"
-          echo "Release Version: ${releaseVersion}"
-          echo "result=${releaseVersion}" >> $GITHUB_OUTPUT
+          snapshotType="prerelease"
+          snapshotVersion="$(pnpm version --silent "${snapshotType}" --no-git-tag-version)"
+          git commit -am "chore: next snapshot version: ${snapshotVersion}"
+          echo "Next Snapshot Version: ${snapshotVersion}"
+          echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
         if: ${{ !inputs.dryRun }}
         name: "Push Changes"
         run: |
-          git push --follow-tags
+          git push
       - id: git-push-dry-run
         if: ${{ inputs.dryRun }}
         name: "Push Changes (Dry Run)"
         run: |
-          git push --follow-tags --dry-run
+          git push --dry-run
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
@@ -128,10 +114,9 @@ jobs:
         run: |
           echo "# ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
           echo "## Parameters" >> $GITHUB_STEP_SUMMARY
-          echo "* Released Type: ${{ env.RELEASE_TYPE }}" >> $GITHUB_STEP_SUMMARY
           echo "* Verbose: ${{ inputs.verbose }}" >> $GITHUB_STEP_SUMMARY
           echo "* Dry-Run: ${{ inputs.dryRun }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "* Released Version: ${{ needs.main.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "* Snapshot Version: ${{ needs.main.outputs.version }}" >> $GITHUB_STEP_SUMMARY
