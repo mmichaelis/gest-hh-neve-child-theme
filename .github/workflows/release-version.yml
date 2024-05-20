@@ -123,12 +123,12 @@ jobs:
           echo "Next Version: ${snapshotVersion}"
           echo "result=${snapshotVersion}" >> $GITHUB_OUTPUT
       - id: git-push
-        if: ${{ inputs.dryRun }}
+        if: ${{ github.event.inputs.dryRun }}
         name: "Push Changes"
         run: |
           git push --follow-tags
       - id: git-push-dry-run
-        if: ${{ inputs.dryRun }}
+        if: ${{ github.event.inputs.dryRun }}
         name: "Push Changes (Dry Run)"
         run: |
           git push --follow-tags --dry-run
@@ -136,7 +136,7 @@ jobs:
     name: "Verbose"
     runs-on: ubuntu-latest
     needs: main
-    if: ${{ inputs.verbose }}
+    if: ${{ github.event.inputs.verbose }}
     steps:
       - id: output
         name: "Output"
