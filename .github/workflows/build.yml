@@ -40,7 +40,7 @@ jobs:
       - id: echo
         name: "Echo Inputs"
         run: |
-          echo "verbose=${{ github.event.inputs.verbose }}"
+          echo "verbose=${{ inputs.verbose }}"
   about:
     name: "About"
     uses: "./.github/workflows/about.yml"

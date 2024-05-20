@@ -48,7 +48,7 @@ jobs:
       - id: echo
         name: "Echo Inputs"
         run: |
-          echo "verbose=${{ github.event.inputs.verbose }}"
+          echo "verbose=${{ inputs.verbose }}"
   main:
     name: "Main"
     runs-on: ubuntu-latest

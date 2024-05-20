@@ -50,8 +50,8 @@ jobs:
       - id: echo
         name: "Echo Inputs"
         run: |
-          echo "dryRun=${{ github.event.inputs.dryRun }}"
-          echo "verbose=${{ github.event.inputs.verbose }}"
+          echo "dryRun=${{ inputs.dryRun }}"
+          echo "verbose=${{ inputs.verbose }}"
   about:
     name: "About"
     uses: "./.github/workflows/about.yml"
