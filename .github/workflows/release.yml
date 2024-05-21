@@ -104,12 +104,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.artifact-name }}
+          path: ${{ github.workspace }}/artifact
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - id: temp-upload-child-theme
         name: "Temp: Upload Child Theme"
         uses: actions/upload-artifact@v4
         with:
           name: "${{ needs.build.outputs.artifact-name }}-temp"
+          path: ${{ github.workspace }}/artifact/**/*
           retention-days: 1
       - id: temp-debug-download
         name: "Debug Download"
