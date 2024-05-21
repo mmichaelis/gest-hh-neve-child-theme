@@ -94,7 +94,7 @@ jobs:
   main:
     name: "Main"
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     needs:
       - build
       - release
@@ -154,7 +154,7 @@ jobs:
       - id: output
         name: "Output"
         run: |
-          echo "# Release Version" >> $GITHUB_STEP_SUMMARY
+          echo "# ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Parameters" >> $GITHUB_STEP_SUMMARY
           echo "* Released Type: ${{ inputs.release_type }}" >> $GITHUB_STEP_SUMMARY

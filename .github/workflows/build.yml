@@ -47,7 +47,7 @@ jobs:
   main:
     name: "Main"
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     needs:
       - about
     env:
@@ -115,6 +115,6 @@ jobs:
       - id: output
         name: "Output"
         run: |
-          echo "# Build Result" >> $GITHUB_STEP_SUMMARY
+          echo "# ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "* Child Theme: [${{ needs.main.outputs.artifact-name }}.zip](${{ needs.main.outputs.artifact-url }})" >> $GITHUB_STEP_SUMMARY
