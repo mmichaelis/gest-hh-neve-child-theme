@@ -53,7 +53,7 @@ env:
   nodeVersion: 20
   pnpmVersion: 8
 
-permissions: { }
+permissions: {}
 
 jobs:
   about:
