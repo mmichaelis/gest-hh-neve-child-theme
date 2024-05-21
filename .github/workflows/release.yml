@@ -105,6 +105,12 @@ jobs:
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - id: temp-upload-child-theme
+        name: "Temp: Upload Child Theme"
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ needs.build.outputs.artifact-name }}-temp"
+          retention-days: 1
       - id: temp-debug-download
         name: "Debug Download"
         run: |
