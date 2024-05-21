@@ -104,20 +104,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.artifact-name }}
-          path: ${{ github.workspace }}/artifact
+          path: ${{ github.workspace }}/artifact/${{ needs.build.outputs.artifact-name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - id: temp-upload-child-theme
-        name: "Temp: Upload Child Theme"
-        uses: actions/upload-artifact@v4
-        with:
-          name: "${{ needs.build.outputs.artifact-name }}-temp"
-          path: ${{ github.workspace }}/artifact/**/*
-          retention-days: 1
-      - id: temp-debug-download
-        name: "Debug Download"
+      - id: zip-release-artifact
+        name: "Zip Release Artifact: ${{ needs.build.outputs.artifact-name }}"
         run: |
-          ls -R
-# TODO: Somehow this does not work. The artifact just does not appear.
+          artifactBasePath="${{ github.workspace }}/artifact/${{ needs.build.outputs.artifact-name }}"
+          artifactPath="${{ github.workspace }}/artifact/${{ needs.build.outputs.artifact-name }}.zip"
+          cd "${artifactBasePath}"
+          zip --recurse-paths -9 "${artifactPath}" .
+          echo "result=${artifactPath}" >> $GITHUB_OUTPUT
       - id: gh-release
         if: ${{ ! inputs.dryRun }}
         name: "Create Release"
@@ -127,21 +123,14 @@ jobs:
         with:
           fail_on_unmatched_files: true
           files: |
-            ${{ steps.download-artifact.outputs.download-path }}
+            ${{ steps.zip-release-artifact.outputs.result }}
           tag_name: ${{ needs.release.outputs.version }}
       - id: gh-release-dry-run
         if: ${{ inputs.dryRun }}
         name: "Create Release (Dry Run)"
         run: |
           echo "Would create a release with ${{ needs.build.outputs.artifact-name }}.zip"
-      - id: debug-on-failure
-        name: "Debug on Failure"
-        if: failure()
-        run: |
-          echo "Debugging on failure..."
-          pwd
-          ls -axl
-          find -type f
+          ls -axl ${{ steps.zip-release-artifact.outputs.result }}
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
