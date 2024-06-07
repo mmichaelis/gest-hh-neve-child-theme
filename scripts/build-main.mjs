@@ -5,8 +5,10 @@ import { wordpressThemeMetaString } from "./wordpress-theme-meta-main.mjs";
 const defaultSourceFolderPath = "./src";
 const defaultBuildFolderPath = "./build";
 
-export const build = async (sourceFolderPath = defaultSourceFolderPath,
-                            buildFolderPath = defaultBuildFolderPath) => {
+export const build = async (
+  sourceFolderPath = defaultSourceFolderPath,
+  buildFolderPath = defaultBuildFolderPath,
+) => {
   const absSource = path.resolve(sourceFolderPath);
   const absTarget = path.resolve(buildFolderPath);
 
@@ -20,4 +22,4 @@ export const build = async (sourceFolderPath = defaultSourceFolderPath,
   await fs.writeFile(`${absTarget}/style.css`, buildStyleContent);
 
   return absTarget;
-}
+};

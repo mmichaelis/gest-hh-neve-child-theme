@@ -10,9 +10,9 @@ export const wordpressThemeMeta = async (version = "") => {
   }
   return {
     ...data,
-    "Version": version,
+    Version: version,
   };
-}
+};
 
 export const wordpressThemeMetaString = async (version = "") => {
   const meta = await wordpressThemeMeta(version);
@@ -21,4 +21,4 @@ export const wordpressThemeMetaString = async (version = "") => {
   return Object.entries(meta)
     .map(([key, value]) => `${padKey(`${key}:`)} ${value}`)
     .join("\n");
-}
+};

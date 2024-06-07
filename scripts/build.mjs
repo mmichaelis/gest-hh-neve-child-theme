@@ -3,7 +3,6 @@
 // Invoke with "pnpm --silent" to suppress additional output.
 
 import minimist from "minimist";
-import { current, nextSnapshot, nextRelease } from "./version-main.mjs";
 import { build } from "./build-main.mjs";
 
 const cliArguments = process.argv.slice(2);
@@ -11,8 +10,8 @@ const cliArguments = process.argv.slice(2);
 const argv = minimist(cliArguments, {
   boolean: ["help", "silent"],
   alias: {
-    "help": ["h", "?"],
-    "silent": ["s"],
+    help: ["h", "?"],
+    silent: ["s"],
   },
   unknown: (unknownArg) => {
     // Don't fail for non-options.
@@ -23,11 +22,7 @@ const argv = minimist(cliArguments, {
   },
 });
 
-const {
-  help = false,
-  silent = false,
-  "_": extraArgs,
-} = argv;
+const { help = false, silent = false, _: extraArgs } = argv;
 
 if (help || extraArgs.length !== 2) {
   const isParameterError = !help && extraArgs.length !== 2;

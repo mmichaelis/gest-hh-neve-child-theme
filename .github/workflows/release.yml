@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Release type.'
+        description: "Release type."
         required: true
-        default: 'patch'
+        default: "patch"
         type: choice
         options:
           - major
@@ -25,9 +25,9 @@ on:
   workflow_call:
     inputs:
       release_type:
-        description: 'Release type.'
+        description: "Release type."
         required: true
-        default: 'patch'
+        default: "patch"
         type: string
       verbose:
         description: "If to output a summary."
@@ -104,7 +104,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.artifact-name }}
-          path: ${{ github.workspace }}/artifact/${{ needs.build.outputs.artifact-name }}
+          path:
+            ${{ github.workspace }}/artifact/${{
+            needs.build.outputs.artifact-name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - id: zip-release-artifact
         name: "Zip Release Artifact: ${{ needs.build.outputs.artifact-name }}"

@@ -11,19 +11,18 @@ const argv = minimist(cliArguments, {
   boolean: ["help"],
   string: ["version"],
   alias: {
-    "help": ["h", "?"],
-    "version": ["v"],
+    help: ["h", "?"],
+    version: ["v"],
   },
   unknown: (unknownArg) => {
-    console.error(`Unknown argument ${unknownArg} passed to "wordpress-theme-meta"!"`);
+    console.error(
+      `Unknown argument ${unknownArg} passed to "wordpress-theme-meta"!"`,
+    );
     process.exit(1);
   },
 });
 
-const {
-  help = false,
-  version = "",
-} = argv;
+const { help = false, version = "" } = argv;
 
 if (help) {
   console.log(`Show WordPress Theme Meta Information
