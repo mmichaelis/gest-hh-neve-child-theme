@@ -1,4 +1,7 @@
-name: "About"
+name: "About (Util)"
+
+# Script to determine the name, node version, pnpm version, and version from
+# package.json.
 
 on:
   workflow_dispatch:
