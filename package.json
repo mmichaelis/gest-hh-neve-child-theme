@@ -25,10 +25,10 @@
   "author": "Mark Michaelis",
   "license": "ISC",
   "devDependencies": {
+    "@npmcli/package-json": "^5.2.0",
     "gulp": "^5.0.0",
     "gulp-zip": "^6.0.0",
     "minimist": "^1.2.8",
-    "read-package-json": "^7.0.1",
     "semver": "^7.6.2"
   }
 }

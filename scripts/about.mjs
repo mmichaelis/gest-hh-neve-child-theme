@@ -3,14 +3,14 @@
 // Invoke with "pnpm --silent" to suppress additional output.
 
 import minimist from "minimist";
-import { about } from "./about-main.mjs";
+import { about } from "./main/about.mjs";
 
 const cliArguments = process.argv.slice(2);
 
 const argv = minimist(cliArguments, {
   boolean: ["help"],
   alias: {
-    "help": ["h", "?"],
+    help: ["h", "?"],
   },
   unknown: (unknownArg) => {
     // Don't fail for non-options.
@@ -21,10 +21,7 @@ const argv = minimist(cliArguments, {
   },
 });
 
-const {
-  help = false,
-  "_": extraArgs,
-} = argv;
+const { help = false, _: extraArgs } = argv;
 
 if (help || extraArgs.length === 0) {
   const isRequiredArgsMissing = !help && extraArgs.length === 0;
@@ -50,6 +47,11 @@ Hint:
 }
 
 (async () => {
-  const data = await about(extraArgs);
-  console.log(data);
+  try {
+    const data = await about(extraArgs);
+    console.log(data);
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
 })();
