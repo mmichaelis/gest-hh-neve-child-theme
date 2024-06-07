@@ -1,8 +1,8 @@
 import { createRequire } from "module";
-import { about } from "./about-main.mjs";
+import { about } from "./about.mjs";
 
 const require = createRequire(import.meta.url);
-const data = require("../wordpress-theme-meta.json");
+const data = require("../../wordpress-theme-meta.json");
 
 export const wordpressThemeMeta = async (version = "") => {
   if (!version) {
