@@ -12,7 +12,6 @@
     "about": "node ./scripts/about.mjs",
     "preadd": "node ./scripts/check-pnpm.mjs",
     "build": "node ./scripts/build.mjs ./src ./build",
-    "get-version": "node ./scripts/version.mjs",
     "preinstall": "node ./scripts/check-pnpm.mjs",
     "preremove": "node ./scripts/check-pnpm.mjs",
     "preversion": "exit 0",
@@ -28,7 +27,6 @@
     "@npmcli/package-json": "^5.2.0",
     "gulp": "^5.0.0",
     "gulp-zip": "^6.0.0",
-    "minimist": "^1.2.8",
-    "semver": "^7.6.2"
+    "minimist": "^1.2.8"
   }
 }
