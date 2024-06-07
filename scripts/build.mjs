@@ -3,7 +3,7 @@
 // Invoke with "pnpm --silent" to suppress additional output.
 
 import minimist from "minimist";
-import { build } from "./build-main.mjs";
+import { build } from "./main/build.mjs";
 
 const cliArguments = process.argv.slice(2);
 

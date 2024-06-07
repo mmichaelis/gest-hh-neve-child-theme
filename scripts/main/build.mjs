@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { wordpressThemeMetaString } from "./main/wordpress-theme-meta-main.mjs";
+import { wordpressThemeMetaString } from "./wordpress-theme-meta.mjs";
 
 const defaultSourceFolderPath = "./src";
 const defaultBuildFolderPath = "./build";
