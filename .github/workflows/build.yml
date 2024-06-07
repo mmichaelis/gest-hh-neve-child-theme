@@ -1,4 +1,7 @@
-name: "Build"
+name: "Build (Util)"
+
+# Build the project for the given version.
+# Uploads the built workspace as an artifact.
 
 on:
   workflow_dispatch:
@@ -86,7 +89,7 @@ jobs:
       - id: build
         name: "Build"
         run: |
-          pnpm -r build
+          pnpm --recursive build
       - id: artifact-name
         name: "Generate Artifact Name"
         run: |
