@@ -5,4 +5,11 @@
     border-bottom: initial !important;
     color: initial !important;
   }
+
+  /*
+   * Hide tooltip content in print output.
+   */
+  #ttcont {
+    display: none;
+  }
 }
