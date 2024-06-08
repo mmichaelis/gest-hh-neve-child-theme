@@ -133,18 +133,18 @@ jobs:
       - id: parse-release-version
         name: "Parse Release Version"
         run: |
-          result="$(jq --raw-output '.releaseVersion' <<< "${{ env.RELEASE_INFORMATION }}")"
+          result="$(jq --raw-output '.releaseVersion' <<< '${{ env.RELEASE_INFORMATION }}')"
           echo "result=${result}" >> $GITHUB_OUTPUT
       - id: parse-snapshot-version
         name: "Parse Snapshot Version"
         run: |
-          result="$(jq --raw-output '.snapshotVersion' <<< "${{ env.RELEASE_INFORMATION }}")"
+          result="$(jq --raw-output '.snapshotVersion' <<< '${{ env.RELEASE_INFORMATION }}')"
           echo "result=${result}" >> $GITHUB_OUTPUT
       - id: parse-artifact-name
         name: "Parse Artifact Name"
         if: ${{ ! inputs.dryRun }}
         run: |
-          result="$(jq --raw-output '.artifactName' <<< "${{ env.RELEASE_INFORMATION }}")"
+          result="$(jq --raw-output '.artifactName' <<< '${{ env.RELEASE_INFORMATION }}')"
           echo "result=${result}" >> $GITHUB_OUTPUT
       - id: gh-release
         if: ${{ ! inputs.dryRun }}
