@@ -142,7 +142,6 @@ jobs:
           echo "result=${result}" >> $GITHUB_OUTPUT
       - id: parse-artifact-name
         name: "Parse Artifact Name"
-        if: ${{ ! inputs.dryRun }}
         run: |
           result="$(jq --raw-output '.artifactName' <<< '${{ env.RELEASE_INFORMATION }}')"
           echo "result=${result}" >> $GITHUB_OUTPUT
