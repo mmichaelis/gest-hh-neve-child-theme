@@ -101,6 +101,8 @@ jobs:
       - id: checkout
         name: "Checkout"
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
       - id: installPnpm
         name: "Install: Use PNPM ${{ env.pnpmVersion }}"
         uses: pnpm/action-setup@v4

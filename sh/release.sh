@@ -139,7 +139,7 @@ if (( dryRun )); then
   exit 0
 fi
 
-previousVersion="$(git describe --all --abbrev=0 --tags)"
+previousVersion="$(git describe --abbrev=0 --tags)"
 declare -r previousVersion
 
 git tag --annotate --message "Release: ${releaseVersion}" "${releaseVersion}" "${releaseHash}" >&2
