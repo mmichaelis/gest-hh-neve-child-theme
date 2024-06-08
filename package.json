@@ -13,7 +13,10 @@
     "preadd": "node ./scripts/check-pnpm.mjs",
     "build": "node ./scripts/build.mjs ./src ./build",
     "preinstall": "node ./scripts/check-pnpm.mjs",
-    "lint": "eslint --max-warnings 0",
+    "lint": "pnpm run eslint",
+    "postlint": "pnpm run stylelint",
+    "eslint": "eslint --max-warnings 0",
+    "stylelint": "stylelint --max-warnings 0 \"src/**/*.css\"",
     "preremove": "node ./scripts/check-pnpm.mjs",
     "preversion": "exit 0",
     "version": "pnpm run lint && pnpm run build",
@@ -31,6 +34,8 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-yml": "^1.14.0",
     "globals": "^15.4.0",
-    "minimist": "^1.2.8"
+    "minimist": "^1.2.8",
+    "stylelint": "^16.6.1",
+    "stylelint-config-standard": "^36.0.0"
   }
 }
