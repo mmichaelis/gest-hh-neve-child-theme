@@ -7,6 +7,13 @@
     display: none !important;
   }
 
+  /*
+   * Hide heading in front of feed.
+   */
+  .wp-block-heading:has(+ .cff-wrapper) {
+    display: none !important;
+  }
+
   /* Feed-Preview looks ugly in print layout. Just remove. */
   #cff .cff-posts-wrap {
     display: none !important;
