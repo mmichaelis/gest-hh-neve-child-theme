@@ -1,5 +1,4 @@
 @media print {
-
   /*
    * Must ensure, that overflow and float are applied here.
    * Otherwise, we will get empty pages for blog-list overview.

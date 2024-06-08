@@ -6,14 +6,11 @@
     --gest-primary-accent: var(--black-color);
     --gest-secondary-accent: var(--black-color);
     --gest-text-on-dark-color: var(--white-color);
-  
     --gest-block-button-fg: var(--white-color);
     --gest-block-button-bg: var(--black-color);
     --gest-block-button-active: var(--gest-yellow-color-light);
     --gest-uag-posts-bg: var(--gray-color-tints-80);
-  
     --gest-formfieldbordercolor: var(--gray-color-tints-20);
-  
     --gest-option-selected-color: var(--white-color);
     --gest-option-selected-bg: var(--black-color);
     --gest-option-hover-color: var(--white-color);
@@ -23,9 +20,12 @@
   /* Some general enforced states for better print experience. */
   * {
     float: none !important;
+
     /* max-width: Setting to 100% broke blog-post-overview. */
+
     /* https://www.bennadel.com/blog/851-fixing-divs-that-cause-content-truncation-when-printing.htm */
     overflow: visible !important;
+
     /* https://www.lockedownseo.com/chrome-print-preview-differs-from-dev-tools/ */
     transition: none !important;
   }
@@ -44,7 +44,7 @@
    * - Links with anchor reference (possibly too long, anchor irrelevant)
    * - Links with arguments (possibly too long)
   */
-  a[href^='http']:not([href*='gest-hamburg']):not([href*='localhost']):not([href*='#']):not([href*='?'])::after {
+  a[href^='http']:not([href*='gest-hamburg'], [href*='localhost'], [href*='#'], [href*='?'])::after {
     content: ' (' attr(href) ')';
     white-space: nowrap;
   }

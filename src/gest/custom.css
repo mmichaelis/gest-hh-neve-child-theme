@@ -1,5 +1,6 @@
 .handwriting {
   font-family: var(--gest-kalam-ff);
+
   /* Minimal Size for Subtext */
   font-size: 24px;
   font-weight: var(--gest-kalam-wght-bold);

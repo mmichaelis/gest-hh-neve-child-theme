@@ -1,15 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Mitr:wght@400;600&family=Open+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 :root {
-  --nv-fallback-ff: Arial, Helvetica, sans-serif;
-  --nv-default-ff: Graphik, -apple-system, BlinkMacSystemFont, Segoe UI;
-
-  --gest-open-sans-ff: Open Sans Regular, Open Sans;
+  --nv-fallback-ff: arial, helvetica, sans-serif;
+  --nv-default-ff: graphik, -apple-system, blinkmacsystemfont, segoe ui;
+  --gest-open-sans-ff: open sans regular, open sans;
   --gest-open-sans-wght-normal: 400;
   --gest-open-sans-wght-bold: 600;
-  --gest-mitr-ff: Mitr Regular, Mitr;
+  --gest-mitr-ff: mitr regular, mitr;
   --gest-mitr-wght-normal: 400;
   --gest-mitr-wght-bold: 600;
-  --gest-kalam-ff: Kalam;
+  --gest-kalam-ff: kalam;
   --gest-kalam-wght-bold: 700;
 }

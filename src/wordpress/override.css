@@ -31,6 +31,7 @@ img.scaled-image {
 .wp-block-image img {
   border-radius: var(--gest-img-border-radius);
   display: block;
+
   /* Center Image */
   margin: 0 auto;
 }
@@ -81,7 +82,7 @@ a.wp-block-file__button:focus, a.wp-block-file__button:hover {
   display: initial;
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   /* Remove strange top-margin on small screens. */
   html,
   body {

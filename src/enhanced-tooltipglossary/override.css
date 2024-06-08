@@ -9,7 +9,7 @@
   display: none
 }
 
-/*<editor-fold desc="Two-Column Layout for Glossary List">*/
+/* <editor-fold desc="Two-Column Layout for Glossary List"> */
 .glossary-container {
   text-align: center;
 }
@@ -25,4 +25,5 @@ ul#glossaryList {
     width: 50%;
   }
 }
-/*</editor-fold>*/
+
+/* </editor-fold> */

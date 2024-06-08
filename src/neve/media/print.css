@@ -4,7 +4,7 @@
     display: none;
   }
 
-  /* Hide navigation toolbar icons.*/
+  /* Hide navigation toolbar icons. */
   [data-item-id="nav-icon"], [data-item-id="header_search_responsive"] {
     display: none;
   }

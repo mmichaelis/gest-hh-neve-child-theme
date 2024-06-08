@@ -8,7 +8,7 @@
   --nv-text-dark-bg: var(--gest-text-on-dark-color);
   --nv-c-1: #9463ae;
   --nv-c-2: #be574b;
-  --nv-fallback-ff: Arial, Helvetica, sans-serif;
+  --nv-fallback-ff: arial, helvetica, sans-serif;
 }
 
 .header-main {

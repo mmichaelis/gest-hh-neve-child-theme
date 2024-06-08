@@ -6,13 +6,13 @@
   fill: var(--gest-text-color);
 }
 
-#content div.uagb-post-grid ul.slick-dots li.slick-active button:before,
-#content div.uagb-post-grid ul.slick-dots li:hover button:before {
+#content div.uagb-post-grid ul.slick-dots li.slick-active button::before,
+#content div.uagb-post-grid ul.slick-dots li:hover button::before {
   opacity: 1;
   color: var(--gest-text-color);
 }
 
-#content div.uagb-post-grid ul.slick-dots li button:before {
+#content div.uagb-post-grid ul.slick-dots li button::before {
   opacity: 0.5;
   color: var(--gest-text-color);
 }

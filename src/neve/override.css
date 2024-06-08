@@ -8,7 +8,7 @@ body {
   background: initial;
 }
 
-[class*=row-inner] {
+[class*="row-inner"] {
   background: initial;
 }
 
@@ -95,7 +95,7 @@ body {
 
 /* Apply Border from Header also to Footer, but at top. */
 .site-footer {
-  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
 }
 
 /* Add Rounded Borders To Default Blog Post Images */
