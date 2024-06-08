@@ -69,6 +69,7 @@ jobs:
           fetch-depth: 1
           sparse-checkout: |
             scripts
+            sh
       - id: git-pull
         name: "Pull Changes"
         run: |
@@ -92,22 +93,22 @@ jobs:
       - id: get-node-version
         name: "Get Node.js Version"
         run: |
-          result=$(pnpm --silent about engines node)
+          result=$(./sh/about.sh engines node)
           echo "result=${result}" >> $GITHUB_OUTPUT
       - id: get-pnpm-version
         name: "Get PNPM Version"
         run: |
-          result=$(pnpm --silent about engines pnpm)
+          result=$(./sh/about.sh engines pnpm)
           echo "result=${result}" >> $GITHUB_OUTPUT
       - id: get-version
         name: "Get Version"
         run: |
-          result=$(pnpm --silent about version)
+          result=$(./sh/about.sh version)
           echo "result=${result}" >> $GITHUB_OUTPUT
       - id: get-name
         name: "Get Name"
         run: |
-          result=$(pnpm --silent about name)
+          result=$(./sh/about.sh name)
           echo "result=${result}" >> $GITHUB_OUTPUT
   verbose:
     name: "Verbose"
