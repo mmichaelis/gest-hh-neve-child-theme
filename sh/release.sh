@@ -107,6 +107,7 @@ else
 fi
 
 declare pnpmVersionOutput=""
+declare artifactName=""
 
 if (( ! onlySnapshot )); then
   echo "Releasing a ${type} version." >&2
@@ -115,6 +116,10 @@ if (( ! onlySnapshot )); then
   git commit --all --message "chore: release ${type}: ${releaseVersion}" >&2
   releaseHash="$(git rev-parse HEAD)"
   echo "Released a ${type} version: ${releaseVersion} (${releaseHash})" >&2
+  # Zip Build Results
+  artifactName="$(pnpm --silent about name)-${releaseVersion}.zip"
+  (cd build >&2 && zip --recurse-paths -9 "../${artifactName}" . >&2)
+  echo "Created Release Artifact: ${artifactName}" >&2
 fi
 
 echo "Preparing next snapshot version." >&2
@@ -141,6 +146,6 @@ if (( push )); then
 fi
 
 if (( MODE_CI )); then
-  ## Output the release version for GitHub Actions to use.
-  echo "${releaseVersion}"
+  ## Output the release information.
+  printf '{"releaseVersion":"%s","snapshotVersion":"%s","artifactName":"%s"}\n' "${releaseVersion}" "${snapshotVersion}" "${artifactName}"
 fi
