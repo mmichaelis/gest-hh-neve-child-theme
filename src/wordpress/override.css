@@ -42,7 +42,7 @@ img.scaled-image {
 
 /* =====================================================[+ Download Button +] */
 
-.wp-block-file__button {
+a.wp-block-file__button {
   background: var(--gest-block-button-bg);
   color: var(--gest-block-button-fg);
 }
