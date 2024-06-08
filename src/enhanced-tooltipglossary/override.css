@@ -1,7 +1,9 @@
+/* Change Colors for Glossary Term Rendering. */
 #content span.glossaryLink, #content a.glossaryLink {
   border-bottom: dotted 1px var(--gest-text-color);
   color: var(--gest-text-color) !important;
 }
+
 /* Hide author information in glossary entry. */
 .single-glossary .nv-meta-list {
   display: none

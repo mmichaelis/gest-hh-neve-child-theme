@@ -1,1 +1,10 @@
+/*
+ * Adaptations for the enhanced tooltip glossary.
+ *
+ * Plugin Name: CM Tooltip Glossary
+ * Plugin Identifier: enhanced-tooltipglossary
+ * Plugin URI: https://wordpress.org/plugins/enhanced-tooltipglossary/
+ */
 @import url("override.css");
+
+@import url("media/main.css");

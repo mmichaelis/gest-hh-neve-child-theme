@@ -1,0 +1,8 @@
+@media print {
+  /* No highlighting of glossary terms in print output.  */
+  #content span.glossaryLink,
+  #content a.glossaryLink {
+    border-bottom: initial !important;
+    color: initial !important;
+  }
+}
