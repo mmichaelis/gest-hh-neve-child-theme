@@ -94,27 +94,47 @@ case "${type}" in
 esac
 
 declare releaseVersion=""
+declare releaseHash=""
 declare snapshotVersion=""
+declare snapshotHash=""
+
+if [ -z "$(git status --untracked-files=no --porcelain)" ]; then
+  echo "Working directory clean." >&2
+else
+  echo "Working directory is dirty. Aborting." >&2
+  git status --untracked-files=no >&2
+  exit 1
+fi
+
+declare pnpmVersionOutput=""
 
 if (( ! onlySnapshot )); then
   echo "Releasing a ${type} version." >&2
-  releaseVersion="$(pnpm version "${type}" --message "chore: release ${type}: %s" || exit 1)"
-  echo "Released a ${type} version: ${releaseVersion}" >&2
+  pnpmVersionOutput="$(pnpm version "${type}" --no-git-tag-version || exit 1)"
+  releaseVersion="$(tail -n 1 <<< "${pnpmVersionOutput}")"
+  git commit --all --message "chore: release ${type}: ${releaseVersion}" >&2
+  releaseHash="$(git rev-parse HEAD)"
+  echo "Released a ${type} version: ${releaseVersion} (${releaseHash})" >&2
 fi
 
 echo "Preparing next snapshot version." >&2
-snapshotVersion="$(pnpm version "prerelease" --preid "rc" --no-git-tag-version --message "chore: next snapshot: %s" || exit 1)"
-echo "Prepared next snapshot: ${snapshotVersion}" >&2
+pnpmVersionOutput="$(pnpm version "prerelease" --no-git-tag-version --preid "rc" || exit 1)"
+snapshotVersion="$(tail -n 1 <<< "${pnpmVersionOutput}")"
+git commit --all --message "chore: next snapshot version: ${snapshotVersion}" >&2
+snapshotHash="$(git rev-parse HEAD)"
+echo "Prepared next snapshot: ${snapshotVersion} (${snapshotHash})" >&2
 
 if (( dryRun )); then
   NEW_HASH=$(git rev-parse HEAD)
   declare -r NEW_HASH
   echo "Dry run mode enabled. Skipping to push results." >&2
   echo "Stashed Commits:" >&2
-  git log --oneline "${CURRENT_HASH}..${NEW_HASH}" >&2
+  git --no-pager log --oneline "${CURRENT_HASH}..${NEW_HASH}" >&2
   git reset --hard "${CURRENT_HASH}" >&2
   exit 0
 fi
+
+git tag --annotate --message "Release: ${releaseVersion}" "${releaseVersion}" "${releaseHash}"
 
 if (( push )); then
   git push --follow-tags >&2
