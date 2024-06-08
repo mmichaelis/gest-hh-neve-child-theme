@@ -1,5 +1,6 @@
 @import url("gest/main.css");
 
+/* <editor-fold desc="Plugin Specific Adaptations."> */
 @import url("cookie-notice/main.css");
 @import url("custom-facebook-feed/main.css");
 @import url("enhanced-tooltipglossary/main.css");
@@ -9,3 +10,5 @@
 @import url("the-events-calendar/main.css");
 @import url("uag/main.css");
 @import url("wordpress/main.css");
+
+/* </editor-fold> */
