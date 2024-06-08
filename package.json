@@ -18,8 +18,7 @@
     "preversion": "exit 0",
     "version": "pnpm run lint && pnpm run build",
     "postversion": "exit 0",
-    "wordpress-theme-meta": "node ./scripts/wordpress-theme-meta.mjs",
-    "zip": "gulp zip"
+    "wordpress-theme-meta": "node ./scripts/wordpress-theme-meta.mjs"
   },
   "keywords": [],
   "author": "Mark Michaelis",
@@ -32,8 +31,6 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-yml": "^1.14.0",
     "globals": "^15.4.0",
-    "gulp": "^5.0.0",
-    "gulp-zip": "^6.0.0",
     "minimist": "^1.2.8"
   }
 }
