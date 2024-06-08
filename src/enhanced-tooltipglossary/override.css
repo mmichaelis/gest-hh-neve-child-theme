@@ -8,3 +8,21 @@
 .single-glossary .nv-meta-list {
   display: none
 }
+
+/*<editor-fold desc="Two-Column Layout for Glossary List">*/
+.glossary-container {
+  text-align: center;
+}
+
+ul#glossaryList {
+  display: inline-block;
+  width: 90%;
+
+  li {
+    float: left;
+    list-style: outside none none;
+    text-align: left;
+    width: 50%;
+  }
+}
+/*</editor-fold>*/
