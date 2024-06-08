@@ -139,13 +139,17 @@ if (( dryRun )); then
   exit 0
 fi
 
-git tag --annotate --message "Release: ${releaseVersion}" "${releaseVersion}" "${releaseHash}"
+previousVersion="$(git describe --abbrev=0 --tags)"
+declare -r previousVersion
+
+git tag --annotate --message "Release: ${releaseVersion}" "${releaseVersion}" "${releaseHash}" >&2
 
 if (( push )); then
   git push --follow-tags >&2
 fi
 
+
 if (( MODE_CI )); then
   ## Output the release information.
-  printf '{"releaseVersion":"%s","snapshotVersion":"%s","artifactName":"%s"}\n' "${releaseVersion}" "${snapshotVersion}" "${artifactName}"
+  printf '{"previousVersion":"%s","releaseVersion":"%s","snapshotVersion":"%s","artifactName":"%s"}\n' "${previousVersion}" "${releaseVersion}" "${snapshotVersion}" "${artifactName}"
 fi

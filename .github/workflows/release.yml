@@ -41,8 +41,11 @@ on:
         default: false
     outputs:
       releaseVersion:
-        description: "Released version"
+        description: "Released Version"
         value: ${{ jobs.main.outputs.releaseVersion }}
+      previousVersion:
+        description: "Previous Release Version"
+        value: ${{ jobs.main.outputs.previousVersion }}
       snapshotVersion:
         description: "Next Snapshot Version"
         value: ${{ jobs.main.outputs.snapshotVersion }}
@@ -86,10 +89,12 @@ jobs:
     needs:
       - about
     env:
+      name: ${{ needs.about.outputs.name }}
       nodeVersion: ${{ needs.about.outputs.nodeVersion }}
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
     outputs:
       releaseVersion: ${{ steps.parse-release-version.outputs.result }}
+      previousVersion: ${{ steps.parse-previous-version.outputs.result }}
       snapshotVersion: ${{ steps.parse-snapshot-version.outputs.result }}
       artifactName: ${{ steps.parse-artifact-name.outputs.result }}
     steps:
@@ -135,6 +140,11 @@ jobs:
         run: |
           result="$(jq --raw-output '.releaseVersion' <<< '${{ env.RELEASE_INFORMATION }}')"
           echo "result=${result}" >> $GITHUB_OUTPUT
+      - id: parse-previous-version
+        name: "Parse Previous Version"
+        run: |
+          result="$(jq --raw-output '.previousVersion' <<< '${{ env.RELEASE_INFORMATION }}')"
+          echo "result=${result}" >> $GITHUB_OUTPUT
       - id: parse-snapshot-version
         name: "Parse Snapshot Version"
         run: |
@@ -152,6 +162,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          body: |
+            Release ${{ steps.parse-release-version.outputs.result }} of ${{ env.name }}.
+
+            ## Changelog
+            
+            ${{ github.server_url }}/${{ github.repository }}/compare/${{ steps.parse-previous-version.outputs.result }}...${{ steps.parse-release-version.outputs.result }}
           fail_on_unmatched_files: true
           files: |
             ${{ steps.parse-artifact-name.outputs.result }}
@@ -181,6 +197,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "* Previous Version: ${{ needs.main.outputs.previousVersion }}" >> $GITHUB_STEP_SUMMARY
           echo "* Released Version: ${{ needs.main.outputs.releaseVersion }}" >> $GITHUB_STEP_SUMMARY
           echo "* Snapshot Version: ${{ needs.main.outputs.snapshotVersion }}" >> $GITHUB_STEP_SUMMARY
           echo "* Artifact: ${{ needs.main.outputs.artifactName }}" >> $GITHUB_STEP_SUMMARY
