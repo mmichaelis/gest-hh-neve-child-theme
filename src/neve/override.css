@@ -72,13 +72,10 @@ body {
 .site-logo small {
   --fontweight: var(--gest-logo-fontweight);
 
+  /* Hide sub-text in logo by default. */
+  display: none;
   font-family: var(--fontfamily);
   font-weight: var(--fontweight);
-}
-
-/* Hide sub-text in logo by default. */
-.site-logo small {
-  display: none;
 }
 
 /* By default, don't force wrapped text in logo. */

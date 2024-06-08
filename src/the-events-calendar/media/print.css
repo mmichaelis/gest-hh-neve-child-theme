@@ -1,1 +1,3 @@
-@media print {}
+@media print {
+  /* Hook for styling print display. */
+}
