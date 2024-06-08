@@ -81,14 +81,7 @@ case "${type}" in
     type="prerelease"
     onlySnapshot=1
     ;;
-  patch)
-    echo "Releasing a patch version." >&2
-    ;;
-  minor)
-    echo "Releasing a minor version." >&2
-    ;;
-  major)
-    echo "Releasing a major version." >&2
+  patch | minor | major)
     ;;
   unset)
     echo "Required argument --type is missing." >&2
@@ -104,13 +97,14 @@ declare releaseVersion=""
 declare snapshotVersion=""
 
 if (( ! onlySnapshot )); then
-  releaseVersion="$(pnpm version --silent "${type}" --message "chore: release ${type}: %s" || exit 1)"
+  echo "Releasing a ${type} version." >&2
+  releaseVersion="$(pnpm version "${type}" --message "chore: release ${type}: %s" || exit 1)"
+  echo "Released a ${type} version: ${releaseVersion}" >&2
 fi
 
-snapshotVersion="$(pnpm version --silent "prerelease" --preid "rc" --no-git-tag-version --message "chore: next snapshot: %s" || exit 1)"
-
-[ -n "${releaseVersion}" ] && echo "Release Version: ${releaseVersion}" >&2
-[ -n "${snapshotVersion}" ] && echo "Snapshot Version: ${snapshotVersion}" >&2
+echo "Preparing next snapshot version." >&2
+snapshotVersion="$(pnpm version "prerelease" --preid "rc" --no-git-tag-version --message "chore: next snapshot: %s" || exit 1)"
+echo "Prepared next snapshot: ${snapshotVersion}" >&2
 
 if (( dryRun )); then
   NEW_HASH=$(git rev-parse HEAD)
