@@ -166,7 +166,7 @@ jobs:
             Release ${{ steps.parse-release-version.outputs.result }} of ${{ env.name }}.
 
             ## Changelog
-            
+
             ${{ github.server_url }}/${{ github.repository }}/compare/${{ steps.parse-previous-version.outputs.result }}...${{ steps.parse-release-version.outputs.result }}
           fail_on_unmatched_files: true
           files: |
