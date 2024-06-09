@@ -280,9 +280,10 @@ fi
 # ------------------------------------------------------------------------------
 
 if (( push )); then
-  git push --follow-tags | log_info
+  git push | log_info
 
   if (( isSnapshotRelease == 0 )); then
+    git push origin tag "${releaseVersion}" | log_info
     log_info "Tagged Release: ${releaseVersion} (${releaseHash})"
   fi
 else
