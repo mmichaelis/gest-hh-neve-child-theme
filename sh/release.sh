@@ -1,44 +1,103 @@
 #!/usr/bin/env bash
 
+# ------------------------------------------------------------------------------
+# Bash Options
+# ------------------------------------------------------------------------------
+
 set -o errexit   # abort on nonzero exit status
 set -o nounset   # abort on unbound variable
 set -o pipefail  # don't hide errors within pipes
 
+# ------------------------------------------------------------------------------
+# Initialization: GitHub Actions Environment Awareness
+# ------------------------------------------------------------------------------
+
 # Respect GitHub Actions debug mode.
 declare -ir MODE_DEBUG=${RUNNER_DEBUG:-0}
 
-# Detect if running in GitHub CI Environment.
-MODE_CI=$( [[ "${CI:-false}" == "true" ]] && echo 1 || echo 0 )
-declare -ir MODE_CI
-
-CURRENT_HASH=$(git rev-parse HEAD)
-declare -r CURRENT_HASH
-
+# Respect GitHub Actions verbosity also for logging bash script.
 if (( MODE_DEBUG )); then
   set -o xtrace
 else
   set +o xtrace
 fi
 
-OPTIONS=$(getopt --options "dhpt:" --longoptions "dry-run,help,push,type:" --name "${BASH_ARGV0}" -- "$@" || exit 1)
+# Detect if running in GitHub CI Environment.
+MODE_CI=$( [[ "${CI:-false}" == "true" ]] && echo 1 || echo 0 )
+declare -ir MODE_CI
+
+# ------------------------------------------------------------------------------
+# Initialization: Helper Methods
+# ------------------------------------------------------------------------------
+
+# Logs the given informational message.
+# May also be used to pipe output to this log.
+#
+# If running in CI, all output is sent to stderr, so that the output to
+# stdout can be used to retrieve the JSON information.
+function log_info() {
+  local -r msg=${1:-$(</dev/stdin)}
+  local logMsg
+  printf -v logMsg "[INFO] %s\n" "${msg}"
+  if (( MODE_CI )); then
+    echo "${logMsg}" >&2
+  else
+    echo "${logMsg}"
+  fi
+}
+
+# Writes directly to stdout. May also be used to pipe output to here.
+# shellcheck disable=SC2120
+function write_out() {
+  local -r msg=${1:-$(</dev/stdin)}
+  printf "%s\n" "${msg}"
+}
+
+# Logs the given error message.
+# May also be used to pipe output to this log.
+function log_error() {
+  local -r msg=${1:-$(</dev/stdin)}
+  printf "[ERROR] %s\n" "${msg}" >&2
+}
+
+# Outputs the given error (if any) and exits the script with a non-zero status.
+function throw_error() {
+  local -r msg=${1:-}
+  [ -n "${msg}" ] && log_error "${msg}"
+  exit 1
+}
+
+# ------------------------------------------------------------------------------
+# Initialization: Parse CLI Options
+# ------------------------------------------------------------------------------
+
+OPTIONS=$(getopt --options "hj::pt:" --longoptions "help,json::,push,type:" --name "${BASH_ARGV0}" -- "$@" || exit 1)
 declare -r OPTIONS
 
-declare dryRun=0
 declare help=0
+# Default to output JSON results in CI mode.
+declare -i json=${MODE_CI}
+# If not empty, write the JSON results to the given path.
+declare jsonPath=""
 declare type="unset"
 declare push=0
 
 eval set -- "${OPTIONS}"
 while true; do
   if (( MODE_DEBUG )); then
-    echo "Processing Argument: ${1:-EOA}" >&2
+    log_info "Processing Argument: ${1:-EOA}"
   fi
   case "${1:-EOA}" in
-    -d | --dry-run)
-      dryRun=1
-      ;;
     -h | --help)
       help=1
+      ;;
+    -j | --json)
+      json=1
+      # If optional argument to JSON (given as --json=PATH), the second
+      # value exists, but is empty, thus, perfectly matches our scenario
+      # for one to write to stdout.
+      jsonPath="${2}"
+      shift
       ;;
     -p | --push)
       push=1
@@ -56,100 +115,221 @@ while true; do
       break
       ;;
     *)
-      echo "Internal error! Unhandled valid option: '${1}'." >&2
-      exit 1
+      throw_error "Internal error! Unhandled valid option: '${1}'."
       ;;
   esac
   shift
 done
 
+#
+# --help takes precedence over all other options.
+#
+
 if (( help )); then
-  echo "Usage: ${BASH_ARGV0} [OPTIONS]"
-  echo "Options:"
-  echo "  -d, --dry-run  Dry run mode."
-  echo "  -h, --help     Display this help message."
-  echo "  -p, --push     Push changes."
-  echo "  -t, --type     Release type: snapshot (alias for prerelease), patch, minor, or major."
+# -------1---------2---------3---------4---------5---------6---------7---------8
+  cat << end_help | write_out
+Usage: ${BASH_ARGV0} [OPTIONS] --type=<TYPE>
+
+Options:
+
+  -d, --dry-run  Dry run mode.
+  -h, --help     Display this help message.
+  -j, --json     Enable JSON result output. If an optional path is given, write
+                 to that file. Otherwise, JSON will be written to stdout
+                 instead.
+  -p, --push     Push changes.
+  -t, --type     (required) Release type: snapshot (alias for prerelease),
+                 patch, minor, or major.
+
+Examples:
+
+${BASH_ARGV0} --type=patch
+${BASH_ARGV0} --type=patch --push
+${BASH_ARGV0} --type=patch --json
+${BASH_ARGV0} --type=patch --json=my/path/result.json
+end_help
+# -------1---------2---------3---------4---------5---------6---------7---------8
+
   exit 0
 fi
 
-declare -i onlySnapshot=0
+#
+# Parse required --type Parameter
+#
+
+declare -i isSnapshotRelease=0
 
 case "${type}" in
   snapshot | prerelease)
-    echo "Releasing a snapshot version." >&2
+    log_info "Releasing a snapshot version."
     type="prerelease"
-    onlySnapshot=1
+    isSnapshotRelease=1
     ;;
   patch | minor | major)
     ;;
   unset)
-    echo "Required argument --type is missing." >&2
-    exit 1
+    throw_error "Required argument --type is missing."
     ;;
   *)
-    echo "Invalid release type: '${type}'." >&2
-    exit 1
+    throw_error "Invalid release type: '${type}'."
     ;;
 esac
 
-declare releaseVersion=""
-declare releaseHash=""
-declare snapshotVersion=""
-declare snapshotHash=""
 
-if [ -z "$(git status --untracked-files=no --porcelain)" ]; then
-  echo "Working directory clean." >&2
+# ------------------------------------------------------------------------------
+# Validation: Ensure that the working directory is clean.
+# ------------------------------------------------------------------------------
+
+if [ -z "$(git --no-pager status --untracked-files=no --porcelain)" ]; then
+  log_info "Working directory clean."
 else
-  echo "Working directory is dirty. Aborting." >&2
-  git status --untracked-files=no >&2
-  exit 1
+  log_error "Working directory is dirty. Aborting."
+  git --no-pager status --untracked-files=no | log_error
+  throw_error
 fi
 
-declare pnpmVersionOutput=""
-declare artifactName=""
+# ------------------------------------------------------------------------------
+# Initialization: Git Information
+# ------------------------------------------------------------------------------
 
-if (( ! onlySnapshot )); then
-  echo "Releasing a ${type} version." >&2
-  pnpmVersionOutput="$(pnpm version "${type}" --no-git-tag-version || exit 1)"
-  releaseVersion="$(tail -n 1 <<< "${pnpmVersionOutput}")"
-  git commit --all --message "chore: release ${type}: ${releaseVersion}" >&2
+log_info "Initialization: Git Information"
+
+currentHash=$(git rev-parse HEAD)
+declare -r currentHash
+
+log_info "Fetching previous release information."
+
+# Example Output: e3cfac0e19c5cfaf3dca11d05a321d952cda64ad        refs/tags/v1.1.0
+lastReleaseInformation=$(git --no-pager ls-remote --tags --quiet|grep --perl-regexp "^\\S+\\s+refs/tags/v[.0-9]+$"|tail --lines=1)
+declare -r lastReleaseInformation
+previousReleaseHash=$(cut --fields=1 <<< "${lastReleaseInformation}")
+declare -r previousReleaseHash
+previousReleaseVersion=$(grep --only-matching --perl-regexp "v[.0-9]+$" <<< "${lastReleaseInformation}")
+declare -r previousReleaseVersion
+
+# ------------------------------------------------------------------------------
+# Initialization: Project Information
+# ------------------------------------------------------------------------------
+
+log_info "Initialization: Project Information"
+
+projectName=$(pnpm --silent about name)
+declare -r projectName
+declare -r artifactName="${projectName}.zip"
+
+currentVersion=$(pnpm --silent about version)
+declare -r currentVersion
+currentIsSnapshot=$( [[ "${currentVersion}" =~ .*rc.* ]] && echo 1 || echo 0 )
+declare -ir currentIsSnapshot
+
+# ------------------------------------------------------------------------------
+# Perform: Create Release
+# ------------------------------------------------------------------------------
+
+if (( isSnapshotRelease == 0 || currentIsSnapshot == 0 )); then
+  log_info "Perform: Releasing a ${type} version."
+
+  releaseVersion="$(tail --lines=1 <<< "$(pnpm version "${type}" --preid "rc" --no-git-tag-version || throw_error "Failed to create release version.")")"
+
+  git commit --all --message "chore: release ${type}: ${releaseVersion}" | log_info
   releaseHash="$(git rev-parse HEAD)"
-  echo "Released a ${type} version: ${releaseVersion} (${releaseHash})" >&2
-  # Zip Build Results
-  artifactName="$(pnpm --silent about name)-${releaseVersion}.zip"
-  (cd build >&2 && zip --recurse-paths -9 "../${artifactName}" . >&2)
-  echo "Created Release Artifact: ${artifactName}" >&2
+
+  log_info "Released a ${type} version: ${releaseVersion} (${releaseHash})"
+else
+  # No need to perform a release, we already have a yet unused snapshot
+  # version. Just build the project.
+  log_info "Skipping release, as we are already in a snapshot version. Just building."
+
+  releaseVersion="${currentVersion}"
+  releaseHash="${currentHash}"
+
+  pnpm build | log_info
 fi
 
-echo "Preparing next snapshot version." >&2
-pnpmVersionOutput="$(pnpm version "prerelease" --no-git-tag-version --preid "rc" || exit 1)"
-snapshotVersion="$(tail -n 1 <<< "${pnpmVersionOutput}")"
-git commit --all --message "chore: next snapshot version: ${snapshotVersion}" >&2
-snapshotHash="$(git rev-parse HEAD)"
-echo "Prepared next snapshot: ${snapshotVersion} (${snapshotHash})" >&2
+declare -r releaseVersion
+declare -r releaseHash
 
-if (( dryRun )); then
-  NEW_HASH=$(git rev-parse HEAD)
-  declare -r NEW_HASH
-  echo "Dry run mode enabled. Skipping to push results." >&2
-  echo "Stashed Commits:" >&2
-  git --no-pager log --oneline "${CURRENT_HASH}..${NEW_HASH}" >&2
-  git reset --hard "${CURRENT_HASH}" >&2
-  exit 0
+# Execute in Subshell to avoid polluting the working directory.
+(
+  cd build | log_info
+  zip --recurse-paths -9 "../${artifactName}" . | log_info
+  log_info "Created Release Artifact: ${artifactName}"
+)
+
+# ------------------------------------------------------------------------------
+# Perform: Create Next Snapshot Version
+# ------------------------------------------------------------------------------
+
+log_info "Preparing next snapshot version."
+
+nextVersion="$(tail --lines=1 <<< "$(pnpm version "prerelease" --preid "rc" --no-git-tag-version || throw_error "Failed to create next snapshot version.")")"
+declare -r nextVersion
+
+git commit --all --message "chore: next snapshot version: ${nextVersion}" >&2
+nextHash="$(git rev-parse HEAD)"
+declare -r nextHash
+
+echo "Prepared next snapshot: ${nextVersion} (${nextHash})" >&2
+
+if (( isSnapshotRelease == 0 )); then
+  git tag --annotate --message "Release: ${releaseVersion}" "${releaseVersion}" "${releaseHash}" | log_info
 fi
 
-previousVersion="$(git describe --abbrev=0 --tags)"
-declare -r previousVersion
-
-git tag --annotate --message "Release: ${releaseVersion}" "${releaseVersion}" "${releaseHash}" >&2
+# ------------------------------------------------------------------------------
+# Finish: Pushing Results or Report State
+# ------------------------------------------------------------------------------
 
 if (( push )); then
-  git push --follow-tags >&2
+  git push --follow-tags | log_info
+
+  if (( isSnapshotRelease == 0 )); then
+    log_info "Tagged Release: ${releaseVersion} (${releaseHash})"
+  fi
+else
+  log_info "Skipping to push changes."
+  log_info "Stashed Commits:"
+  git --no-pager log --oneline "${currentHash}..${nextHash}" | log_info
+
+  if (( isSnapshotRelease == 0 )); then
+    log_info "Tagged Release (not pushed): ${releaseVersion} (${releaseHash})"
+  fi
 fi
 
-
-if (( MODE_CI )); then
-  ## Output the release information.
-  printf '{"previousVersion":"%s","releaseVersion":"%s","snapshotVersion":"%s","artifactName":"%s"}\n' "${previousVersion}" "${releaseVersion}" "${snapshotVersion}" "${artifactName}"
+if (( json )); then
+  read -r -d '' jsonResult << end_json
+{
+  "project": "${projectName}",
+  "artifact": "${artifactName}",
+  "current": {
+    "version": "${currentVersion}",
+    "hash": "${currentHash}"
+    "isSnapshot": ${currentIsSnapshot}
+  },
+  "previous": {
+    "version": "${previousReleaseVersion}",
+    "hash": "${previousReleaseHash}"
+  },
+  "release": {
+    "version": "${releaseVersion}",
+    "hash": "${releaseHash}"
+    "isSnapshot": ${isSnapshotRelease}
+  },
+  "next": {
+    "version": "${nextVersion}",
+    "hash": "${nextHash}"
+  }
+}
+end_json
+  if [ -n "${jsonPath}" ]; then
+    echo "${jsonResult}" > "${jsonPath}"
+  else
+    write_out "${jsonResult}"
+  fi
 fi
+
+#
+# Todos:
+# - Remove support for dry-run in GitHub Actions
+# - Adapt JSON result parsing, possibly outputting to a file
+# - Remove fetch depth, we do not need it anymore.
+# - Note, that artifact name does not contain version information anymore.

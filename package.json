@@ -18,8 +18,8 @@
     "eslint": "eslint --max-warnings 0",
     "stylelint": "stylelint --max-warnings 0 \"src/**/*.css\"",
     "preremove": "node ./scripts/check-pnpm.mjs",
-    "preversion": "exit 0",
-    "version": "pnpm run lint && pnpm run build",
+    "preversion": "pnpm run lint",
+    "version": "pnpm run build",
     "postversion": "exit 0",
     "wordpress-theme-meta": "node ./scripts/wordpress-theme-meta.mjs"
   },
