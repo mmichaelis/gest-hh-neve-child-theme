@@ -87,13 +87,13 @@ function get_repository_url() {
 
 function get_github_compare_url() {
   local -r repoUrl=$(get_repository_url)
-  local -r previousRef=${1:-}
-  local -r currentRef=${2:-}
-  if [ -z "${previousRef}" ] || [ -z "${currentRef}" ]; then
+  local -r previousCompareRef=${1:-}
+  local -r currentCompareRef=${2:-}
+  if [ -z "${previousCompareRef}" ] || [ -z "${currentCompareRef}" ]; then
     throw_error "Missing required arguments for GitHub Compare URL."
   fi
 
-  echo "${repoUrl}/compare/${previousRef}...${currentRef}"
+  echo "${repoUrl}/compare/${previousCompareRef}...${currentCompareRef}"
 }
 
 # ------------------------------------------------------------------------------
