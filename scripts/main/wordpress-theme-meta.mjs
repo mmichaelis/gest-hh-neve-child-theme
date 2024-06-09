@@ -10,7 +10,6 @@ export const wordpressThemeMeta = async (version = "") => {
   }
   return {
     ...data,
-    "Theme Name": `${data["Theme Name"]} ${version}`,
     Version: version,
   };
 };
