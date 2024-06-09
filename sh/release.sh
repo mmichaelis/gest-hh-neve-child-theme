@@ -252,7 +252,7 @@ declare -r releaseHash
 # Execute in Subshell to avoid polluting the working directory.
 (
   cd build | log_info
-  zip --recurse-paths -9 "../${artifactName}" . | log_info
+  zip --quiet --recurse-paths -9 "../${artifactName}" . | log_info
   log_info "Created Release Artifact: ${artifactName}"
 )
 
