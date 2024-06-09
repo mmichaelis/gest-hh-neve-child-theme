@@ -297,6 +297,7 @@ else
 fi
 
 if (( json )); then
+  log_info "Outputting JSON result."
   read -r -d '' jsonResult << end_json
 {
   "project": "${projectName}",
@@ -323,6 +324,7 @@ if (( json )); then
 end_json
   if [ -n "${jsonPath}" ]; then
     echo "${jsonResult}" > "${jsonPath}"
+    log_info "Wrote JSON result to: ${jsonPath}"
   else
     write_out "${jsonResult}"
   fi
