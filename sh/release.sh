@@ -298,7 +298,8 @@ fi
 
 if (( json )); then
   log_info "Outputting JSON result."
-  read -r -d '' jsonResult << end_json
+  declare jsonResult
+  read -r -d '' jsonResult << end_json || true
 {
   "project": "${projectName}",
   "artifact": "${artifactName}",
