@@ -1,11 +1,12 @@
 {
-  "Theme Name": "Neve (GEST)",
+  "Theme Name": "GEST (Neve)",
   "Theme URI": "https://github.com/mmichaelis/gest-hh-neve-child-theme",
   "Template": "neve",
   "Author": "GEST Hamburg",
   "Author URI": "https://gest-hamburg.de/",
-  "Description": "Child theme for the Neve theme.",
-  "License": "GNU General Public License v2 or later",
+  "Description": "Child theme for the Neve providing adaptations for the website gest-hamburg.de.",
+  "License": "GNU General Public License v3 or later",
+  "License URI": "https://www.gnu.org/licenses/gpl-3.0",
   "Text Domain": "neve",
   "Tags": [
     "blog",
