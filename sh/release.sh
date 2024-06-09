@@ -327,11 +327,11 @@ fi
 
 if (( json )); then
   log_info "Outputting JSON result."
-  if (( isSnapshotRelease )); then
+  if (( isSnapshotRelease == 0 )); then
+    diff="$(get_github_compare_url "${previousReleaseVersion}" "${releaseVersion}")"
+  else
     # No tag available. Using the commit hash instead.
     diff="$(get_github_compare_url "${previousReleaseVersion}" "${releaseHash}")"
-  else
-    diff="$(get_github_compare_url "${previousReleaseVersion}" "${releaseVersion}")"
   fi
   declare -r diff
 
