@@ -67,6 +67,35 @@ function throw_error() {
   exit 1
 }
 
+# Retrieve the repository URL (without trailing .git).
+function get_repository_url() {
+  local -r gitHubServerUrl="${GITHUB_SERVER_URL:-}"
+  local -r gitHubRepository="${GITHUB_REPOSITORY:-}"
+  # Prefer GitHub Actions environment variables.
+  if [ -n "${gitHubServerUrl}" ] && [ -n "${gitHubRepository}" ]; then
+    echo "${gitHubServerUrl}/${gitHubRepository}"
+    return
+  fi
+
+  # Fallback, especially for local execution.
+  local -r repoUrl=$(git config --get remote.origin.url)
+  if [ -z "${repoUrl}" ]; then
+    throw_error "Failed to determine repository URL."
+  fi
+  echo "${repoUrl%.git}"
+}
+
+function get_github_compare_url() {
+  local -r repoUrl=$(get_repository_url)
+  local -r previousRef=${1:-}
+  local -r currentRef=${2:-}
+  if [ -z "${previousRef}" ] || [ -z "${currentRef}" ]; then
+    throw_error "Missing required arguments for GitHub Compare URL."
+  fi
+
+  echo "${repoUrl}/compare/${previousRef}...${currentRef}"
+}
+
 # ------------------------------------------------------------------------------
 # Initialization: Parse CLI Options
 # ------------------------------------------------------------------------------
@@ -194,8 +223,8 @@ fi
 
 log_info "Initialization: Git Information"
 
-currentHash=$(git rev-parse HEAD)
-declare -r currentHash
+currentRef=$(git rev-parse HEAD)
+declare -r currentRef
 
 log_info "Fetching previous release information."
 
@@ -241,7 +270,7 @@ else
   log_info "Skipping release, as we are already in a snapshot version. Just building."
 
   releaseVersion="${currentVersion}"
-  releaseHash="${currentHash}"
+  releaseHash="${currentRef}"
 
   pnpm build | log_info
 fi
@@ -289,7 +318,7 @@ if (( push )); then
 else
   log_info "Skipping to push changes."
   log_info "Stashed Commits:"
-  git --no-pager log --oneline "${currentHash}..${nextHash}" | log_info
+  git --no-pager log --oneline "${currentRef}..${nextHash}" | log_info
 
   if (( isSnapshotRelease == 0 )); then
     log_info "Tagged Release (not pushed): ${releaseVersion} (${releaseHash})"
@@ -298,6 +327,14 @@ fi
 
 if (( json )); then
   log_info "Outputting JSON result."
+  if (( isSnapshotRelease )); then
+    # No tag available. Using the commit hash instead.
+    diff="$(get_github_compare_url "${previousReleaseVersion}" "${releaseHash}")"
+  else
+    diff="$(get_github_compare_url "${previousReleaseVersion}" "${releaseVersion}")"
+  fi
+  declare -r diff
+
   declare jsonResult
   read -r -d '' jsonResult << end_json || true
 {
@@ -305,7 +342,7 @@ if (( json )); then
   "artifact": "${artifactName}",
   "current": {
     "version": "${currentVersion}",
-    "hash": "${currentHash}"
+    "hash": "${currentRef}"
     "isSnapshot": ${currentIsSnapshot}
   },
   "previous": {
@@ -316,6 +353,7 @@ if (( json )); then
     "version": "${releaseVersion}",
     "hash": "${releaseHash}"
     "isSnapshot": ${isSnapshotRelease}
+    "diff": "${diff}"
   },
   "next": {
     "version": "${nextVersion}",
