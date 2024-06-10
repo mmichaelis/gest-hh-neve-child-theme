@@ -101,19 +101,19 @@ jobs:
       nodeVersion: ${{ needs.about.outputs.nodeVersion }}
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
     outputs:
-      project: ${{ steps.release-information.outputs.project }}
-      artifact: ${{ steps.release-information.outputs.artifact }}
-      currentVersion: ${{ steps.release-information.outputs.currentVersion }}
-      currentHash: ${{ steps.release-information.outputs.currentHash }}
-      currentSnapshot: ${{ steps.release-information.outputs.currentSnapshot }}
-      previousVersion: ${{ steps.release-information.outputs.previousVersion }}
-      previousHash: ${{ steps.release-information.outputs.previousHash }}
-      releaseVersion: ${{ steps.release-information.outputs.releaseVersion }}
-      releaseHash: ${{ steps.release-information.outputs.releaseHash }}
-      releaseSnapshot: ${{ steps.release-information.outputs.releaseSnapshot }}
-      releaseDiff: ${{ steps.release-information.outputs.releaseDiff }}
-      nextVersion: ${{ steps.release-information.outputs.nextVersion }}
-      nextHash: ${{ steps.release-information.outputs.nextHash }}
+      project: ${{ steps.release.outputs.project }}
+      artifact: ${{ steps.release.outputs.artifact }}
+      currentVersion: ${{ steps.release.outputs.currentVersion }}
+      currentHash: ${{ steps.release.outputs.currentHash }}
+      currentSnapshot: ${{ steps.release.outputs.currentSnapshot }}
+      previousVersion: ${{ steps.release.outputs.previousVersion }}
+      previousHash: ${{ steps.release.outputs.previousHash }}
+      releaseVersion: ${{ steps.release.outputs.releaseVersion }}
+      releaseHash: ${{ steps.release.outputs.releaseHash }}
+      releaseSnapshot: ${{ steps.release.outputs.releaseSnapshot }}
+      releaseDiff: ${{ steps.release.outputs.releaseDiff }}
+      nextVersion: ${{ steps.release.outputs.nextVersion }}
+      nextHash: ${{ steps.release.outputs.nextHash }}
     steps:
       - id: checkout
         name: "Checkout"
@@ -144,23 +144,20 @@ jobs:
         name: "Release"
         run: |
           result="$(${{ env.SCRIPT_RELEASE }} --type "${{ env.RELEASE_TYPE }}" --push --json)"
-          echo "RELEASE_INFORMATION=\"${result}\"" >> $GITHUB_ENV
-      - id: release-information
-        name: "Parse Release Information"
-        run: |
-          project="$(jq --raw-output '.project' <<< '${{ env.RELEASE_INFORMATION }}')"
-          artifact="$(jq --raw-output '.artifact' <<< '${{ env.RELEASE_INFORMATION }}')"
-          currentVersion="$(jq --raw-output '.current.version' <<< '${{ env.RELEASE_INFORMATION }}')"
-          currentHash="$(jq --raw-output '.current.hash' <<< '${{ env.RELEASE_INFORMATION }}')"
-          currentSnapshot="$(jq --raw-output '.current.isSnapshot' <<< '${{ env.RELEASE_INFORMATION }}')"
-          previousVersion="$(jq --raw-output '.previous.version' <<< '${{ env.RELEASE_INFORMATION }}')"
-          previousHash="$(jq --raw-output '.previous.hash' <<< '${{ env.RELEASE_INFORMATION }}')"
-          releaseVersion="$(jq --raw-output '.release.version' <<< '${{ env.RELEASE_INFORMATION }}')"
-          releaseHash="$(jq --raw-output '.release.hash' <<< '${{ env.RELEASE_INFORMATION }}')"
-          releaseSnapshot="$(jq --raw-output '.release.isSnapshot' <<< '${{ env.RELEASE_INFORMATION }}')"
-          releaseDiff="$(jq --raw-output '.release.diff' <<< '${{ env.RELEASE_INFORMATION }}')"
-          nextVersion="$(jq --raw-output '.next.version' <<< '${{ env.RELEASE_INFORMATION }}')"
-          nextHash="$(jq --raw-output '.next.hash' <<< '${{ env.RELEASE_INFORMATION }}')"
+
+          project="$(jq --raw-output '.project' <<< '${result}')"
+          artifact="$(jq --raw-output '.artifact' <<< '${result}')"
+          currentVersion="$(jq --raw-output '.current.version' <<< '${result}')"
+          currentHash="$(jq --raw-output '.current.hash' <<< '${result}')"
+          currentSnapshot="$(jq --raw-output '.current.isSnapshot' <<< '${result}')"
+          previousVersion="$(jq --raw-output '.previous.version' <<< '${result}')"
+          previousHash="$(jq --raw-output '.previous.hash' <<< '${result}')"
+          releaseVersion="$(jq --raw-output '.release.version' <<< '${result}')"
+          releaseHash="$(jq --raw-output '.release.hash' <<< '${result}')"
+          releaseSnapshot="$(jq --raw-output '.release.isSnapshot' <<< '${result}')"
+          releaseDiff="$(jq --raw-output '.release.diff' <<< '${result}')"
+          nextVersion="$(jq --raw-output '.next.version' <<< '${result}')"
+          nextHash="$(jq --raw-output '.next.hash' <<< '${result}')"
 
           echo "project=${project}" >> $GITHUB_OUTPUT
           echo "artifact=${artifact}" >> $GITHUB_OUTPUT
@@ -183,23 +180,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           body: |
-            Release ${{ steps.release-information.outputs.releaseVersion }} of ${{ steps.release-information.outputs.project }}.
+            Release ${{ steps.release.outputs.releaseVersion }} of ${{ steps.release.outputs.project }}.
 
             ## Changelog
 
-            ${{ steps.release-information.outputs.releaseDiff }}
+            ${{ steps.release.outputs.releaseDiff }}
           fail_on_unmatched_files: true
           files: |
-            ${{ steps.release-information.outputs.artifact }}
-          tag_name: ${{ steps.release-information.outputs.releaseVersion }}
+            ${{ steps.release.outputs.artifact }}
+          tag_name: ${{ steps.release.outputs.releaseVersion }}
       - id: upload-artifact
         name: "Upload Artifact"
         uses: actions/upload-artifact@v4
         with:
           # The artifact is already a ZIP file, thus, just store.
           compression-level: 0
-          name: ${{ steps.release-information.outputs.artifact }}
-          path: ${{ steps.release-information.outputs.artifact }}
+          name: ${{ steps.release.outputs.artifact }}
+          path: ${{ steps.release.outputs.artifact }}
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
