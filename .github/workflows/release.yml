@@ -12,13 +12,9 @@ on:
           - major
           - minor
           - patch
+          - snapshot
       verbose:
         description: "If to output a summary."
-        required: false
-        type: boolean
-        default: true
-      dryRun:
-        description: "If to perform a dryRun without push at the end."
         required: false
         type: boolean
         default: true
@@ -34,27 +30,49 @@ on:
         required: false
         type: boolean
         default: false
-      dryRun:
-        description: "If to perform a dryRun without push at the end."
-        required: false
-        type: boolean
-        default: false
     outputs:
-      releaseVersion:
-        description: "Released Version"
-        value: ${{ jobs.main.outputs.releaseVersion }}
-      previousVersion:
-        description: "Previous Release Version"
-        value: ${{ jobs.main.outputs.previousVersion }}
-      snapshotVersion:
-        description: "Next Snapshot Version"
-        value: ${{ jobs.main.outputs.snapshotVersion }}
-      artifactName:
+      project:
+        description: "Project Name"
+        value: ${{ jobs.main.outputs.project }}
+      artifact:
         description: "Artifact Name"
-        value: ${{ jobs.main.outputs.artifactName }}
+        value: ${{ jobs.main.outputs.artifact }}
+      currentVersion:
+        description: "Current Version"
+        value: ${{ jobs.main.outputs.currentVersion }}
+      currentHash:
+        description: "Current Hash"
+        value: ${{ jobs.main.outputs.currentHash }}
+      currentSnapshot:
+        description: "Current Snapshot"
+        value: ${{ jobs.main.outputs.currentSnapshot }}
+      previousVersion:
+        description: "Previous Version"
+        value: ${{ jobs.main.outputs.previousVersion }}
+      previousHash:
+        description: "Previous Hash"
+        value: ${{ jobs.main.outputs.previousHash }}
+      releaseVersion:
+        description: "Release Version"
+        value: ${{ jobs.main.outputs.releaseVersion }}
+      releaseHash:
+        description: "Release Hash"
+        value: ${{ jobs.main.outputs.releaseHash }}
+      releaseSnapshot:
+        description: "Release Snapshot"
+        value: ${{ jobs.main.outputs.releaseSnapshot }}
+      releaseDiff:
+        description: "Release Diff"
+        value: ${{ jobs.main.outputs.releaseDiff }}
+      nextVersion:
+        description: "Next Version"
+        value: ${{ jobs.main.outputs.nextVersion }}
+      nextHash:
+        description: "Next Hash"
+        value: ${{ jobs.main.outputs.nextHash }}
 
 run-name: |
-  ${{ github.workflow }} (release type: ${{ inputs.release_type }}, dry-run: ${{ inputs.dryRun }}, verbose: ${{ inputs.verbose }})
+  ${{ github.workflow }} (release type: ${{ inputs.release_type }}, verbose: ${{ inputs.verbose }})
 
 env:
   # https://github.com/actions/runner-images/issues/70
@@ -62,6 +80,7 @@ env:
   RELEASE_TYPE: ${{ inputs.release_type }}
   USER_NAME: ${{ github.actor }}
   USER_MAIL: "${{ github.actor }}@users.noreply.github.com"
+  SCRIPT_RELEASE: "${{ github.workspace }}/sh/release.sh"
 
 permissions:
   # Requires write permissions, as inc-snapshot-version and release-version
@@ -69,16 +88,6 @@ permissions:
   contents: write
 
 jobs:
-  echo-inputs:
-    name: "Echo Inputs"
-    runs-on: ubuntu-latest
-    steps:
-      - id: echo
-        name: "Echo Inputs"
-        run: |
-          echo "dryRun=${{ inputs.dryRun }}"
-          echo "release_type=${{ inputs.release_type }}"
-          echo "verbose=${{ inputs.verbose }}"
   about:
     name: "About"
     uses: "./.github/workflows/about.yml"
@@ -89,14 +98,22 @@ jobs:
     needs:
       - about
     env:
-      name: ${{ needs.about.outputs.name }}
       nodeVersion: ${{ needs.about.outputs.nodeVersion }}
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
     outputs:
-      releaseVersion: ${{ steps.parse-release-version.outputs.result }}
-      previousVersion: ${{ steps.parse-previous-version.outputs.result }}
-      snapshotVersion: ${{ steps.parse-snapshot-version.outputs.result }}
-      artifactName: ${{ steps.parse-artifact-name.outputs.result }}
+      project: ${{ steps.release-information.outputs.project }}
+      artifact: ${{ steps.release-information.outputs.artifact }}
+      currentVersion: ${{ steps.release-information.outputs.currentVersion }}
+      currentHash: ${{ steps.release-information.outputs.currentHash }}
+      currentSnapshot: ${{ steps.release-information.outputs.currentSnapshot }}
+      previousVersion: ${{ steps.release-information.outputs.previousVersion }}
+      previousHash: ${{ steps.release-information.outputs.previousHash }}
+      releaseVersion: ${{ steps.release-information.outputs.releaseVersion }}
+      releaseHash: ${{ steps.release-information.outputs.releaseHash }}
+      releaseSnapshot: ${{ steps.release-information.outputs.releaseSnapshot }}
+      releaseDiff: ${{ steps.release-information.outputs.releaseDiff }}
+      nextVersion: ${{ steps.release-information.outputs.nextVersion }}
+      nextHash: ${{ steps.release-information.outputs.nextHash }}
     steps:
       - id: checkout
         name: "Checkout"
@@ -127,59 +144,64 @@ jobs:
           echo "Done configuring Git: user.name and user.email."
       - id: release
         name: "Release"
-        if: ${{ ! inputs.dryRun }}
         run: |
-          result="$(./sh/release.sh --type "${{ env.RELEASE_TYPE }}" --push)"
+          result="$(${{ env.SCRIPT_RELEASE }} --type "${{ env.RELEASE_TYPE }}" --push --json)"
           echo "RELEASE_INFORMATION=${result}" >> $GITHUB_ENV
-      - id: release-dry-run
-        name: "Release (Dry Run)"
-        if: ${{ inputs.dryRun }}
+      - id: release-information
+        name: "Parse Release Information"
         run: |
-          result="$(./sh/release.sh --type "${{ env.RELEASE_TYPE }}")"
-          echo "RELEASE_INFORMATION=${result}" >> $GITHUB_ENV
-      - id: parse-release-version
-        name: "Parse Release Version"
-        run: |
-          result="$(jq --raw-output '.releaseVersion' <<< '${{ env.RELEASE_INFORMATION }}')"
-          echo "result=${result}" >> $GITHUB_OUTPUT
-      - id: parse-previous-version
-        name: "Parse Previous Version"
-        run: |
-          result="$(jq --raw-output '.previousVersion' <<< '${{ env.RELEASE_INFORMATION }}')"
-          echo "result=${result}" >> $GITHUB_OUTPUT
-      - id: parse-snapshot-version
-        name: "Parse Snapshot Version"
-        run: |
-          result="$(jq --raw-output '.snapshotVersion' <<< '${{ env.RELEASE_INFORMATION }}')"
-          echo "result=${result}" >> $GITHUB_OUTPUT
-      - id: parse-artifact-name
-        name: "Parse Artifact Name"
-        run: |
-          result="$(jq --raw-output '.artifactName' <<< '${{ env.RELEASE_INFORMATION }}')"
-          echo "result=${result}" >> $GITHUB_OUTPUT
+          project="$(jq --raw-output '.project' <<< '${{ env.RELEASE_INFORMATION }}')"
+          artifact="$(jq --raw-output '.artifact' <<< '${{ env.RELEASE_INFORMATION }}')"
+          currentVersion="$(jq --raw-output '.current.version' <<< '${{ env.RELEASE_INFORMATION }}')"
+          currentHash="$(jq --raw-output '.current.hash' <<< '${{ env.RELEASE_INFORMATION }}')"
+          currentSnapshot="$(jq --raw-output '.current.isSnapshot' <<< '${{ env.RELEASE_INFORMATION }}')"
+          previousVersion="$(jq --raw-output '.previous.version' <<< '${{ env.RELEASE_INFORMATION }}')"
+          previousHash="$(jq --raw-output '.previous.hash' <<< '${{ env.RELEASE_INFORMATION }}')"
+          releaseVersion="$(jq --raw-output '.release.version' <<< '${{ env.RELEASE_INFORMATION }}')"
+          releaseHash="$(jq --raw-output '.release.hash' <<< '${{ env.RELEASE_INFORMATION }}')"
+          releaseSnapshot="$(jq --raw-output '.release.isSnapshot' <<< '${{ env.RELEASE_INFORMATION }}')"
+          releaseDiff="$(jq --raw-output '.release.diff' <<< '${{ env.RELEASE_INFORMATION }}')"
+          nextVersion="$(jq --raw-output '.next.version' <<< '${{ env.RELEASE_INFORMATION }}')"
+          nextHash="$(jq --raw-output '.next.hash' <<< '${{ env.RELEASE_INFORMATION }}')"
+
+          echo "project=${project}" >> $GITHUB_OUTPUT
+          echo "artifact=${artifact}" >> $GITHUB_OUTPUT
+          echo "currentVersion=${currentVersion}" >> $GITHUB_OUTPUT
+          echo "currentHash=${currentHash}" >> $GITHUB_OUTPUT
+          echo "currentSnapshot=${currentSnapshot}" >> $GITHUB_OUTPUT
+          echo "previousVersion=${previousVersion}" >> $GITHUB_OUTPUT
+          echo "previousHash=${previousHash}" >> $GITHUB_OUTPUT
+          echo "releaseVersion=${releaseVersion}" >> $GITHUB_OUTPUT
+          echo "releaseHash=${releaseHash}" >> $GITHUB_OUTPUT
+          echo "releaseSnapshot=${releaseSnapshot}" >> $GITHUB_OUTPUT
+          echo "releaseDiff=${releaseDiff}" >> $GITHUB_OUTPUT
+          echo "nextVersion=${nextVersion}" >> $GITHUB_OUTPUT
+          echo "nextHash=${nextHash}" >> $GITHUB_OUTPUT
       - id: gh-release
-        if: ${{ ! inputs.dryRun }}
-        name: "Create Release"
+        if: ${{ inputs.release_type != 'snapshot' }}
+        name: "GitHub: Create Release"
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           body: |
-            Release ${{ steps.parse-release-version.outputs.result }} of ${{ env.name }}.
+            Release ${{ steps.release-information.outputs.releaseVersion }} of ${{ steps.release-information.outputs.project }}.
 
             ## Changelog
 
-            ${{ github.server_url }}/${{ github.repository }}/compare/${{ steps.parse-previous-version.outputs.result }}...${{ steps.parse-release-version.outputs.result }}
+            ${{ steps.release-information.outputs.releaseDiff }}
           fail_on_unmatched_files: true
           files: |
-            ${{ steps.parse-artifact-name.outputs.result }}
-          tag_name: ${{ steps.parse-release-version.outputs.result }}
-      - id: gh-release-dry-run
-        if: ${{ inputs.dryRun }}
-        name: "Create Release (Dry Run)"
-        run: |
-          echo "Would create a release ${{ steps.parse-release-version.outputs.result }} with ${{ steps.parse-artifact-name.outputs.result }}."
-          ls -axl ${{ steps.parse-artifact-name.outputs.result }}
+            ${{ steps.release-information.outputs.artifact }}
+          tag_name: ${{ steps.release-information.outputs.releaseVersion }}
+      - id: upload-artifact
+        name: "Upload Artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          # The artifact is already a ZIP file, thus, just store.
+          compression-level: 0
+          name: ${{ steps.release-information.outputs.artifact }}
+          path: ${{ steps.release-information.outputs.artifact }}
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
@@ -195,11 +217,21 @@ jobs:
           echo "## Parameters" >> $GITHUB_STEP_SUMMARY
           echo "* Released Type: ${{ inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
           echo "* Verbose: ${{ inputs.verbose }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Dry-Run: ${{ inputs.dryRun }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "* Previous Version: ${{ needs.main.outputs.previousVersion }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Released Version: ${{ needs.main.outputs.releaseVersion }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Snapshot Version: ${{ needs.main.outputs.snapshotVersion }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Artifact: ${{ needs.main.outputs.artifactName }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Key | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Project | ${{ needs.main.outputs.project }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact | ${{ needs.main.outputs.artifact }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Current Version | ${{ needs.main.outputs.currentVersion }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Current Hash | ${{ needs.main.outputs.currentHash }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Current Snapshot | ${{ needs.main.outputs.currentSnapshot }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Previous Version | ${{ needs.main.outputs.previousVersion }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Previous Hash | ${{ needs.main.outputs.previousHash }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Release Version | ${{ needs.main.outputs.releaseVersion }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Release Hash | ${{ needs.main.outputs.releaseHash }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Release Snapshot | ${{ needs.main.outputs.releaseSnapshot }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Release Diff | ${{ needs.main.outputs.releaseDiff }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Next Version | ${{ needs.main.outputs.nextVersion }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Next Hash | ${{ needs.main.outputs.nextHash }}" >> $GITHUB_STEP_SUMMARY
