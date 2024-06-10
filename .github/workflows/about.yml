@@ -44,14 +44,6 @@ env:
 permissions: {}
 
 jobs:
-  echo-inputs:
-    name: "Echo Inputs"
-    runs-on: ubuntu-latest
-    steps:
-      - id: echo
-        name: "Echo Inputs"
-        run: |
-          echo "verbose=${{ inputs.verbose }}"
   main:
     name: "Main"
     runs-on: ubuntu-latest
