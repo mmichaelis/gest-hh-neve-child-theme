@@ -144,7 +144,7 @@ jobs:
         name: "Release"
         run: |
           result="$(${{ env.SCRIPT_RELEASE }} --type "${{ env.RELEASE_TYPE }}" --push --json)"
-          echo "RELEASE_INFORMATION=${result}" >> $GITHUB_ENV
+          echo "RELEASE_INFORMATION=\"${result}\"" >> $GITHUB_ENV
       - id: release-information
         name: "Parse Release Information"
         run: |
