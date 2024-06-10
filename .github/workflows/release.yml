@@ -6,13 +6,13 @@ on:
       release_type:
         description: "Release type."
         required: true
-        default: "patch"
+        default: "snapshot"
         type: choice
         options:
+          - snapshot
           - major
           - minor
           - patch
-          - snapshot
       verbose:
         description: "If to output a summary."
         required: false
@@ -23,7 +23,7 @@ on:
       release_type:
         description: "Release type."
         required: true
-        default: "patch"
+        default: "snapshot"
         type: string
       verbose:
         description: "If to output a summary."
