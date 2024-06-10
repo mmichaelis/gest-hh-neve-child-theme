@@ -342,7 +342,7 @@ if (( json )); then
   "artifact": "${artifactName}",
   "current": {
     "version": "${currentVersion}",
-    "hash": "${currentRef}"
+    "hash": "${currentRef}",
     "isSnapshot": ${currentIsSnapshot}
   },
   "previous": {
@@ -351,8 +351,8 @@ if (( json )); then
   },
   "release": {
     "version": "${releaseVersion}",
-    "hash": "${releaseHash}"
-    "isSnapshot": ${isSnapshotRelease}
+    "hash": "${releaseHash}",
+    "isSnapshot": ${isSnapshotRelease},
     "diff": "${diff}"
   },
   "next": {
