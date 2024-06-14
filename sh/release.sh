@@ -27,6 +27,13 @@ MODE_CI=$( [[ "${CI:-false}" == "true" ]] && echo 1 || echo 0 )
 declare -ir MODE_CI
 
 # ------------------------------------------------------------------------------
+# Initialization: Output Folder
+# ------------------------------------------------------------------------------
+
+output_path="${GITHUB_WORKSPACE:-$(git rev-parse --show-toplevel)}"
+declare -r output_path
+
+# ------------------------------------------------------------------------------
 # Initialization: Helper Methods
 # ------------------------------------------------------------------------------
 
@@ -249,6 +256,7 @@ log_info "Initialization: Project Information"
 projectName=$(pnpm --silent about name)
 declare -r projectName
 declare -r artifactName="${projectName}.zip"
+declare -r artifactPath="${output_path}/${artifactName}"
 
 currentVersion=$(pnpm --silent about version)
 declare -r currentVersion
@@ -285,8 +293,8 @@ declare -r releaseHash
 # Execute in Subshell to avoid polluting the working directory.
 (
   cd build | log_info
-  zip --quiet --recurse-paths -9 "../${artifactName}" . | log_info
-  log_info "Created Release Artifact: ${artifactName}"
+  zip --quiet --recurse-paths -9 "${artifactPath}" . | log_info
+  log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath})"
 )
 
 # ------------------------------------------------------------------------------
@@ -343,7 +351,10 @@ if (( json )); then
   read -r -d '' jsonResult << end_json || true
 {
   "project": "${projectName}",
-  "artifact": "${artifactName}",
+  "artifact": {
+    "name": "${artifactName}",
+    "path": "${artifactPath}"
+  },
   "current": {
     "version": "${currentVersion}",
     "hash": "${currentRef}",

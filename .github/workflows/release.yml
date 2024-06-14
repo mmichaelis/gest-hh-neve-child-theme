@@ -36,7 +36,7 @@ on:
         value: ${{ jobs.main.outputs.project }}
       artifact:
         description: "Artifact Name"
-        value: ${{ jobs.main.outputs.artifact }}
+        value: ${{ jobs.main.outputs.artifactName }}
       currentVersion:
         description: "Current Version"
         value: ${{ jobs.main.outputs.currentVersion }}
@@ -102,7 +102,7 @@ jobs:
       pnpmVersion: ${{ needs.about.outputs.pnpmVersion }}
     outputs:
       project: ${{ steps.release.outputs.project }}
-      artifact: ${{ steps.release.outputs.artifact }}
+      artifactName: ${{ steps.release.outputs.artifactName }}
       currentVersion: ${{ steps.release.outputs.currentVersion }}
       currentHash: ${{ steps.release.outputs.currentHash }}
       currentSnapshot: ${{ steps.release.outputs.currentSnapshot }}
@@ -148,7 +148,8 @@ jobs:
           echo -e "Going to parse data from result into variables:\n${result}"
 
           project="$(jq --raw-output '.project' <<< "${result}")"
-          artifact="$(jq --raw-output '.artifact' <<< "${result}")"
+          artifactName="$(jq --raw-output '.artifact.name' <<< "${result}")"
+          artifactPath="$(jq --raw-output '.artifact.path' <<< "${result}")"
           currentVersion="$(jq --raw-output '.current.version' <<< "${result}")"
           currentHash="$(jq --raw-output '.current.hash' <<< "${result}")"
           currentSnapshot="$(jq --raw-output '.current.isSnapshot' <<< "${result}")"
@@ -161,19 +162,20 @@ jobs:
           nextVersion="$(jq --raw-output '.next.version' <<< "${result}")"
           nextHash="$(jq --raw-output '.next.hash' <<< "${result}")"
 
-          echo "project=${project}" >> $GITHUB_OUTPUT
-          echo "artifact=${artifact}" >> $GITHUB_OUTPUT
-          echo "currentVersion=${currentVersion}" >> $GITHUB_OUTPUT
-          echo "currentHash=${currentHash}" >> $GITHUB_OUTPUT
-          echo "currentSnapshot=${currentSnapshot}" >> $GITHUB_OUTPUT
-          echo "previousVersion=${previousVersion}" >> $GITHUB_OUTPUT
-          echo "previousHash=${previousHash}" >> $GITHUB_OUTPUT
-          echo "releaseVersion=${releaseVersion}" >> $GITHUB_OUTPUT
-          echo "releaseHash=${releaseHash}" >> $GITHUB_OUTPUT
-          echo "releaseSnapshot=${releaseSnapshot}" >> $GITHUB_OUTPUT
-          echo "releaseDiff=${releaseDiff}" >> $GITHUB_OUTPUT
-          echo "nextVersion=${nextVersion}" >> $GITHUB_OUTPUT
-          echo "nextHash=${nextHash}" >> $GITHUB_OUTPUT
+          echo "project=\"${project}\"" >> $GITHUB_OUTPUT
+          echo "artifactName=\"${artifactName}\"" >> $GITHUB_OUTPUT
+          echo "artifactPath=\"${artifactPath}\"" >> $GITHUB_OUTPUT
+          echo "currentVersion=\"${currentVersion}\"" >> $GITHUB_OUTPUT
+          echo "currentHash=\"${currentHash}\"" >> $GITHUB_OUTPUT
+          echo "currentSnapshot=\"${currentSnapshot}\"" >> $GITHUB_OUTPUT
+          echo "previousVersion=\"${previousVersion}\"" >> $GITHUB_OUTPUT
+          echo "previousHash=\"${previousHash}\"" >> $GITHUB_OUTPUT
+          echo "releaseVersion=\"${releaseVersion}\"" >> $GITHUB_OUTPUT
+          echo "releaseHash=\"${releaseHash}\"" >> $GITHUB_OUTPUT
+          echo "releaseSnapshot=\"${releaseSnapshot}\"" >> $GITHUB_OUTPUT
+          echo "releaseDiff=\"${releaseDiff}\"" >> $GITHUB_OUTPUT
+          echo "nextVersion=\"${nextVersion}\"" >> $GITHUB_OUTPUT
+          echo "nextHash=\"${nextHash}\"" >> $GITHUB_OUTPUT
       - id: gh-release
         if: ${{ inputs.release_type != 'snapshot' }}
         name: "GitHub: Create Release"
@@ -189,7 +191,7 @@ jobs:
             ${{ steps.release.outputs.releaseDiff }}
           fail_on_unmatched_files: true
           files: |
-            ${{ steps.release.outputs.artifact }}
+            ${{ steps.release.outputs.artifactPath }}
           tag_name: ${{ steps.release.outputs.releaseVersion }}
       - id: upload-artifact
         name: "Upload Artifact"
@@ -197,8 +199,8 @@ jobs:
         with:
           # The artifact is already a ZIP file, thus, just store.
           compression-level: 0
-          name: ${{ steps.release.outputs.artifact }}
-          path: ${{ steps.release.outputs.artifact }}
+          if-no-files-found: error
+          path: ${{ steps.release.outputs.artifactPath }}
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
