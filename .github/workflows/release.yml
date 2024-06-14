@@ -145,6 +145,8 @@ jobs:
         run: |
           result="$(${{ env.SCRIPT_RELEASE }} --type "${{ env.RELEASE_TYPE }}" --push --json)"
 
+          echo -e "Going to parse data from result into variables:\n${result}"
+
           project="$(jq --raw-output '.project' <<< '${result}')"
           artifact="$(jq --raw-output '.artifact' <<< '${result}')"
           currentVersion="$(jq --raw-output '.current.version' <<< '${result}')"
