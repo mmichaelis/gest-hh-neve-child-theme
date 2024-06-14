@@ -147,19 +147,19 @@ jobs:
 
           echo -e "Going to parse data from result into variables:\n${result}"
 
-          project="$(jq --raw-output '.project' <<< '${result}')"
-          artifact="$(jq --raw-output '.artifact' <<< '${result}')"
-          currentVersion="$(jq --raw-output '.current.version' <<< '${result}')"
-          currentHash="$(jq --raw-output '.current.hash' <<< '${result}')"
-          currentSnapshot="$(jq --raw-output '.current.isSnapshot' <<< '${result}')"
-          previousVersion="$(jq --raw-output '.previous.version' <<< '${result}')"
-          previousHash="$(jq --raw-output '.previous.hash' <<< '${result}')"
-          releaseVersion="$(jq --raw-output '.release.version' <<< '${result}')"
-          releaseHash="$(jq --raw-output '.release.hash' <<< '${result}')"
-          releaseSnapshot="$(jq --raw-output '.release.isSnapshot' <<< '${result}')"
-          releaseDiff="$(jq --raw-output '.release.diff' <<< '${result}')"
-          nextVersion="$(jq --raw-output '.next.version' <<< '${result}')"
-          nextHash="$(jq --raw-output '.next.hash' <<< '${result}')"
+          project="$(jq --raw-output '.project' <<< "${result}")"
+          artifact="$(jq --raw-output '.artifact' <<< "${result}")"
+          currentVersion="$(jq --raw-output '.current.version' <<< "${result}")"
+          currentHash="$(jq --raw-output '.current.hash' <<< "${result}")"
+          currentSnapshot="$(jq --raw-output '.current.isSnapshot' <<< "${result}")"
+          previousVersion="$(jq --raw-output '.previous.version' <<< "${result}")"
+          previousHash="$(jq --raw-output '.previous.hash' <<< "${result}")"
+          releaseVersion="$(jq --raw-output '.release.version' <<< "${result}")"
+          releaseHash="$(jq --raw-output '.release.hash' <<< "${result}")"
+          releaseSnapshot="$(jq --raw-output '.release.isSnapshot' <<< "${result}")"
+          releaseDiff="$(jq --raw-output '.release.diff' <<< "${result}")"
+          nextVersion="$(jq --raw-output '.next.version' <<< "${result}")"
+          nextHash="$(jq --raw-output '.next.hash' <<< "${result}")"
 
           echo "project=${project}" >> $GITHUB_OUTPUT
           echo "artifact=${artifact}" >> $GITHUB_OUTPUT
