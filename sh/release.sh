@@ -37,6 +37,10 @@ declare -ir MODE_CI
 # stdout can be used to retrieve the JSON information.
 function log_info() {
   local -r msg=${1:-$(</dev/stdin)}
+  if [[ -z "${msg}" ]]; then
+    # Nothing to print
+    return
+  fi
   local logMsg
   printf -v logMsg "[INFO] %s\n" "${msg}"
   if (( MODE_CI )); then
