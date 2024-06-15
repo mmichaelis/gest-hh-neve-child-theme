@@ -232,6 +232,10 @@ fi
 # Initialization: Git Information
 # ------------------------------------------------------------------------------
 
+# Ensure we are latest. This also allows to re-run the release workflow with
+# the same stored commit hash, if needed.
+git fetch --quiet | log_info
+
 log_info "Initialization: Git Information"
 
 currentRef=$(git rev-parse HEAD)
