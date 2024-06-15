@@ -298,10 +298,8 @@ declare -r releaseHash
 (
   cd build | log_info
   zip add --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
-  cd .. | log_info
-  sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
   declare -r sizeInfo
-  log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath}, size: ${sizeInfo})"
+  log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath})"
 )
 
 # ------------------------------------------------------------------------------
