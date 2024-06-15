@@ -298,13 +298,11 @@ declare -r releaseHash
 (
   cd build | log_info
   zip add --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
-  cd .. | log_info
-  # shellcheck disable=SC2012
-  ls -l --human-readable | log_info
-  sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
-  declare -r sizeInfo
-  log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath}, size: ${sizeInfo})"
 )
+
+sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
+declare -r sizeInfo
+log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath}, size: ${sizeInfo})"
 
 # ------------------------------------------------------------------------------
 # Perform: Create Next Snapshot Version
