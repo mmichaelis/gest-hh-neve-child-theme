@@ -293,8 +293,10 @@ declare -r releaseHash
 # Execute in Subshell to avoid polluting the working directory.
 (
   cd build | log_info
-  zip --quiet --recurse-paths -9 "${artifactPath}" . | log_info
+  zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
   log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath})"
+  # shellcheck disable=SC2012
+  ls -l "${artifactPath}" | log_info
 )
 
 # ------------------------------------------------------------------------------
