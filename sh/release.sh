@@ -293,10 +293,10 @@ declare -r releaseHash
 # Execute in Subshell to avoid polluting the working directory.
 (
   cd build | log_info
-  zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
-  log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath})"
-  # shellcheck disable=SC2012
-  ls -l "${artifactPath}" | log_info
+  zip add --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
+  sizeInfo="$(du --summarize --human-readable "${artifactPath}" | cut -f1)"
+  declare -r sizeInfo
+  log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath}, size: ${sizeInfo})"
 )
 
 # ------------------------------------------------------------------------------
@@ -385,10 +385,3 @@ end_json
     write_out "${jsonResult}"
   fi
 fi
-
-#
-# Todos:
-# - Remove support for dry-run in GitHub Actions
-# - Adapt JSON result parsing, possibly outputting to a file
-# - Remove fetch depth, we do not need it anymore.
-# - Note, that artifact name does not contain version information anymore.

@@ -200,6 +200,7 @@ jobs:
           # The artifact is already a ZIP file, thus, just store.
           compression-level: 0
           if-no-files-found: error
+          name: ${{ steps.release.outputs.project }}
           path: ${{ steps.release.outputs.artifactPath }}
   verbose:
     name: "Verbose"
@@ -219,10 +220,16 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- - - - -" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** The artifact ${{ needs.main.outputs.project }} is a ZIP file" >> $GITHUB_STEP_SUMMARY
+          echo "containing the theme (as ZIP, again). It is not the theme itself." >> $GITHUB_STEP_SUMMARY
+          echo "Prefer using the ZIP attached to the release to upload to WordPress." >> $GITHUB_STEP_SUMMARY
+          echo "- - - - -" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Key | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|-----|-------|" >> $GITHUB_STEP_SUMMARY
           echo "| Project | ${{ needs.main.outputs.project }}" >> $GITHUB_STEP_SUMMARY
-          echo "| Artifact | ${{ needs.main.outputs.artifact }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact | ${{ needs.main.outputs.artifactName }}" >> $GITHUB_STEP_SUMMARY
           echo "| Current Version | ${{ needs.main.outputs.currentVersion }}" >> $GITHUB_STEP_SUMMARY
           echo "| Current Hash | ${{ needs.main.outputs.currentHash }}" >> $GITHUB_STEP_SUMMARY
           echo "| Current Snapshot | ${{ needs.main.outputs.currentSnapshot }}" >> $GITHUB_STEP_SUMMARY
