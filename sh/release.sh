@@ -297,12 +297,8 @@ declare -r releaseHash
 # Execute in Subshell to avoid polluting the working directory.
 (
   cd build | log_info
-  zip add --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
+  zip --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
 )
-
-echo "Current folder: $(pwd)" | log_info
-echo "Artifact: ${artifactName}" | log_info
-echo "Artifact Path: ${artifactPath}" | log_info
 
 sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
 declare -r sizeInfo
