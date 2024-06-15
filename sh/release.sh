@@ -296,9 +296,9 @@ declare -r releaseHash
 
 # Execute in Subshell to avoid polluting the working directory.
 (
-  pushd build | log_info
+  cd build | log_info
   zip add --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
-  popd | log_info
+  cd .. | log_info
   sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
   declare -r sizeInfo
   log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath}, size: ${sizeInfo})"
