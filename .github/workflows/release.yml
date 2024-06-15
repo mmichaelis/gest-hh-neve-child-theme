@@ -162,20 +162,20 @@ jobs:
           nextVersion="$(jq --raw-output '.next.version' <<< "${result}")"
           nextHash="$(jq --raw-output '.next.hash' <<< "${result}")"
 
-          echo "project=\"${project}\"" >> $GITHUB_OUTPUT
-          echo "artifactName=\"${artifactName}\"" >> $GITHUB_OUTPUT
-          echo "artifactPath=\"${artifactPath}\"" >> $GITHUB_OUTPUT
-          echo "currentVersion=\"${currentVersion}\"" >> $GITHUB_OUTPUT
-          echo "currentHash=\"${currentHash}\"" >> $GITHUB_OUTPUT
-          echo "currentSnapshot=\"${currentSnapshot}\"" >> $GITHUB_OUTPUT
-          echo "previousVersion=\"${previousVersion}\"" >> $GITHUB_OUTPUT
-          echo "previousHash=\"${previousHash}\"" >> $GITHUB_OUTPUT
-          echo "releaseVersion=\"${releaseVersion}\"" >> $GITHUB_OUTPUT
-          echo "releaseHash=\"${releaseHash}\"" >> $GITHUB_OUTPUT
-          echo "releaseSnapshot=\"${releaseSnapshot}\"" >> $GITHUB_OUTPUT
-          echo "releaseDiff=\"${releaseDiff}\"" >> $GITHUB_OUTPUT
-          echo "nextVersion=\"${nextVersion}\"" >> $GITHUB_OUTPUT
-          echo "nextHash=\"${nextHash}\"" >> $GITHUB_OUTPUT
+          echo "project=${project}" >> $GITHUB_OUTPUT
+          echo "artifactName=${artifactName}" >> $GITHUB_OUTPUT
+          echo "artifactPath=${artifactPath}" >> $GITHUB_OUTPUT
+          echo "currentVersion=${currentVersion}" >> $GITHUB_OUTPUT
+          echo "currentHash=${currentHash}" >> $GITHUB_OUTPUT
+          echo "currentSnapshot=${currentSnapshot}" >> $GITHUB_OUTPUT
+          echo "previousVersion=${previousVersion}" >> $GITHUB_OUTPUT
+          echo "previousHash=${previousHash}" >> $GITHUB_OUTPUT
+          echo "releaseVersion=${releaseVersion}" >> $GITHUB_OUTPUT
+          echo "releaseHash=${releaseHash}" >> $GITHUB_OUTPUT
+          echo "releaseSnapshot=${releaseSnapshot}" >> $GITHUB_OUTPUT
+          echo "releaseDiff=${releaseDiff}" >> $GITHUB_OUTPUT
+          echo "nextVersion=${nextVersion}" >> $GITHUB_OUTPUT
+          echo "nextHash=${nextHash}" >> $GITHUB_OUTPUT
       - id: gh-release
         if: ${{ inputs.release_type != 'snapshot' }}
         name: "GitHub: Create Release"
