@@ -30,7 +30,7 @@ declare -ir MODE_CI
 # Initialization: Output Folder
 # ------------------------------------------------------------------------------
 
-git_workspace="${GITHUB_WORKSPACE:-$(git rev-parse --show-toplevel)}}"
+git_workspace="${GITHUB_WORKSPACE:-$(git rev-parse --show-toplevel)}"
 declare -r git_workspace
 declare -r output_path="${git_workspace}"
 
