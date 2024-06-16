@@ -37,6 +37,24 @@ declare -r output_path
 # Initialization: Helper Methods
 # ------------------------------------------------------------------------------
 
+function log_debug() {
+  local -r msg=${1:-$(</dev/stdin)}
+  if (( MODE_DEBUG == 0 )); then
+    return
+  fi
+  if [[ -z "${msg}" ]]; then
+    # Nothing to print
+    return
+  fi
+  local logMsg
+  printf -v logMsg "[DEBUG] %s\n" "${msg}"
+  if (( MODE_CI )); then
+    echo "${logMsg}" >&2
+  else
+    echo "${logMsg}"
+  fi
+}
+
 # Logs the given informational message.
 # May also be used to pipe output to this log.
 #
@@ -296,7 +314,7 @@ declare -r releaseHash
 
 # Execute in Subshell to avoid polluting the working directory.
 (
-  cd build | log_info
+  cd build && echo "Changed directory to: $(pwd)" | log_info
   zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
 )
 
