@@ -30,8 +30,9 @@ declare -ir MODE_CI
 # Initialization: Output Folder
 # ------------------------------------------------------------------------------
 
-output_path="${GITHUB_WORKSPACE:-$(git rev-parse --show-toplevel)}"
-declare -r output_path
+git_workspace="${GITHUB_WORKSPACE:-$(git rev-parse --show-toplevel)}}"
+declare -r git_workspace
+declare -r output_path="${git_workspace}"
 
 # ------------------------------------------------------------------------------
 # Initialization: Helper Methods
@@ -313,10 +314,9 @@ declare -r releaseVersion
 declare -r releaseHash
 
 # Execute in Subshell to avoid polluting the working directory.
-(
-  cd build && echo "Changed directory to: $(pwd)" | log_info
-  zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." | log_info
-)
+cd "${git_workspace/build}" && echo "Changed directory to: $(pwd)" | log_info
+zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." && echo "Success: Create ZIP." | log_info
+cd "${git_workspace}" && echo "Changed directory back to: $(pwd)" | log_info
 
 sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
 declare -r sizeInfo
