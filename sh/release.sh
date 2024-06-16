@@ -314,7 +314,7 @@ declare -r releaseVersion
 declare -r releaseHash
 
 # Execute in Subshell to avoid polluting the working directory.
-cd "${git_workspace/build}" && echo "Changed directory to: $(pwd)" | log_info
+cd "${git_workspace}/build" && echo "Changed directory to: $(pwd)" | log_info
 zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." && echo "Success: Create ZIP." | log_info
 cd "${git_workspace}" && echo "Changed directory back to: $(pwd)" | log_info
 
