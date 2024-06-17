@@ -27,7 +27,7 @@
   "author": "Mark Michaelis",
   "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^9.4.0",
+    "@eslint/js": "^9.5.0",
     "@npmcli/package-json": "^5.2.0",
     "eslint": "^9.4.0",
     "eslint-config-prettier": "^9.1.0",
