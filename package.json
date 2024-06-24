@@ -36,6 +36,6 @@
     "globals": "^15.4.0",
     "minimist": "^1.2.8",
     "stylelint": "^16.6.1",
-    "stylelint-config-standard": "^36.0.0"
+    "stylelint-config-standard": "^36.0.1"
   }
 }
