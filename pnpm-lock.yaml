@@ -29,6 +29,9 @@ devDependencies:
   minimist:
     specifier: ^1.2.8
     version: 1.2.8
+  rimraf:
+    specifier: ^5.0.7
+    version: 5.0.7
   stylelint:
     specifier: ^16.6.1
     version: 16.6.1
@@ -1307,6 +1310,14 @@ packages:
   /reusify@1.0.4:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
+    dev: true
+
+  /rimraf@5.0.7:
+    resolution: {integrity: sha512-nV6YcJo5wbLW77m+8KjH8aB/7/rxQy9SZ0HY5shnwULfS+9nmTtVXAJET5NdZmCzA4fPI/Hm1wo/Po/4mopOdg==}
+    engines: {node: '>=14.18'}
+    hasBin: true
+    dependencies:
+      glob: 10.3.12
     dev: true
 
   /run-parallel@1.2.0:

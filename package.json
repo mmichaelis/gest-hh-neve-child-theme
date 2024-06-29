@@ -12,6 +12,7 @@
     "about": "node ./scripts/about.mjs",
     "preadd": "node ./scripts/check-pnpm.mjs",
     "build": "node ./scripts/build.mjs ./src ./build",
+    "clean": "rimraf ./build",
     "preinstall": "node ./scripts/check-pnpm.mjs",
     "lint": "pnpm run eslint",
     "postlint": "pnpm run stylelint",
@@ -35,6 +36,7 @@
     "eslint-plugin-yml": "^1.14.0",
     "globals": "^15.4.0",
     "minimist": "^1.2.8",
+    "rimraf": "^5.0.7",
     "stylelint": "^16.6.1",
     "stylelint-config-standard": "^36.0.0"
   }
