@@ -321,10 +321,10 @@ fi
 # Execute in Subshell to avoid polluting the working directory.
 cd "${git_workspace}/build" && echo "Changed directory to: $(pwd)" | log_info
 zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" "${projectName}" <<< "${type^} release ${releaseVersion} of ${projectName}." && echo "Success: Create ZIP." | log_info
-cd "${git_workspace}" && echo "Changed directory back to: $(pwd)" | log_info
-
 sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
 declare -r sizeInfo
+cd "${git_workspace}" && echo "Changed directory back to: $(pwd)" | log_info
+
 log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath}, size: ${sizeInfo})"
 
 # ------------------------------------------------------------------------------
