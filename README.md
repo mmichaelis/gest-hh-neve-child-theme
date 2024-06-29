@@ -19,7 +19,7 @@ This repository uses _semantic versioning_, thus, quoting from [semver.org](http
 > Additional labels for pre-release and build metadata are available as
 > extensions to the `MAJOR.MINOR.PATCH` format.
 
-For a pre-release we use the synonym "snapshot". Such a snapshot release is
+For a pre-release we use the synonym "snapshot". Such a snapshot release
 has a label `rc`, so that the _Release Candidate_ for version `1.2.3` would be
 `1.2.3-rc.4`, where `4` is the next snapshot increment version.
 
