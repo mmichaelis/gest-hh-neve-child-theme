@@ -32,7 +32,7 @@ declare -ir MODE_CI
 
 git_workspace="${GITHUB_WORKSPACE:-$(git rev-parse --show-toplevel)}"
 declare -r git_workspace
-declare -r output_path="${git_workspace}"
+declare -r output_path="${git_workspace}/build"
 
 # ------------------------------------------------------------------------------
 # Initialization: Helper Methods
