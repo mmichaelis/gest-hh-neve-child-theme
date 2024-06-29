@@ -312,10 +312,15 @@ fi
 
 declare -r releaseVersion
 declare -r releaseHash
+declare -r expectedThemePath="${git_workspace}/build/${projectName}"
+
+if [[ ! -d "${expectedThemePath}" ]]; then
+  throw_error "Failed to find expected build artifacts at: ${expectedThemePath}"
+fi
 
 # Execute in Subshell to avoid polluting the working directory.
 cd "${git_workspace}/build" && echo "Changed directory to: $(pwd)" | log_info
-zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" . <<< "${type^} release ${releaseVersion} of ${projectName}." && echo "Success: Create ZIP." | log_info
+zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" "${projectName}" <<< "${type^} release ${releaseVersion} of ${projectName}." && echo "Success: Create ZIP." | log_info
 cd "${git_workspace}" && echo "Changed directory back to: $(pwd)" | log_info
 
 sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
