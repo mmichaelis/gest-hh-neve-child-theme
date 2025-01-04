@@ -39,7 +39,7 @@ env:
   # https://github.com/actions/runner-images/issues/70
   NODE_OPTIONS: "--max_old_space_size=4096"
   nodeVersion: 20
-  pnpmVersion: 8
+  pnpmVersion: 9
 
 permissions: {}
 
