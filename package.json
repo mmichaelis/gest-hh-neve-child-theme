@@ -19,6 +19,7 @@
     "eslint": "eslint --max-warnings 0",
     "stylelint": "stylelint --max-warnings 0 \"src/**/*.css\"",
     "preremove": "node ./scripts/check-pnpm.mjs",
+    "update-actions": "node ./scripts/update-actions.mjs",
     "preversion": "pnpm run lint",
     "version": "pnpm run build",
     "postversion": "exit 0",
@@ -36,6 +37,7 @@
     "eslint-plugin-yml": "^1.14.0",
     "globals": "^15.6.0",
     "minimist": "^1.2.8",
+    "node-fetch": "^3.3.2",
     "rimraf": "^5.0.7",
     "stylelint": "^16.6.1",
     "stylelint-config-standard": "^36.0.1"
