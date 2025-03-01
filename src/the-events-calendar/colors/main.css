@@ -4,3 +4,11 @@
   --tec-color-accent-primary-active: var(--gest-primary-accent-hover);
   --tec-color-background: var(--gest-site-bg);
 }
+
+/*
+ * Fixes black text on dark blue background on mobile devices for selected
+ * days in the calendar.
+ */
+.tribe-events-calendar-month__day-cell--mobile.tribe-events-calendar-month__day-cell--selected .tribe-events-calendar-month__day-date-daynum {
+  color: var(--white-color);
+}
