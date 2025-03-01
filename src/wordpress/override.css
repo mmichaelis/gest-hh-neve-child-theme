@@ -60,11 +60,6 @@ a.wp-block-file__button:focus, a.wp-block-file__button:hover {
  * in the toolbar.
  */
 
-#wpadminbar {
-  /* Hide overflow, as wrapping looks bad. */
-  overflow: hidden;
-}
-
 #wpadminbar #wp-admin-bar-root-default > li,
 #wpadminbar #wp-admin-bar-top-secondary > li {
   /* By default, hide all menu items, so that we may allow them explicitly. */
