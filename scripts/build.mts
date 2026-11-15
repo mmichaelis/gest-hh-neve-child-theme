@@ -3,7 +3,7 @@
 // Invoke with "pnpm --silent" to suppress additional output.
 
 import minimist from "minimist";
-import { build } from "./main/build.mjs";
+import { build } from "./main/build.mts";
 
 const cliArguments = process.argv.slice(2);
 
@@ -19,6 +19,7 @@ const argv = minimist(cliArguments, {
       console.error(`Unknown argument ${unknownArg} passed to "version"!"`);
       process.exit(1);
     }
+    return true;
   },
 });
 
@@ -45,6 +46,10 @@ Examples:
 
 (async () => {
   const [srcFolder, targetFolder] = extraArgs;
+  if (typeof srcFolder !== "string" || typeof targetFolder !== "string") {
+    console.error("The source and target folders must be strings.");
+    process.exit(1);
+  }
   const path = await build(srcFolder, targetFolder);
   if (!silent) {
     console.log(path);

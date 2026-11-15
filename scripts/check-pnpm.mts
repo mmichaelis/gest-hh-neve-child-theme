@@ -3,9 +3,9 @@
 /* inspired by https://github.com/pnpm/only-allow */
 
 const wantedPM = "pnpm";
-const usedPM = pmFromUserAgent(process.env.npm_config_user_agent);
+const usedPM = pmFromUserAgent(process.env.npm_config_user_agent ?? "");
 
-function pmFromUserAgent(userAgent) {
+function pmFromUserAgent(userAgent: string) {
   const pmSpec = userAgent.split(" ")[0];
   const separatorPos = pmSpec.lastIndexOf("/");
   return pmSpec.substring(0, separatorPos);

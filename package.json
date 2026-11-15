@@ -10,21 +10,22 @@
   },
   "private": true,
   "scripts": {
-    "about": "node ./scripts/about.mjs",
-    "preadd": "node ./scripts/check-pnpm.mjs",
-    "build": "node ./scripts/build.mjs ./src ./build",
+    "about": "node ./scripts/about.mts",
+    "preadd": "node ./scripts/check-pnpm.mts",
+    "build": "node ./scripts/build.mts ./src ./build",
     "clean": "rimraf ./build",
-    "preinstall": "node ./scripts/check-pnpm.mjs",
-    "lint": "pnpm run eslint",
+    "preinstall": "node ./scripts/check-pnpm.mts",
+    "lint": "pnpm run eslint && pnpm run typecheck",
     "postlint": "pnpm run stylelint",
     "eslint": "eslint --max-warnings 0",
+    "typecheck": "tsc --noEmit",
     "stylelint": "stylelint --max-warnings 0 \"src/**/*.css\"",
-    "preremove": "node ./scripts/check-pnpm.mjs",
-    "update-actions": "node ./scripts/update-actions.mjs",
+    "preremove": "node ./scripts/check-pnpm.mts",
+    "update-actions": "node ./scripts/update-actions.mts",
     "preversion": "pnpm run lint",
     "version": "pnpm run build",
     "postversion": "exit 0",
-    "wordpress-theme-meta": "node ./scripts/wordpress-theme-meta.mjs"
+    "wordpress-theme-meta": "node ./scripts/wordpress-theme-meta.mts"
   },
   "keywords": [],
   "author": "Mark Michaelis",
@@ -32,6 +33,8 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@npmcli/package-json": "^8.0.1",
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^26.6.6",
     "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.7",
@@ -41,6 +44,7 @@
     "node-fetch": "^3.3.2",
     "rimraf": "^6.1.4",
     "stylelint": "^18.0.0",
-    "stylelint-config-standard": "^41.0.0"
+    "stylelint-config-standard": "^41.0.0",
+    "typescript": "^7.0.2"
   }
 }

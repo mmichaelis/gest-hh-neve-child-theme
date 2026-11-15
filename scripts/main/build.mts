@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { wordpressThemeMetaString } from "./wordpress-theme-meta.mjs";
-import { about } from "./about.mjs";
+import { wordpressThemeMetaString } from "./wordpress-theme-meta.mts";
+import { about } from "./about.mts";
 
 const defaultSourceFolderPath = "./src";
 const defaultBuildFolderPath = "./build";
@@ -11,6 +11,9 @@ export const build = async (
   buildFolderPath = defaultBuildFolderPath,
 ) => {
   const name = await about(["name"]);
+  if (typeof name !== "string") {
+    throw new TypeError("The package name in package.json must be a string.");
+  }
   const absSource = path.resolve(sourceFolderPath);
   const absTarget = path.resolve(buildFolderPath, name);
 
