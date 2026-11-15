@@ -1,31 +1,28 @@
-# gest-hh-neve-child-theme
+# GEST Neve Child Theme
 
-WordPress theme for [gest-hamburg.de](https://gest-hamburg.de) based on
-[Neve](https://themeisle.com/themes/neve/)
-([Codeinwp/neve](https://github.com/Codeinwp/neve)).
+This repository builds the WordPress child theme for
+[gest-hamburg.de](https://gest-hamburg.de/). It extends the Neve theme. It does
+not include the Neve parent theme.
 
-## Neve Compatibility Review
+## Build and upload
+
+To build a ZIP file and upload it to the live WordPress site without GitHub
+Actions, follow the [build and upload guide](./docs/build-and-upload.md).
+
+## Project guides
+
+- [Development and checks](./docs/development.md)
+- [Theme source layout](./docs/source-layout.md)
+- [GitHub release process](./docs/releasing.md)
+- [Dependency updates](./docs/updating-dependencies.md)
+- [Documentation index](./docs/README.md)
+- [Contributing](./CONTRIBUTING.md)
+- [AI coding instructions](./AGENTS.md)
+
+## Neve compatibility
 
 The child theme's Neve-specific CSS was last reviewed against Neve 4.2.19
-(upstream commit `ab4ff1c`) on November 15, 2026. The review compared the CSS
-variables and selectors with Neve's source and spot-checked the live homepage at
-desktop, mobile, and print media settings. It was not a full visual regression
-test; known rendering issues remain outside the scope of this review.
-
-## How-Tos
-
-- [Contributing](./CONTRIBUTING.md)
-
-  Describes the development checks and available auto-fixes.
-
-- [Release](./HOWTO_Release.md)
-
-  Describes how to release a new version of the theme.
-
-- [Upload](./HOWTO_Upload.md)
-
-  Describes how to upload a new version of the theme to the WordPress site.
-
-- [Update Third-Party Dependencies](./HOWTO_Update-Third-Party.md)
-
-  Describes how to update third-party dependencies in the project.
+(upstream commit `ab4ff1c`) on November 15, 2026. The review compared CSS
+variables and selectors with Neve's source and checked the live homepage on
+desktop, mobile, and print. It was not a full visual test. Known rendering
+issues remain outside the scope of that review.
