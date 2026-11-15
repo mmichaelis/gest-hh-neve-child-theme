@@ -9,12 +9,11 @@ You need Node.js 26 and PNPM 12. Use a macOS or Linux shell. On Windows, use
 WSL. The packaging command uses a project dependency, so you do not need to
 install `zip` or `unzip`.
 
-This procedure uploads to the live WordPress site. The project does not have a
-supported staging site or a documented, repeatable local WordPress setup. An
-earlier Docker copy was experimental and is not maintained by the project.
-There is no automated rollback command. Static checks do not test the rendered
-site. Before an upload, know how to restore a backup through your WordPress
-host.
+This procedure uploads to the live WordPress site. For local layout checks, use
+the separate [local WordPress test site guide](./local-wordpress.md). The local
+copy is not a public staging site and does not provide an automated rollback.
+Static checks do not test the rendered site. Before a live upload, know how to
+restore a backup through your WordPress host.
 
 ## Build the theme ZIP
 
