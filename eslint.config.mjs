@@ -5,7 +5,13 @@ import pluginYml from "eslint-plugin-yml";
 
 export default [
   {
-    ignores: [".idea/*", "pnpm-lock.yaml", "node_modules/*", "build/*"],
+    ignores: [
+      ".idea/*",
+      "pnpm-lock.yaml",
+      "node_modules/*",
+      "build/*",
+      ".local-wordpress/**",
+    ],
   },
   {
     languageOptions: { globals: globals.node },

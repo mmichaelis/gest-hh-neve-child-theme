@@ -1,0 +1,81 @@
+name: gest-hh-neve-child-local
+
+services:
+  database:
+    image: mariadb:10.11.4
+    restart: "no"
+    environment:
+      MARIADB_DATABASE: ${LOCAL_DB_NAME:-wordpress}
+      MARIADB_USER: ${LOCAL_DB_USER:-gest_local}
+      MARIADB_PASSWORD: ${LOCAL_DB_PASSWORD:-install-required}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-install-required}
+    volumes:
+      - database-data:/var/lib/mysql
+    networks:
+      - local-only
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  wordpress:
+    image: wordpress:${WORDPRESS_VERSION:-7.1.4}-php${PHP_VERSION:-8.3}-apache
+    restart: "no"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_NAME: ${LOCAL_DB_NAME:-wordpress}
+      WORDPRESS_DB_USER: ${LOCAL_DB_USER:-gest_local}
+      WORDPRESS_DB_PASSWORD: ${LOCAL_DB_PASSWORD:-install-required}
+      WORDPRESS_CONFIG_EXTRA: |
+        $$table_prefix = '${WORDPRESS_TABLE_PREFIX:-gowp_}';
+        define('WP_HOME', 'http://localhost:${WORDPRESS_PORT:-8080}');
+        define('WP_SITEURL', 'http://localhost:${WORDPRESS_PORT:-8080}');
+        define('DISALLOW_FILE_EDIT', true);
+    ports:
+      - 127.0.0.1:${WORDPRESS_PORT:-8080}:80
+    volumes:
+      - wordpress-core:/var/www/html
+      - ./.local-wordpress/wp-content:/var/www/html/wp-content
+      - ./build/gest-hh-neve-child:/var/www/html/wp-content/themes/gest-hh-neve-child:ro
+      - ./docker/local-mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+    networks:
+      - local-only
+
+  cli:
+    image: wordpress:cli-php${PHP_VERSION:-8.3}
+    profiles:
+      - tools
+    entrypoint: ["wp"]
+    environment:
+      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_NAME: ${LOCAL_DB_NAME:-wordpress}
+      WORDPRESS_DB_USER: ${LOCAL_DB_USER:-gest_local}
+      WORDPRESS_DB_PASSWORD: ${LOCAL_DB_PASSWORD:-install-required}
+      WORDPRESS_CONFIG_EXTRA: |
+        $$table_prefix = '${WORDPRESS_TABLE_PREFIX:-gowp_}';
+        define('WP_HOME', 'http://localhost:${WORDPRESS_PORT:-8080}');
+        define('WP_SITEURL', 'http://localhost:${WORDPRESS_PORT:-8080}');
+        define('DISALLOW_FILE_EDIT', true);
+    volumes:
+      - wordpress-core:/var/www/html
+      - ./.local-wordpress/wp-content:/var/www/html/wp-content
+      - ./build/gest-hh-neve-child:/var/www/html/wp-content/themes/gest-hh-neve-child:ro
+      - ./docker/local-mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+    networks:
+      - local-only
+    restart: "no"
+
+volumes:
+  database-data: {}
+  wordpress-core: {}
+
+networks:
+  local-only:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: "false"

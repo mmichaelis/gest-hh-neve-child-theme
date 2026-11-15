@@ -1,4 +1,5 @@
 node_modules/
+__pycache__/
 # Packed Artifacts
 *.zip
 *.tgz
@@ -7,3 +8,4 @@ node_modules/
 /.vscode
 # Build Files
 build/
+/.local-wordpress/
