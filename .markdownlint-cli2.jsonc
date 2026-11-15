@@ -8,6 +8,7 @@
   },
   "gitignore": true,
   "globs": ["**/*.md"],
+  // User-level Git excludes are not read by markdownlint-cli2.
   "ignores": ["my-planning/**"],
   "overrides": [
     {
