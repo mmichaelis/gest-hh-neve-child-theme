@@ -7,7 +7,7 @@ This document describes how to update third-party dependencies in the project.
 The project uses NodeJS for development purposes. The dependencies are managed
 via `pnpm`.
 
-### General Advice
+### Dependency Update Guidance
 
 When doing updates, always commit the changes to the `package.json` and
 `pnpm-lock.yaml` file in extra commits. This makes it easier to track changes
@@ -43,7 +43,7 @@ breaking changes.
 The project uses GitHub Actions for continuous integration. The configuration
 is stored in `.github/workflows/` and is written in YAML.
 
-### General Advice
+### GitHub Actions Update Guidance
 
 When doing updates, always commit the changes to the workflow files in extra
 commits. This makes it easier to track changes and to resolve conflicts from
