@@ -1,0 +1,23 @@
+{
+  "config": {
+    "default": true,
+    "MD013": {
+      // Markdown tables do not support wrapping cells like prose.
+      "tables": false,
+    },
+  },
+  "gitignore": true,
+  "globs": ["**/*.md"],
+  "ignores": ["my-planning/**"],
+  "overrides": [
+    {
+      "filter": ["LICENSE.md"],
+      // Preserve the bundled GPL text verbatim, including headings and lists.
+      "config": {
+        "MD026": false,
+        "MD030": false,
+      },
+      "combine": "merge",
+    },
+  ],
+}

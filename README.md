@@ -14,6 +14,10 @@ test; known rendering issues remain outside the scope of this review.
 
 ## How-Tos
 
+- [Contributing](./CONTRIBUTING.md)
+
+  Describes the development checks and available auto-fixes.
+
 - [Release](./HOWTO_Release.md)
 
   Describes how to release a new version of the theme.
