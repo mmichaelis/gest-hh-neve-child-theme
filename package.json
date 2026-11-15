@@ -25,6 +25,7 @@
     "stylelint": "stylelint --max-warnings 0 \"src/**/*.css\"",
     "preremove": "node ./scripts/check-pnpm.mts",
     "update-actions": "node ./scripts/update-actions.mts",
+    "verify": "bash ./bin/verify.sh",
     "preversion": "pnpm run lint",
     "version": "pnpm run build",
     "postversion": "exit 0",
