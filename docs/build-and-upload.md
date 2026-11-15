@@ -5,15 +5,9 @@ GitHub release workflow.
 
 ## Before you start
 
-You need Node.js 26, PNPM 12, and the `zip` and `unzip` commands. Use a macOS
-or Linux shell. On Windows, use WSL.
-
-On Ubuntu or WSL, install the archive tools if they are missing:
-
-```bash
-sudo apt update
-sudo apt install zip unzip
-```
+You need Node.js 26 and PNPM 12. Use a macOS or Linux shell. On Windows, use
+WSL. The packaging command uses a project dependency, so you do not need to
+install `zip` or `unzip`.
 
 This procedure uploads to the live WordPress site. The project does not have a
 supported staging site or a documented, repeatable local WordPress setup. An
@@ -29,21 +23,24 @@ Run these commands from the repository root:
 ```bash
 pnpm install --frozen-lockfile
 pnpm run verify
-pnpm run build
-rm -f build/gest-hh-neve-child.zip
-(cd build && zip -qr gest-hh-neve-child.zip gest-hh-neve-child)
-unzip -l build/gest-hh-neve-child.zip
+pnpm run package
 ```
 
-The build command replaces `build/gest-hh-neve-child`. It copies the theme
-files from `src/` and writes the WordPress theme version from `package.json`
-into the built `style.css`. It does not create a ZIP, so the commands above
-create one separately.
+The package command replaces `build/gest-hh-neve-child`. It copies the theme
+files from `src/`, writes the WordPress theme version from `package.json` into
+the built `style.css`, and creates the ZIP.
 
-The ZIP is `build/gest-hh-neve-child.zip`. Check the `unzip -l` output. The
-archive must contain one top-level `gest-hh-neve-child/` folder with files such
-as `style.css` and `functions.php`. It must not contain a `build/` folder at the
-top level.
+The ZIP is `build/gest-hh-neve-child.zip`. Before writing it, the command
+checks that the archive has one top-level `gest-hh-neve-child/` folder and
+contains `style.css` and `functions.php`.
+
+To keep an existing `build/` folder unchanged, pass a different output folder:
+
+```bash
+pnpm run package -- /tmp/gest-hh-neve-output
+```
+
+This creates `/tmp/gest-hh-neve-output/gest-hh-neve-child.zip`.
 
 If `pnpm run verify` reports that a tool is unavailable, that check was
 skipped. Install the missing tool and run verification again when you need all

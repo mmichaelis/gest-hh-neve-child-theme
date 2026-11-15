@@ -48,6 +48,15 @@ pnpm run lint:fix
 
 Review the changed files, then run `pnpm run verify` again.
 
+To build the theme and create a ZIP locally, run:
+
+```bash
+pnpm run package
+```
+
+See the [build and upload guide](./build-and-upload.md) for the upload steps
+and for using a separate output folder.
+
 ### Optional system tools
 
 Install ShellCheck with your system package manager. On Ubuntu or Debian:

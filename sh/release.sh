@@ -301,29 +301,29 @@ if (( isSnapshotRelease == 0 || currentIsSnapshot == 0 )); then
   log_info "Released a ${type} version: ${releaseVersion} (${releaseHash})"
 else
   # No need to perform a release, we already have a yet unused snapshot
-  # version. Just build the project.
-  log_info "Skipping release, as we are already in a snapshot version. Just building."
+  # version. The artifact is built below.
+  log_info "Skipping release, as we are already in a snapshot version."
 
   releaseVersion="${currentVersion}"
   releaseHash="${currentRef}"
-
-  pnpm build | log_info
 fi
 
 declare -r releaseVersion
 declare -r releaseHash
 declare -r expectedThemePath="${git_workspace}/build/${projectName}"
 
+pnpm run package | log_info
+
 if [[ ! -d "${expectedThemePath}" ]]; then
   throw_error "Failed to find expected build artifacts at: ${expectedThemePath}"
 fi
 
-# Execute in Subshell to avoid polluting the working directory.
-cd "${git_workspace}/build" && echo "Changed directory to: $(pwd)" | log_info
-zip --quiet --recurse-paths -9 --archive-comment "${artifactPath}" "${projectName}" <<< "${type^} release ${releaseVersion} of ${projectName}." && echo "Success: Create ZIP." | log_info
-sizeInfo="$(du --summarize --human-readable "${artifactName}" | cut -f1)"
+if [[ ! -f "${artifactPath}" ]]; then
+  throw_error "Failed to find expected release archive at: ${artifactPath}"
+fi
+
+sizeInfo="$(du --summarize --human-readable "${artifactPath}" | cut -f1)"
 declare -r sizeInfo
-cd "${git_workspace}" && echo "Changed directory back to: $(pwd)" | log_info
 
 log_info "Created Release Artifact: ${artifactName} (path: ${artifactPath}, size: ${sizeInfo})"
 
