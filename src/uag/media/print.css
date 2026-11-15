@@ -38,7 +38,7 @@
 
   /* Team-Display like GEST-Board. */
   .wp-block-uagb-team {
-    page-break-inside: avoid;
+    break-inside: avoid;
     width: 100%;
   }
 }
