@@ -1,5 +1,7 @@
 # GEST Neve Child Theme
 
+[![Latest Neve release](https://img.shields.io/github/v/release/Codeinwp/neve?label=Neve&display_name=tag)](https://github.com/Codeinwp/neve/releases)
+
 This repository builds the WordPress child theme for
 [gest-hamburg.de](https://gest-hamburg.de/). It extends the Neve theme. It does
 not include the Neve parent theme.
@@ -21,8 +23,9 @@ Actions, follow the [build and upload guide](./docs/build-and-upload.md).
 
 ## Neve compatibility
 
-The child theme's Neve-specific CSS was last reviewed against Neve 4.2.19
-(upstream commit `ab4ff1c`) on November 15, 2026. The review compared CSS
-variables and selectors with Neve's source and checked the live homepage on
-desktop, mobile, and print. It was not a full visual test. Known rendering
-issues remain outside the scope of that review.
+The badge shows the latest Neve release. It does not show which release was
+used for the last compatibility review. The Neve-specific CSS was last reviewed
+on November 15, 2026. The review compared CSS variables and selectors with
+Neve's source and checked the live homepage on desktop, mobile, and print. It
+was not a full visual test. Known rendering issues remain outside the scope of
+that review.
