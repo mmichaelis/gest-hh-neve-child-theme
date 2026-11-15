@@ -27,13 +27,24 @@ pnpm run verify
 
 Install [ShellCheck](https://github.com/koalaman/shellcheck#installing) with
 your operating system's package manager. On Debian or Ubuntu, run
-`sudo apt install shellcheck`. Install
-[actionlint](https://github.com/rhysd/actionlint/blob/main/docs/install.md)
-from its official prebuilt release. If an external tool is unavailable, the
-verifier warns and skips that check; failures from available tools still make
-verification fail after the remaining checks run. The pull-request workflow
-uses ShellCheck on Ubuntu and downloads actionlint v1.7.12 with provenance
-verification.
+`sudo apt install shellcheck`. Install the repository-pinned actionlint release
+locally with:
+
+```bash
+./sh/install-actionlint.sh
+```
+
+The script installs the official Linux binary to `$HOME/.local/bin`, verifies
+its GitHub attestation, and overwrites an existing installation. Pass an
+install directory as the first argument to use another target. The CI workflow
+uses the same script with its temporary directory. The script requires the
+GitHub CLI to be authenticated (`gh auth login`). See the
+[official actionlint installation guide](https://github.com/rhysd/actionlint/blob/main/docs/install.md)
+for other installation options.
+
+If an external tool is unavailable, the verifier warns and skips that check;
+failures from available tools still make verification fail after the remaining
+checks run.
 
 ## Auto-Fixes
 

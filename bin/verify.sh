@@ -46,10 +46,13 @@ run_pnpm_check "Prettier" "prettier" "formatcheck"
 run_pnpm_check "Markdownlint" "markdownlint-cli2" "markdownlint"
 run_pnpm_check "Stylelint" "stylelint" "stylelint"
 
+actionlint_local_bin="${HOME:-}/.local/bin/actionlint"
 if command -v actionlint >/dev/null 2>&1; then
   run_check "actionlint" actionlint
+elif [[ -n "${HOME:-}" && -x "${actionlint_local_bin}" ]]; then
+  run_check "actionlint" "${actionlint_local_bin}"
 else
-  warn_skip "actionlint" "the actionlint executable is unavailable"
+  warn_skip "actionlint" "run sh/install-actionlint.sh to install the pinned release"
 fi
 
 if command -v shellcheck >/dev/null 2>&1; then

@@ -32,16 +32,9 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Install actionlint
         env:
-          ACTIONLINT_VERSION: 1.7.12
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive="${RUNNER_TEMP}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
-          gh release download "v${ACTIONLINT_VERSION}" \
-            --repo rhysd/actionlint \
-            --pattern "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" \
-            --dir "${RUNNER_TEMP}"
-          gh attestation verify --repo rhysd/actionlint "${archive}"
-          tar -xzf "${archive}" -C "${RUNNER_TEMP}" actionlint
+          sh/install-actionlint.sh "${RUNNER_TEMP}"
           printf '%s\n' "${RUNNER_TEMP}" >> "${GITHUB_PATH}"
         shell: bash
       - name: Run static verification
