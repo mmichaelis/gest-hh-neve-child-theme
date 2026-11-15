@@ -46,8 +46,14 @@ run_pnpm_check "Prettier" "prettier" "formatcheck"
 run_pnpm_check "Markdownlint" "markdownlint-cli2" "markdownlint"
 run_pnpm_check "Stylelint" "stylelint" "stylelint"
 
+if command -v actionlint >/dev/null 2>&1; then
+  run_check "actionlint" actionlint
+else
+  warn_skip "actionlint" "the actionlint executable is unavailable"
+fi
+
 if command -v shellcheck >/dev/null 2>&1; then
-  run_check "ShellCheck" shellcheck sh/about.sh sh/release.sh bin/verify.sh
+  run_check "ShellCheck" shellcheck sh/*.sh bin/*.sh
 else
   warn_skip "ShellCheck" "the shellcheck executable is unavailable"
 fi

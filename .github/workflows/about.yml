@@ -86,22 +86,22 @@ jobs:
         name: "Get Node.js Version"
         run: |
           result=$(./sh/about.sh engines node)
-          echo "result=${result}" >> $GITHUB_OUTPUT
+          echo "result=${result}" >> "$GITHUB_OUTPUT"
       - id: get-pnpm-version
         name: "Get PNPM Version"
         run: |
           result=$(./sh/about.sh engines pnpm)
-          echo "result=${result}" >> $GITHUB_OUTPUT
+          echo "result=${result}" >> "$GITHUB_OUTPUT"
       - id: get-version
         name: "Get Version"
         run: |
           result=$(./sh/about.sh version)
-          echo "result=${result}" >> $GITHUB_OUTPUT
+          echo "result=${result}" >> "$GITHUB_OUTPUT"
       - id: get-name
         name: "Get Name"
         run: |
           result=$(./sh/about.sh name)
-          echo "result=${result}" >> $GITHUB_OUTPUT
+          echo "result=${result}" >> "$GITHUB_OUTPUT"
   verbose:
     name: "Verbose"
     runs-on: ubuntu-latest
@@ -111,9 +111,11 @@ jobs:
       - id: output
         name: "Output"
         run: |
-          echo "# ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "* Node Version: ${{ needs.main.outputs.nodeVersion }}" >> $GITHUB_STEP_SUMMARY
-          echo "* PNPM Version: ${{ needs.main.outputs.pnpmVersion }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Name: ${{ needs.main.outputs.name }}" >> $GITHUB_STEP_SUMMARY
-          echo "* Version: ${{ needs.main.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "# ${{ github.workflow }}"
+            echo ""
+            echo "* Node Version: ${{ needs.main.outputs.nodeVersion }}"
+            echo "* PNPM Version: ${{ needs.main.outputs.pnpmVersion }}"
+            echo "* Name: ${{ needs.main.outputs.name }}"
+            echo "* Version: ${{ needs.main.outputs.version }}"
+          } >> "$GITHUB_STEP_SUMMARY"
