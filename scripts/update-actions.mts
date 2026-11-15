@@ -1,16 +1,19 @@
-import { promises as fs } from "fs";
-import path from "path";
+import fs from "node:fs/promises";
+import path from "node:path";
 import fetch from "node-fetch";
 
 const workflowsDir = path.resolve(".github/workflows");
 
-async function getLatestVersion(action) {
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null;
+
+async function getLatestVersion(action: string): Promise<string> {
   const response = await fetch(
     `https://api.github.com/repos/${action}/releases/latest`,
   );
-  const data = await response.json();
+  const data: unknown = await response.json();
   // Fail, if `tag_name` is not present.
-  if (!data["tag_name"]) {
+  if (!isRecord(data) || typeof data.tag_name !== "string") {
     throw new Error(
       `Failed to get the latest version of ${action}. Response: ${JSON.stringify(
         data,
@@ -20,12 +23,14 @@ async function getLatestVersion(action) {
   return data["tag_name"];
 }
 
-async function getLatestMajorVersion(action) {
+async function getLatestMajorVersion(action: string): Promise<string> {
   const latestVersion = await getLatestVersion(action);
   return latestVersion.split(".")[0];
 }
 
-async function getLatestMajorVersions(actions) {
+async function getLatestMajorVersions(
+  actions: Map<string, string>,
+): Promise<Map<string, string>> {
   const versions = new Map();
   for (const action of actions.keys()) {
     const latestVersion = await getLatestMajorVersion(action);
@@ -40,7 +45,7 @@ async function getLatestMajorVersions(actions) {
  * @param content {string} The content of a workflow file.
  * @returns {Map<string, string>} A map of used actions and their versions.
  */
-function getUsedActions(content) {
+function getUsedActions(content: string): Map<string, string> {
   const actions = new Map();
   const pattern = /uses: ([^@\n]+)@([^ \n]+)/g;
   let match;
@@ -51,7 +56,7 @@ function getUsedActions(content) {
   return actions;
 }
 
-async function updateWorkflowFile(filePath) {
+async function updateWorkflowFile(filePath: string): Promise<void> {
   console.log(`Updating ${filePath}`);
 
   const content = await fs.readFile(filePath, "utf8");
@@ -60,6 +65,9 @@ async function updateWorkflowFile(filePath) {
   const updatedContent = Array.from(usedActions).reduce(
     (content, [action, version]) => {
       const latestMajorVersion = latestMajorVersions.get(action);
+      if (!latestMajorVersion) {
+        throw new Error(`Failed to determine the latest version of ${action}.`);
+      }
       if (latestMajorVersion === version) {
         console.log(`No update needed for ${action} (${version})`);
         return content;
@@ -73,7 +81,7 @@ async function updateWorkflowFile(filePath) {
   await fs.writeFile(filePath, updatedContent, "utf8");
 }
 
-async function updateAllWorkflows() {
+async function updateAllWorkflows(): Promise<void> {
   const files = await fs.readdir(workflowsDir);
   for (const file of files) {
     const filePath = path.join(workflowsDir, file);
@@ -81,4 +89,7 @@ async function updateAllWorkflows() {
   }
 }
 
-updateAllWorkflows().catch(console.error);
+updateAllWorkflows().catch((error: unknown) => {
+  console.error(error);
+  process.exitCode = 1;
+});

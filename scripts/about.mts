@@ -3,7 +3,7 @@
 // Invoke with "pnpm --silent" to suppress additional output.
 
 import minimist from "minimist";
-import { about } from "./main/about.mjs";
+import { about } from "./main/about.mts";
 
 const cliArguments = process.argv.slice(2);
 
@@ -18,6 +18,7 @@ const argv = minimist(cliArguments, {
       console.error(`Unknown argument ${unknownArg} passed to "about"!"`);
       process.exit(1);
     }
+    return true;
   },
 });
 
@@ -51,7 +52,7 @@ Hint:
     const data = await about(extraArgs);
     console.log(data);
   } catch (error) {
-    console.error(error.message);
-    process.exit(1);
+    console.error(error instanceof Error ? error.message : error);
+    process.exitCode = 1;
   }
 })();

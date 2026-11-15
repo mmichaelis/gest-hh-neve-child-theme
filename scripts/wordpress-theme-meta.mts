@@ -3,7 +3,7 @@
 // Invoke with "pnpm --silent" to suppress additional output.
 
 import minimist from "minimist";
-import { wordpressThemeMetaString } from "./main/wordpress-theme-meta.mjs";
+import { wordpressThemeMetaString } from "./main/wordpress-theme-meta.mts";
 
 const cliArguments = process.argv.slice(2);
 
